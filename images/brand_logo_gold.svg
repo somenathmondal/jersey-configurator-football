@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- Three diagonal premium golden bars (Adidas-style brand concept) -->
+  <g fill="#D4AF37" stroke="#996515" stroke-width="0.5">
+    <!-- Left bar (shortest) -->
+    <polygon points="15,75 27,75 47,40 35,40" />
+    <!-- Center bar (medium) -->
+    <polygon points="35,75 47,75 72,25 60,25" />
+    <!-- Right bar (tallest) -->
+    <polygon points="55,75 67,75 97,10 85,10" />
+  </g>
+</svg>
