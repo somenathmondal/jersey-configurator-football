@@ -377,7 +377,7 @@ class JerseyViewer {
     init() {
         // Create scene
         this.scene = new THREE.Scene();
-        this.scene.background = new THREE.Color(0xf5f7fa);
+        this.scene.background = null; // Enable transparent canvas background
 
         // Create camera
         const aspect = this.container.clientWidth / this.container.clientHeight;

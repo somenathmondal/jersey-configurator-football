@@ -3907,9 +3907,9 @@ function loadJerseyConfiguration(isSavedDesign) {
             tab1: {
               enabled: true,
               color: '#FFFFFF',
-              position: 7,
-              gap: 15,
-              thickness: 15,
+              position: 11.6,
+              gap: 10,
+              thickness: 10,
               defaultCounts: { horizontal: 4, vertical: 3 }
             },
             tab2: { enabled: false, color: '#eaeef1', position: 15, gap: 10, thickness: 10, defaultCounts: { horizontal: 4, vertical: 3 } },
@@ -3924,9 +3924,9 @@ function loadJerseyConfiguration(isSavedDesign) {
             tab1: {
               enabled: true,
               color: '#FFFFFF',
-              position: 7,
-              gap: 15,
-              thickness: 15,
+              position: 11.6,
+              gap: 10,
+              thickness: 10,
               defaultCounts: { horizontal: 4, vertical: 3 }
             },
             tab2: { enabled: false, color: '#eaeef1', position: 15, gap: 10, thickness: 10, defaultCounts: { horizontal: 4, vertical: 3 } },
