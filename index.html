@@ -4,11 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AFA Albiceleste 3D Customizer</title>
+  <title>Messi & The Albiceleste — World Cup Jerseys 2006–2026</title>
   <link rel="icon" type="image/x-icon" href="images/gf_sports.ico">
-  <meta name="description" content="Experience the legendary 3-star Argentina home jersey in real-time interactive 3D. Customize collars, shoulders, stripes, and badges.">
+  <meta name="description" content="A visual journey through Lionel Messi's six World Cup campaigns with Argentina, told through the iconic Albiceleste jerseys — from the 2006 debut to the 2026 farewell.">
   
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=2.0.0">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
 
   <!-- Import map for Three.js modules -->
   <script type="importmap">
@@ -25,179 +30,350 @@
 </head>
 
 <body>
-  <!-- Header -->
-  <header class="header">
-    <div class="header-content">
-      <div class="brand">
-        <img class="brand-logo" src="images/argentina_crest.svg" alt="AFA Logo">
-        <span class="brand-name">Albiceleste 3D</span>
-      </div>
-      <div class="header-links">
-        <a href="#" class="nav-link active">Home</a>
-        <a href="https://github.com" class="nav-link" target="_blank">GitHub</a>
+  <!-- ========== HERO INTRO ========== -->
+  <section class="hero-intro" id="hero">
+    <div class="hero-particles" id="hero-particles"></div>
+    <div class="hero-content">
+      <div class="hero-overline">A Visual Journey · 2006 – 2026</div>
+      <h1 class="hero-title">
+        <span class="hero-title-line">Messi</span>
+        <span class="hero-title-line accent">&</span>
+        <span class="hero-title-line">The Albiceleste</span>
+      </h1>
+      <p class="hero-subtitle">
+        Six World Cups. Twenty years. One destiny.<br>
+        The story of the greatest, told through the jersey he wore.
+      </p>
+      <div class="scroll-indicator" id="scroll-indicator">
+        <span>Begin the Journey</span>
+        <div class="scroll-arrow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+        </div>
       </div>
     </div>
-  </header>
+  </section>
 
-  <!-- Main Hero Layout -->
-  <main class="main-layout">
-    
-    <!-- Left Column: Controls -->
-    <section class="control-section">
-      <div class="hero-text">
-        <div class="brand-badge">AFA Albiceleste Edition</div>
-        <h1>Albiceleste Customizer</h1>
-        <p>
-          Configure the legendary 3-star Argentine home kit in interactive 3D. Fine-tune stripes, switch collar/shoulder templates, and toggle the golden crests.
-        </p>
-      </div>
+  <!-- ========== SCROLLYTELLING TIMELINE ========== -->
+  <div class="timeline-container" id="timeline">
 
-      <!-- Model Style Selector Panel -->
-      <div class="glass-panel">
-        <h2 class="panel-title">Model Template</h2>
-        <div class="settings-grid">
-          <div class="input-group">
-            <label for="collar-selector" class="input-label">Collar Style</label>
-            <select id="collar-selector" class="select-input">
-              <option value="v_neck">V-Neck (Classic)</option>
-              <option value="round">Round Collar</option>
-              <option value="insert">Insert Collar</option>
-              <option value="v_neck_crossed">V-Neck Crossed</option>
-            </select>
-          </div>
-          <div class="input-group">
-            <label for="shoulder-selector" class="input-label">Shoulder Cut</label>
-            <select id="shoulder-selector" class="select-input">
-              <option value="reglan">Raglan (Sleek)</option>
-              <option value="set_in">Set-In (Traditional)</option>
-            </select>
+    <!-- Sticky 3D Viewer Column -->
+    <div class="viewer-track">
+      <div class="viewer-sticky">
+        <div class="viewer-era-badge" id="viewer-era-badge">
+          <span class="badge-year" id="badge-year">2026</span>
+          <span class="badge-tournament" id="badge-tournament">North America</span>
+        </div>
+        <div class="viewer-wrapper">
+          <div id="viewer-container" class="viewer-container"></div>
+          <!-- Loading overlay -->
+          <div class="loading-overlay" id="canvas-loading-overlay">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Assembling Jersey...</div>
           </div>
         </div>
-
-        <div class="toggle-group">
-          <span class="input-label">Ribbed Fabric Texture</span>
-          <label class="switch-container">
-            <input type="checkbox" id="ribbed-collar-checkbox-colors" checked>
-            <span class="slider-switch"></span>
-          </label>
-        </div>
-      </div>
-
-      <!-- Color & Stripes Customization Panel -->
-      <div class="glass-panel" id="colors-tab">
-        <h2 class="panel-title">Design &amp; Stripes</h2>
-        
-        <div class="settings-grid">
-          <div class="input-group">
-            <label for="jersey-part-select-colors" class="input-label">Part to Customize</label>
-            <select id="jersey-part-select-colors" class="select-input">
-              <option value="front">Body Front</option>
-              <option value="back">Body Back</option>
-              <option value="left-sleeve">Left Sleeve</option>
-              <option value="right-sleeve">Right Sleeve</option>
-              <option value="collar">Collar Rim</option>
-              <option value="collar2">Collar Insert</option>
-              <option value="hem">Hem Bottom</option>
-            </select>
-          </div>
-          <div class="input-group">
-            <label class="input-label">Base Fabric Color</label>
-            <div class="color-preset-group" id="base-color-presets">
-              <button type="button" class="preset-swatch active" data-color="#75AADB" style="background-color: #75AADB;" title="Albiceleste Blue"></button>
-              <button type="button" class="preset-swatch" data-color="#FFFFFF" style="background-color: #FFFFFF;" title="White"></button>
-              <button type="button" class="preset-swatch" data-color="#D4AF37" style="background-color: #D4AF37;" title="AFA Gold"></button>
-              <button type="button" class="preset-swatch" data-color="#1A1F36" style="background-color: #1A1F36;" title="Navy Black"></button>
-              <div class="color-picker-custom">
-                <input type="color" id="jersey-part-color" class="color-picker-input" value="#75AADB">
-                <span id="base-color-hex" class="hex-code">#75AADB</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Stripe Layer 1 Controls (Main stripes) -->
-        <div class="stripe-controls">
-          <div class="toggle-group">
-            <span class="input-label">Enable Stripes</span>
-            <label class="switch-container">
-              <input type="checkbox" id="jersey-stripes-toggle-tab1" checked>
-              <span class="slider-switch"></span>
-            </label>
-          </div>
-
-          <div class="input-group">
-            <label class="input-label">Stripe Color</label>
-            <div class="color-preset-group" id="stripe-color-presets">
-              <button type="button" class="preset-swatch active" data-color="#FFFFFF" style="background-color: #FFFFFF;" title="White"></button>
-              <button type="button" class="preset-swatch" data-color="#75AADB" style="background-color: #75AADB;" title="Albiceleste Blue"></button>
-              <button type="button" class="preset-swatch" data-color="#1A1F36" style="background-color: #1A1F36;" title="Navy Black"></button>
-              <button type="button" class="preset-swatch" data-color="#D4AF37" style="background-color: #D4AF37;" title="AFA Gold"></button>
-              <div class="color-picker-custom">
-                <input type="color" id="jersey-stripes-color-tab1" class="color-picker-input" value="#FFFFFF">
-                <span id="stripe-color-hex" class="hex-code">#FFFFFF</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="settings-group range-group">
-            <div class="range-header">
-              <span>Stripe Width</span>
-              <span class="range-value" id="stripe-thickness-val">10</span>
-            </div>
-            <input type="range" class="range-input" min="5" max="40" value="10" step="0.5" id="jersey-stripes-thickness-tab1">
-          </div>
-
-          <div class="settings-group range-group">
-            <div class="range-header">
-              <span>Gap Between Stripes</span>
-              <span class="range-value" id="stripe-gap-val">10</span>
-            </div>
-            <input type="range" class="range-input" min="5" max="40" value="10" step="1" id="jersey-stripes-gap-tab1">
-          </div>
-
-          <div class="settings-group range-group">
-            <div class="range-header">
-              <span>Pattern Offset (Centering)</span>
-              <span class="range-value" id="stripe-position-val">11.6</span>
-            </div>
-            <input type="range" class="range-input" min="0" max="20" value="11.6" step="0.1" id="jersey-stripes-position-tab1">
-          </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="btn-group">
-          <button id="download-button" class="btn btn-primary">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Export Design
-          </button>
-          <button id="reset-button" class="btn btn-secondary">
-            Reset Kit
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Right Column: 3D Viewport -->
-    <section class="viewer-section">
-      <div class="viewer-wrapper">
-        <!-- 3D Scene Container -->
-        <div id="viewer-container" class="viewer-container"></div>
-        
-        <!-- Loading overlay -->
-        <div class="loading-overlay" id="canvas-loading-overlay">
-          <div class="loading-spinner"></div>
-          <div class="loading-text">Assembling 3D Jersey...</div>
-        </div>
-
-        <!-- Interactive hint -->
         <div class="viewer-hint">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m10 15 5-3-5-3v6z"/></svg>
-          Drag to rotate | Scroll to zoom
+          Drag to rotate · Scroll to zoom
+        </div>
+        <!-- Timeline Progress -->
+        <div class="timeline-progress">
+          <div class="progress-track">
+            <div class="progress-fill" id="timeline-progress-fill"></div>
+          </div>
+          <div class="progress-dots">
+            <button class="dot" data-year="2026" aria-label="2026"><span>26</span></button>
+            <button class="dot" data-year="2022" aria-label="2022"><span>22</span></button>
+            <button class="dot" data-year="2018" aria-label="2018"><span>18</span></button>
+            <button class="dot" data-year="2014" aria-label="2014"><span>14</span></button>
+            <button class="dot" data-year="2010" aria-label="2010"><span>10</span></button>
+            <button class="dot" data-year="2006" aria-label="2006"><span>06</span></button>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
 
-  </main>
+    <!-- Scrolling Narrative Column -->
+    <div class="narrative-track">
+      <section class="era-section active" id="era-2026" data-year="2026"
+        data-collar="v_neck" data-shoulder="reglan"
+        data-bg-color="#75AADB" data-stripe-color="#FFFFFF"
+        data-stripe-width="12" data-stripe-gap="10" data-stripe-position="11">
+        <div class="era-number">01</div>
+        <div class="era-card">
+          <div class="era-header">
+            <span class="era-flag">🇺🇸🇨🇦🇲🇽</span>
+            <div class="era-year-label">2026</div>
+          </div>
+          <h2 class="era-title">North America</h2>
+          <p class="era-tagline">The Last Dance</p>
+          <div class="era-messi-image-container">
+            <img class="era-messi-image" src="https://upload.wikimedia.org/wikipedia/commons/4/43/Argentina_1-1_Ecuador_-_Copa_Am%C3%A9rica_2024_-_Messi_en_la_tanda_de_penales.jpg" alt="Lionel Messi in Copa America 2024" loading="lazy">
+          </div>
+          <p class="era-story">
+            At 39, the GOAT returns to the World Cup stage one final time. With three stars on the crest he helped earn, Messi's farewell tournament across North America marks the end of an era that redefined the beautiful game. Whatever happens on the pitch, the jersey he wears one last time carries the weight of every dream, every tear, and every moment of magic that made him immortal.
+          </p>
+          <div class="era-stats">
+            <div class="stat">
+              <span class="stat-value">39</span>
+              <span class="stat-label">Age</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">—</span>
+              <span class="stat-label">Apps</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">—</span>
+              <span class="stat-label">Goals</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">TBD</span>
+              <span class="stat-label">Result</span>
+            </div>
+          </div>
+          <div class="era-detail">
+            <span class="detail-label">Jersey</span>
+            <span class="detail-value">V-neck collar with blue accents · White sleeves · Metallic gold logos & side panels</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== 2022 QATAR ====== -->
+      <section class="era-section" id="era-2022" data-year="2022"
+        data-collar="round" data-shoulder="reglan"
+        data-bg-color="#75AADB" data-stripe-color="#FFFFFF"
+        data-stripe-width="10" data-stripe-gap="10" data-stripe-position="11.6">
+        <div class="era-number">02</div>
+        <div class="era-card champion">
+          <div class="era-header">
+            <span class="era-flag">🇶🇦</span>
+            <div class="era-year-label">2022</div>
+          </div>
+          <h2 class="era-title">Qatar <span class="trophy-icon">🏆</span></h2>
+          <p class="era-tagline">The Coronation</p>
+          <div class="era-messi-image-container">
+            <img class="era-messi-image" src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Lionel-Messi-Argentina-2022-FIFA-World-Cup.jpg" alt="Lionel Messi at the 2022 FIFA World Cup" loading="lazy">
+          </div>
+          <p class="era-story">
+            At 35, Messi delivered the performance of a lifetime. Seven goals, three assists, and a performance in the greatest World Cup final ever played — against France. After 120 minutes, a Mbappé hat-trick, every emotion known to mankind, and a penalty shootout for the ages, Messi finally lifted the one trophy that had eluded him. The image of the little Argentine, golden trophy raised high under the Lusail lights, completed football's greatest ever story.
+          </p>
+          <div class="era-stats">
+            <div class="stat highlight">
+              <span class="stat-value">35</span>
+              <span class="stat-label">Age</span>
+            </div>
+            <div class="stat highlight">
+              <span class="stat-value">7</span>
+              <span class="stat-label">Apps</span>
+            </div>
+            <div class="stat highlight">
+              <span class="stat-value">7</span>
+              <span class="stat-label">Goals</span>
+            </div>
+            <div class="stat highlight">
+              <span class="stat-value">🥇</span>
+              <span class="stat-label">Champion</span>
+            </div>
+          </div>
+          <div class="era-detail">
+            <span class="detail-label">Jersey</span>
+            <span class="detail-value">Ribbed black crew neck & cuffs · Black Adidas stripes · Sol de Mayo on back</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== 2018 RUSSIA ====== -->
+      <section class="era-section" id="era-2018" data-year="2018"
+        data-collar="v_neck" data-shoulder="reglan"
+        data-bg-color="#85BBE6" data-stripe-color="#FFFFFF"
+        data-stripe-width="8" data-stripe-gap="6" data-stripe-position="12">
+        <div class="era-number">03</div>
+        <div class="era-card">
+          <div class="era-header">
+            <span class="era-flag">🇷🇺</span>
+            <div class="era-year-label">2018</div>
+          </div>
+          <h2 class="era-title">Russia</h2>
+          <p class="era-tagline">The Darkest Chapter</p>
+          <div class="era-messi-image-container">
+            <img class="era-messi-image" src="https://upload.wikimedia.org/wikipedia/commons/e/e6/FWC_2018_-_Group_D_-_ARG_v_ISL_-_Messi_penalty_kick.jpg" alt="Lionel Messi at the 2018 FIFA World Cup" loading="lazy">
+          </div>
+          <p class="era-story">
+            At 31, many believed this would be Messi's last World Cup. The campaign was chaos from start to finish — a frustrating draw with Iceland, a 3-0 humiliation by Croatia that left him visibly broken, then a dramatic late winner over Nigeria to scrape through the group. It all ended with a breathless 4-3 Round of 16 defeat to a teenage Kylian Mbappé and France. The pixelated jersey of 2018 became a symbol of a fractured era.
+          </p>
+          <div class="era-stats">
+            <div class="stat">
+              <span class="stat-value">30</span>
+              <span class="stat-label">Age</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">4</span>
+              <span class="stat-label">Apps</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">1</span>
+              <span class="stat-label">Goal</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">R16</span>
+              <span class="stat-label">Result</span>
+            </div>
+          </div>
+          <div class="era-detail">
+            <span class="detail-label">Jersey</span>
+            <span class="detail-value">V-neck · Digital pixelated gradient stripes · Plain white shoulders/sleeves</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== 2014 BRAZIL ====== -->
+      <section class="era-section" id="era-2014" data-year="2014"
+        data-collar="v_neck" data-shoulder="set_in"
+        data-bg-color="#6CACE4" data-stripe-color="#FFFFFF"
+        data-stripe-width="14" data-stripe-gap="14" data-stripe-position="11.5">
+        <div class="era-number">04</div>
+        <div class="era-card">
+          <div class="era-header">
+            <span class="era-flag">🇧🇷</span>
+            <div class="era-year-label">2014</div>
+          </div>
+          <h2 class="era-title">Brazil</h2>
+          <p class="era-tagline">So Close, So Far</p>
+          <div class="era-messi-image-container">
+            <img class="era-messi-image" src="https://upload.wikimedia.org/wikipedia/commons/2/27/Lionel_Messi_in_tears_after_the_final.jpg" alt="Lionel Messi at the 2014 FIFA World Cup" loading="lazy">
+          </div>
+          <p class="era-story">
+            Messi was magnificent — scoring four goals and dragging Argentina to the final through sheer individual brilliance. He won the Golden Ball as the tournament's best player, but the ultimate prize slipped away in a 1-0 extra-time defeat to Germany at the Maracanã. The image of Messi, hands on knees, staring at the trophy he couldn't touch became one of football's most haunting photographs.
+          </p>
+          <div class="era-stats">
+            <div class="stat">
+              <span class="stat-value">26</span>
+              <span class="stat-label">Age</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">7</span>
+              <span class="stat-label">Apps</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">4</span>
+              <span class="stat-label">Goals</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">Final</span>
+              <span class="stat-label">Result</span>
+            </div>
+          </div>
+          <div class="era-detail">
+            <span class="detail-label">Jersey</span>
+            <span class="detail-value">White V-neck with black back line · Distinct white sleeves · Crest in golden shield</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== 2010 SOUTH AFRICA ====== -->
+      <section class="era-section" id="era-2010" data-year="2010"
+        data-collar="round" data-shoulder="set_in"
+        data-bg-color="#75AADB" data-stripe-color="#FFFFFF"
+        data-stripe-width="15" data-stripe-gap="15" data-stripe-position="11">
+        <div class="era-number">05</div>
+        <div class="era-card">
+          <div class="era-header">
+            <span class="era-flag">🇿🇦</span>
+            <div class="era-year-label">2010</div>
+          </div>
+          <h2 class="era-title">South Africa</h2>
+          <p class="era-tagline">The Weight of a Nation</p>
+          <div class="era-messi-image-container">
+            <img class="era-messi-image" src="https://upload.wikimedia.org/wikipedia/commons/7/71/Messi_Podolski_Di_Maria_2010.jpg" alt="Lionel Messi at the 2010 FIFA World Cup" loading="lazy">
+          </div>
+          <p class="era-story">
+            Now the reigning Ballon d'Or holder, Messi carried the weight of an entire nation on his shoulders. Despite his brilliance in build-up play, he couldn't find the net, and Argentina's campaign ended in a devastating 4-0 quarter-final demolition by Germany. The round-collar jersey became a symbol of promise unfulfilled — a tournament where Messi learned what it truly cost to lead.
+          </p>
+          <div class="era-stats">
+            <div class="stat">
+              <span class="stat-value">22</span>
+              <span class="stat-label">Age</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">5</span>
+              <span class="stat-label">Apps</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">0</span>
+              <span class="stat-label">Goals</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">QF</span>
+              <span class="stat-label">Result</span>
+            </div>
+          </div>
+          <div class="era-detail">
+            <span class="detail-label">Jersey</span>
+            <span class="detail-value">Classic white crew neck · Blue sleeves with white 3-stripes · Centered Adidas logo</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== 2006 GERMANY ====== -->
+      <section class="era-section" id="era-2006" data-year="2006"
+        data-collar="v_neck" data-shoulder="set_in"
+        data-bg-color="#75AADB" data-stripe-color="#FFFFFF"
+        data-stripe-width="18" data-stripe-gap="18" data-stripe-position="10">
+        <div class="era-number">06</div>
+        <div class="era-card">
+          <div class="era-header">
+            <span class="era-flag">🇩🇪</span>
+            <div class="era-year-label">2006</div>
+          </div>
+          <h2 class="era-title">Germany</h2>
+          <p class="era-tagline">The Beginning</p>
+          <div class="era-messi-image-container">
+            <img class="era-messi-image" src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Messi_in_Copa_America_2007_%28Cropped%29.jpg" alt="Lionel Messi in 2006 World Cup Cycle" loading="lazy">
+          </div>
+          <p class="era-story">
+            An 18-year-old Lionel Messi stepped onto the World Cup stage for the first time, wearing the classic wide-striped Albiceleste. He became Argentina's youngest-ever World Cup goalscorer with a stunning finish against Serbia & Montenegro — announcing himself to the world as a generational talent. The quarter-final exit to Germany only fueled the fire for what was to come.
+          </p>
+          <div class="era-stats">
+            <div class="stat">
+              <span class="stat-value">18</span>
+              <span class="stat-label">Age</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">3</span>
+              <span class="stat-label">Apps</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">1</span>
+              <span class="stat-label">Goal</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">QF</span>
+              <span class="stat-label">Result</span>
+            </div>
+          </div>
+          <div class="era-detail">
+            <span class="detail-label">Jersey</span>
+            <span class="detail-value">White V-neck with gold & black outlines · Underarm side piping · Set-in sleeves</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Closing Section -->
+      <section class="closing-section">
+        <div class="closing-card">
+          <div class="closing-stars">★ ★ ★</div>
+          <h2 class="closing-title">D10S</h2>
+          <p class="closing-text">
+            26 World Cup goals. 6 tournaments. 1 trophy that changed everything.<br>
+            The Albiceleste was never just a jersey — it was a canvas for the greatest story ever told in football.
+          </p>
+          <div class="closing-badge">
+            <img class="brand-logo-closing" src="images/argentina_crest.svg" alt="AFA Crest" width="48" height="48">
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
 
   <!-- Fabric.js background canvases (Hidden, used for texture generation) -->
   <canvas id="fabric-canvas-front" width="2048" height="2048" data-debug="false"></canvas>
@@ -209,7 +385,7 @@
   <canvas id="fabric-canvas-hem" width="2048" height="2048" data-debug="false"></canvas>
 
   <!-- ==================== HIDDEN COMPATIBILITY UI ELEMENTS ==================== -->
-  <!-- These elements are queried by script.js but not needed in our landing UI. -->
+  <!-- These elements are queried by script.js / threeD-script.js but hidden in featurette mode. -->
   <div class="hidden-ui settings-group scale-group">
     <span class="range-value" style="display:none;"></span>
     <input type="radio" name="jersey-tab" value="colors" id="tab-colors-radio" checked>
@@ -219,6 +395,7 @@
     <input type="radio" name="jersey-orientation" value="horizontal">
     
     <div id="designs-tab"></div>
+    <div id="colors-tab" class="active"></div>
     <div id="color-selection-group"></div>
     <div id="design-thumbnails"></div>
     <div id="family-name"></div>
@@ -227,8 +404,31 @@
     <div id="ribbed-collar-group-designs"></div>
     <input type="checkbox" id="ribbed-collar-checkbox-designs">
     <input type="checkbox" id="ribbed-collar-checkbox">
+    <input type="checkbox" id="ribbed-collar-checkbox-colors" checked>
     <select id="jersey-part-select"><option value="front"></option></select>
+    <select id="jersey-part-select-colors">
+      <option value="front">Body Front</option>
+      <option value="back">Body Back</option>
+      <option value="left-sleeve">Left Sleeve</option>
+      <option value="right-sleeve">Right Sleeve</option>
+      <option value="collar">Collar Rim</option>
+      <option value="collar2">Collar Insert</option>
+      <option value="hem">Hem Bottom</option>
+    </select>
+    <select id="jersey-part-select-working"><option value="front">Body Front</option></select>
     
+    <select id="collar-selector">
+      <option value="v_neck">V-Neck</option>
+      <option value="round">Round Collar</option>
+      <option value="insert">Insert Collar</option>
+      <option value="v_neck_crossed">V-Neck Crossed</option>
+    </select>
+    <select id="shoulder-selector">
+      <option value="reglan">Raglan</option>
+      <option value="set_in">Set-In</option>
+    </select>
+
+    <input type="color" id="jersey-part-color" value="#75AADB">
     <input type="color" id="jersey-color-1">
     <input type="color" id="jersey-color-2">
     <input type="color" id="jersey-color-3">
@@ -238,7 +438,13 @@
     <input type="range" id="logo-scale-colors" value="1">
     <input type="range" id="logo-rotate-colors" value="0">
 
-    <!-- Hide unused tabs for stripes layers 2, 3, 4 -->
+    <!-- Stripe controls for all 4 tabs -->
+    <input type="checkbox" id="jersey-stripes-toggle-tab1" checked>
+    <input type="color" id="jersey-stripes-color-tab1" value="#FFFFFF">
+    <input type="range" id="jersey-stripes-position-tab1" value="11.6">
+    <input type="range" id="jersey-stripes-gap-tab1" value="10">
+    <input type="range" id="jersey-stripes-thickness-tab1" value="10">
+
     <input type="checkbox" id="jersey-stripes-toggle-tab2">
     <input type="color" id="jersey-stripes-color-tab2" value="#eaeef1">
     <input type="range" id="jersey-stripes-position-tab2" value="0">
@@ -259,150 +465,326 @@
     <input type="range" id="jersey-stripes-gap-tab4" value="10">
     <input type="range" id="jersey-stripes-thickness-tab4" value="5">
     <input type="range" id="jersey-stripes-rotation-tab4" value="0">
+
+    <button id="download-button"></button>
+    <button id="reset-button"></button>
   </div>
 
   <!-- Supabase / Auth Scripts -->
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-  <script src="auth.js"></script>
+  <script src="auth.js?v=1.0.2"></script>
   
   <!-- Main Controllers -->
-  <script src="script.js"></script>
-  <script type="module" src="threeD-script.js"></script>
+  <script src="script.js?v=1.0.2"></script>
+  <script type="module" src="threeD-script.js?v=1.0.2"></script>
 
-  <!-- Landing Page Custom Sync Script -->
+  <!-- ========== FEATURETTE SCROLL ENGINE ========== -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Sync Range Slider Displays
-      const setupSliderDisplay = (sliderId, valId, suffix = '') => {
-        const slider = document.getElementById(sliderId);
-        const display = document.getElementById(valId);
-        if (slider && display) {
-          display.textContent = slider.value + suffix;
-          slider.addEventListener('input', () => {
-            display.textContent = slider.value + suffix;
-          });
+    (function() {
+      'use strict';
+
+      // ---- World Cup Era Configurations ----
+      const ERA_ORDER = ['2026', '2022', '2018', '2014', '2010', '2006'];
+      const ERA_CONFIGS = {
+        '2006': {
+          collar: 'v_neck', shoulder: 'set_in',
+          bgColor: '#75AADB', stripeColor: '#FFFFFF',
+          stripeWidth: 18, stripeGap: 18, stripePosition: 10,
+          sleeveColor: '#75AADB',
+          collarColor: '#FFFFFF', collar2Color: '#D4AF37', hemColor: '#75AADB',
+          tournament: 'Germany'
+        },
+        '2010': {
+          collar: 'round', shoulder: 'set_in',
+          bgColor: '#75AADB', stripeColor: '#FFFFFF',
+          stripeWidth: 15, stripeGap: 15, stripePosition: 11,
+          sleeveColor: '#75AADB',
+          collarColor: '#FFFFFF', collar2Color: '#FFFFFF', hemColor: '#75AADB',
+          tournament: 'South Africa'
+        },
+        '2014': {
+          collar: 'v_neck', shoulder: 'set_in',
+          bgColor: '#6CACE4', stripeColor: '#FFFFFF',
+          stripeWidth: 14, stripeGap: 14, stripePosition: 11.5,
+          sleeveColor: '#FFFFFF',
+          collarColor: '#FFFFFF', collar2Color: '#1A1F36', hemColor: '#6CACE4',
+          tournament: 'Brazil'
+        },
+        '2018': {
+          collar: 'v_neck', shoulder: 'reglan',
+          bgColor: '#85BBE6', stripeColor: '#FFFFFF',
+          stripeWidth: 8, stripeGap: 6, stripePosition: 12,
+          sleeveColor: '#FFFFFF',
+          collarColor: '#FFFFFF', collar2Color: '#FFFFFF', hemColor: '#FFFFFF',
+          tournament: 'Russia'
+        },
+        '2022': {
+          collar: 'round', shoulder: 'reglan',
+          bgColor: '#75AADB', stripeColor: '#FFFFFF',
+          stripeWidth: 10, stripeGap: 10, stripePosition: 11.6,
+          sleeveColor: '#75AADB',
+          collarColor: '#1A1F36', collar2Color: '#1A1F36', hemColor: '#1A1F36',
+          tournament: 'Qatar'
+        },
+        '2026': {
+          collar: 'v_neck', shoulder: 'reglan',
+          bgColor: '#75AADB', stripeColor: '#FFFFFF',
+          stripeWidth: 12, stripeGap: 10, stripePosition: 11,
+          sleeveColor: '#FFFFFF',
+          collarColor: '#FFFFFF', collar2Color: '#D4AF37', hemColor: '#D4AF37',
+          tournament: 'North America'
         }
       };
 
-      setupSliderDisplay('jersey-stripes-thickness-tab1', 'stripe-thickness-val');
-      setupSliderDisplay('jersey-stripes-gap-tab1', 'stripe-gap-val');
-      setupSliderDisplay('jersey-stripes-position-tab1', 'stripe-position-val');
+      let currentEra = null;
+      let currentModelKey = null;
+      let isTransitioning = false;
 
-      // Color Input Hex Text Sync & Preset Swatches Sync
-      const setupColorPresets = (containerId, pickerId, textId) => {
-        const container = document.getElementById(containerId);
-        const picker = document.getElementById(pickerId);
-        const textLabel = document.getElementById(textId);
-        if (!container || !picker) return;
+      // ---- Apply jersey configuration for an era ----
+      function applyEraConfig(year) {
+        const config = ERA_CONFIGS[year];
+        if (!config || !window.jerseyViewer) return;
 
-        // Custom Swatch Click logic
-        container.querySelectorAll('.preset-swatch').forEach(swatch => {
-          swatch.addEventListener('click', () => {
-            const color = swatch.dataset.color;
-            picker.value = color;
-            if (textLabel) textLabel.textContent = color.toUpperCase();
-            
-            // Dispatch input and change events to trigger fabric texture generation
-            picker.dispatchEvent(new Event('input', { bubbles: true }));
-            picker.dispatchEvent(new Event('change', { bubbles: true }));
+        const viewer = window.jerseyViewer;
 
-            // Update active state class
-            container.querySelectorAll('.preset-swatch').forEach(s => s.classList.remove('active'));
-            swatch.classList.add('active');
-          });
-        });
-
-        // Sync Hex Label and Swatch active state when picker values change
-        picker.addEventListener('input', () => {
-          const val = picker.value.toLowerCase();
-          if (textLabel) textLabel.textContent = picker.value.toUpperCase();
+        // Check if we need to load a different 3D model
+        const newModelKey = `${config.collar}_${config.shoulder}`;
+        if (newModelKey !== currentModelKey) {
+          currentModelKey = newModelKey;
+          const modelPath = window.getModelPath(config.collar, config.shoulder);
           
-          let matched = false;
-          container.querySelectorAll('.preset-swatch').forEach(swatch => {
-            if (swatch.dataset.color.toLowerCase() === val) {
-              swatch.classList.add('active');
-              matched = true;
-            } else {
-              swatch.classList.remove('active');
-            }
-          });
-        });
-      };
-
-      setupColorPresets('base-color-presets', 'jersey-part-color', 'base-color-hex');
-      setupColorPresets('stripe-color-presets', 'jersey-stripes-color-tab1', 'stripe-color-hex');
-
-      // Collar and Shoulder Selectors url parameter sync
-      const collarSelector = document.getElementById('collar-selector');
-      const shoulderSelector = document.getElementById('shoulder-selector');
-
-      // Parse current URL params
-      const urlParams = new URLSearchParams(window.location.search);
-      const currentCollar = urlParams.get('collar') || 'v_neck';
-      const currentShoulder = urlParams.get('shoulder') || 'reglan';
-
-      // Set selector values
-      if (collarSelector) collarSelector.value = currentCollar;
-      if (shoulderSelector) shoulderSelector.value = currentShoulder;
-
-      // Handle selector changes
-      const handleModelTemplateChange = () => {
-        const newCollar = collarSelector.value;
-        const newShoulder = shoulderSelector.value;
-
-        // Update URL
-        const nextUrl = new URL(window.location.href);
-        nextUrl.searchParams.set('collar', newCollar);
-        nextUrl.searchParams.set('shoulder', newShoulder);
-        window.history.replaceState({}, '', nextUrl);
-
-        // Reload 3D model
-        if (window.jerseyViewer && typeof window.jerseyViewer.loadModel === 'function') {
-          // Show loader overlay
+          // Show brief loader
           const loader = document.getElementById('canvas-loading-overlay');
-          if (loader) loader.style.opacity = '1';
-          if (loader) loader.style.visibility = 'visible';
+          if (loader) {
+            loader.style.opacity = '1';
+            loader.style.visibility = 'visible';
+          }
 
-          // Get model path and load it
-          const modelPath = window.getModelPath(newCollar, newShoulder);
-          window.jerseyViewer.loadModel(modelPath);
+          viewer.loadModel(modelPath);
 
-          // Hide loader after loading model
+          // Wait for model to load, then apply stripes
           setTimeout(() => {
+            applyStripesToViewer(viewer, config);
             if (loader) {
               loader.style.opacity = '0';
-              setTimeout(() => {
-                loader.style.visibility = 'hidden';
-              }, 500);
+              setTimeout(() => { loader.style.visibility = 'hidden'; }, 500);
             }
-          }, 1200);
+          }, 1500);
+        } else {
+          // Same model, just update stripes and colors
+          applyStripesToViewer(viewer, config);
         }
-      };
 
-      if (collarSelector) collarSelector.addEventListener('change', handleModelTemplateChange);
-      if (shoulderSelector) shoulderSelector.addEventListener('change', handleModelTemplateChange);
+        // Update hidden DOM elements for compatibility
+        const collarSel = document.getElementById('collar-selector');
+        const shoulderSel = document.getElementById('shoulder-selector');
+        if (collarSel) collarSel.value = config.collar;
+        if (shoulderSel) shoulderSel.value = config.shoulder;
+      }
 
-      // Reset Kit Button
-      const resetButton = document.getElementById('reset-button');
-      if (resetButton) {
-        resetButton.addEventListener('click', () => {
-          localStorage.removeItem('jerseyConfig');
-          window.location.href = window.location.pathname; // Reload clear
+      function applyStripesToViewer(viewer, config) {
+        const parts = ['front', 'back'];
+        const sleeves = ['left-sleeve', 'right-sleeve'];
+        const collarParts = ['collar', 'collar2', 'hem'];
+
+        // Apply to front and back
+        parts.forEach(part => {
+          const canvas = viewer.partCanvases[part];
+          if (canvas) {
+            canvas.backgroundColor = config.bgColor;
+            canvas.renderAll();
+          }
+
+          viewer.stripeLayersByPart[part] = {
+            tab1: {
+              enabled: true,
+              color: config.stripeColor,
+              position: config.stripePosition,
+              gap: config.stripeGap,
+              thickness: config.stripeWidth,
+              defaultCounts: { horizontal: 4, vertical: 3 }
+            },
+            tab2: { enabled: false, color: '#eaeef1', position: 15, gap: 10, thickness: 10, defaultCounts: { horizontal: 4, vertical: 3 } },
+            tab3: { enabled: false, color: '#eaeef1', position: 20, gap: 10, thickness: 10, defaultCounts: { horizontal: 4, vertical: 3 } },
+            tab4: { enabled: false, color: '#eaeef1', position: 10, gap: 10, thickness: 10, defaultCounts: { horizontal: 4, vertical: 3 } }
+          };
+
+          viewer.stripeOrientationByPart[part] = 'vertical';
+          viewer.regenerateStripesForPart(part);
+        });
+
+        // Apply background color to sleeves
+        sleeves.forEach(part => {
+          const canvas = viewer.partCanvases[part];
+          if (canvas) {
+            canvas.backgroundColor = config.sleeveColor || config.bgColor;
+            canvas.renderAll();
+          }
+          viewer.stripeLayersByPart[part] = {
+            tab1: { enabled: false, color: '#eaeef1', position: 15, gap: 10, thickness: 10, defaultCounts: { horizontal: 3, vertical: 2 } },
+            tab2: { enabled: false, color: '#eaeef1', position: 10, gap: 10, thickness: 10, defaultCounts: { horizontal: 3, vertical: 2 } },
+            tab3: { enabled: false, color: '#eaeef1', position: 15, gap: 10, thickness: 10, defaultCounts: { horizontal: 3, vertical: 2 } },
+            tab4: { enabled: false, color: '#eaeef1', position: 20, gap: 10, thickness: 10, defaultCounts: { horizontal: 3, vertical: 2 } }
+          };
+          viewer.stripeOrientationByPart[part] = 'vertical';
+          viewer.regenerateStripesForPart(part);
+        });
+
+        // Apply collar, collar2, hem colors
+        collarParts.forEach(part => {
+          const canvas = viewer.partCanvases[part];
+          if (canvas) {
+            if (part === 'collar') canvas.backgroundColor = config.collarColor || '#FFFFFF';
+            else if (part === 'collar2') canvas.backgroundColor = config.collar2Color || '#FFFFFF';
+            else if (part === 'hem') canvas.backgroundColor = config.hemColor || config.bgColor;
+            canvas.renderAll();
+            // Manually trigger texture update as they don't have stripes
+            if (viewer.updateTexture) {
+              viewer.updateTexture(part);
+            }
+          }
         });
       }
-    });
 
-    // Helper functions to control loading spinner visibility globally
+      // ---- Update viewer badge ----
+      function updateBadge(year) {
+        const config = ERA_CONFIGS[year];
+        if (!config) return;
+        const badgeYear = document.getElementById('badge-year');
+        const badgeTourney = document.getElementById('badge-tournament');
+        if (badgeYear) badgeYear.textContent = year;
+        if (badgeTourney) badgeTourney.textContent = config.tournament;
+      }
+
+      // ---- Update timeline progress ----
+      function updateTimelineProgress(year) {
+        const years = ERA_ORDER;
+        const index = years.indexOf(year);
+        const progress = (index / (years.length - 1)) * 100;
+        const fill = document.getElementById('timeline-progress-fill');
+        if (fill) fill.style.width = `${progress}%`;
+
+        // Update dots
+        document.querySelectorAll('.progress-dots .dot').forEach(dot => {
+          dot.classList.toggle('active', dot.dataset.year === year);
+          const dotYear = years.indexOf(dot.dataset.year);
+          dot.classList.toggle('passed', dotYear <= index);
+        });
+      }
+
+      // ---- Intersection Observer for scroll-driven changes ----
+      function initScrollObserver() {
+        const sections = document.querySelectorAll('.era-section');
+        
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.4) {
+              const year = entry.target.dataset.year;
+              if (year !== currentEra) {
+                currentEra = year;
+
+                // Update active section styling
+                sections.forEach(s => s.classList.remove('active'));
+                entry.target.classList.add('active');
+
+                // Apply jersey configuration
+                applyEraConfig(year);
+                updateBadge(year);
+                updateTimelineProgress(year);
+              }
+            }
+          });
+        }, {
+          threshold: [0.4],
+          rootMargin: '-10% 0px -10% 0px'
+        });
+
+        sections.forEach(section => observer.observe(section));
+      }
+
+      // ---- Timeline dot click navigation ----
+      function initDotNavigation() {
+        document.querySelectorAll('.progress-dots .dot').forEach(dot => {
+          dot.addEventListener('click', () => {
+            const year = dot.dataset.year;
+            const target = document.getElementById(`era-${year}`);
+            if (target) {
+              target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          });
+        });
+      }
+
+      // ---- Hero scroll indicator ----
+      function initScrollIndicator() {
+        const indicator = document.getElementById('scroll-indicator');
+        if (indicator) {
+          indicator.addEventListener('click', () => {
+            const timeline = document.getElementById('timeline');
+            if (timeline) timeline.scrollIntoView({ behavior: 'smooth' });
+          });
+        }
+      }
+
+      // ---- Parallax on hero ----
+      function initHeroParallax() {
+        const hero = document.getElementById('hero');
+        window.addEventListener('scroll', () => {
+          const scrolled = window.scrollY;
+          const heroHeight = hero?.offsetHeight || 800;
+          if (scrolled < heroHeight) {
+            const opacity = 1 - (scrolled / heroHeight);
+            const translateY = scrolled * 0.3;
+            const heroContent = hero?.querySelector('.hero-content');
+            if (heroContent) {
+              heroContent.style.opacity = Math.max(0, opacity);
+              heroContent.style.transform = `translateY(${translateY}px)`;
+            }
+          }
+        }, { passive: true });
+      }
+
+      // ---- Initialize everything after DOM ready and viewer loaded ----
+      function init() {
+        initScrollObserver();
+        initDotNavigation();
+        initScrollIndicator();
+        initHeroParallax();
+
+        // Apply initial era config once the viewer is ready
+        const waitForViewer = setInterval(() => {
+          if (window.jerseyViewer && window.jerseyViewer.partCanvases && window.jerseyViewer.partCanvases['front']) {
+            clearInterval(waitForViewer);
+            
+            // Small delay to let model finish loading
+            setTimeout(() => {
+              currentEra = '2026';
+              currentModelKey = 'v_neck_reglan'; // default from threeD-script
+              applyEraConfig('2026');
+              updateBadge('2026');
+              updateTimelineProgress('2026');
+            }, 2000);
+          }
+        }, 200);
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+
+  <!-- Loader helper overrides -->
+  <script>
     window.hideCanvasLoader = function() {
       const loader = document.getElementById('canvas-loading-overlay');
       if (loader) {
         loader.style.opacity = '0';
-        setTimeout(() => {
-          loader.style.visibility = 'hidden';
-        }, 500);
+        setTimeout(() => { loader.style.visibility = 'hidden'; }, 500);
       }
     };
-
     window.showCanvasLoader = function() {
       const loader = document.getElementById('canvas-loading-overlay');
       if (loader) {
