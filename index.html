@@ -126,7 +126,7 @@
             </div>
           </div>
 
-          <div class="range-group">
+          <div class="settings-group range-group">
             <div class="range-header">
               <span>Stripe Width</span>
               <span class="range-value" id="stripe-thickness-val">15</span>
@@ -134,7 +134,7 @@
             <input type="range" class="range-input" min="5" max="40" value="15" step="0.5" id="jersey-stripes-thickness-tab1">
           </div>
 
-          <div class="range-group">
+          <div class="settings-group range-group">
             <div class="range-header">
               <span>Gap Between Stripes</span>
               <span class="range-value" id="stripe-gap-val">15</span>
@@ -142,7 +142,7 @@
             <input type="range" class="range-input" min="5" max="40" value="15" step="1" id="jersey-stripes-gap-tab1">
           </div>
 
-          <div class="range-group">
+          <div class="settings-group range-group">
             <div class="range-header">
               <span>Pattern Offset (Centering)</span>
               <span class="range-value" id="stripe-position-val">7</span>
@@ -197,7 +197,8 @@
 
   <!-- ==================== HIDDEN COMPATIBILITY UI ELEMENTS ==================== -->
   <!-- These elements are queried by script.js but not needed in our landing UI. -->
-  <div class="hidden-ui">
+  <div class="hidden-ui settings-group scale-group">
+    <span class="range-value" style="display:none;"></span>
     <input type="radio" name="jersey-tab" value="colors" id="tab-colors-radio" checked>
     <input type="radio" name="jersey-tab" value="designs" id="tab-designs-radio">
     
