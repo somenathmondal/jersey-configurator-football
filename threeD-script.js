@@ -2940,7 +2940,7 @@ class JerseyViewer {
                 } else {
                     debugLog(`🗿 Statue model detected - bypassing custom canvas texture loop`);
                     // Rotate statue to face camera (z-axis positive)
-                    this.current3DObject.rotation.y = Math.PI;
+                    this.current3DObject.rotation.y = 0;
                 }
 
                 // Scale and position the model appropriately
