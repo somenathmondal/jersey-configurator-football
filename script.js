@@ -4056,7 +4056,9 @@ function loadJerseyConfiguration(isSavedDesign) {
         currentUrl.searchParams.set('shoulder', config.shoulder);
 
         // Update URL without reloading the page
-        window.history.replaceState({}, '', currentUrl);
+        if (window.location.pathname.includes('customizer.html')) {
+          window.history.replaceState({}, '', currentUrl);
+        }
 
         // Notify 3D viewer to reload the model with new parameters
         if (window.jerseyViewer && typeof window.jerseyViewer.loadModel === 'function') {

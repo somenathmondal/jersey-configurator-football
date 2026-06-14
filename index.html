@@ -1152,10 +1152,12 @@
             }
           }
 
-          // 3. Play 3D showcase animation
-          if (window.jerseyViewer && window.jerseyViewer.playShowcaseAnimation) {
-            window.jerseyViewer.playShowcaseAnimation();
-          }
+          // 3. Play 3D showcase animation after fading 2D out (1.5s) + showing 3D static for 1s (1.0s) = 2.5s total delay
+          setTimeout(() => {
+            if (window.jerseyViewer && window.jerseyViewer.playShowcaseAnimation) {
+              window.jerseyViewer.playShowcaseAnimation();
+            }
+          }, 2500);
         }
       }
 

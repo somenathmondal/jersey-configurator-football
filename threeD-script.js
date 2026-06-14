@@ -408,7 +408,7 @@ class JerseyViewer {
         // Enforce boundary limits for the Messi statue view
         this.controls.enablePan = false;
         this.controls.minDistance = 3.0;
-        this.controls.maxDistance = 5.0;
+        this.controls.maxDistance = 4.5;
 
         // Polar Angle (Vertical rotation): Restrict looking directly under/over (60 deg to 105 deg)
         this.controls.minPolarAngle = Math.PI / 3;     // 60 deg
@@ -2941,8 +2941,8 @@ class JerseyViewer {
                     debugLog(`✅ Model loaded: ${meshCount} meshes found, ${texturedMeshCount} textured`);
                 } else {
                     debugLog(`🗿 Statue model detected - bypassing custom canvas texture loop`);
-                    // Rotate statue to face camera (z-axis positive)
-                    this.current3DObject.rotation.y = 0;
+                    // Rotate statue to 190 degrees Y base position
+                    //this.current3DObject.rotation.y = -10 * Math.PI / 180;
                 }
 
                 // Scale and position the model appropriately
@@ -3673,7 +3673,7 @@ class JerseyViewer {
 
         const currentTime = performance.now();
         const elapsed = currentTime - this.showcaseStartTime;
-        const duration = 2500; // 2.5 seconds
+        const duration = 4000; // 4 seconds
         const progress = Math.min(elapsed / duration, 1.0);
 
         if (progress >= 1.0) {
@@ -3682,13 +3682,18 @@ class JerseyViewer {
             this.current3DObject.rotation.x = 0;
             debugLog('🎬 Showcase animation complete. Returned to rest position.');
         } else {
-            // Sine wave for azimuth swing: completes a full period back and forth (-20 deg to +20 deg)
-            const azimuthRange = 20 * Math.PI / 180; // 20 degrees swing
-            this.current3DObject.rotation.y = Math.sin(progress * Math.PI * 2) * azimuthRange;
+            // Cubic ease-in-out curve
+            const ease = progress < 0.5 
+                ? 4 * progress * progress * progress 
+                : 1 - Math.pow(-2 * progress + 2, 3) / 2;
 
-            // Sine wave for polar tilt: subtle tilt up and down (-8 deg to +8 deg)
+            // Sine wave for azimuth swing with ease-in-out applied to the phase
+            const azimuthRange = 20 * Math.PI / 180; // 20 degrees swing
+            this.current3DObject.rotation.y = Math.sin(ease * Math.PI * 2) * azimuthRange;
+
+            // Sine wave for polar tilt with ease-in-out applied to the phase
             const polarRange = 8 * Math.PI / 180; // 8 degrees swing
-            this.current3DObject.rotation.x = Math.sin(progress * Math.PI * 2) * polarRange;
+            this.current3DObject.rotation.x = Math.sin(ease * Math.PI * 2) * polarRange;
         }
     }
 
