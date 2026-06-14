@@ -401,6 +401,10 @@
           <span class="badge-tournament" id="badge-tournament">North America</span>
         </div>
         <div class="viewer-wrapper">
+          <!-- Cinematic 2D Transition Overlay -->
+          <div id="transition-image-overlay" class="transition-image-overlay">
+            <img src="images/messi_cup_source.jpg" alt="Lionel Messi 2022 World Cup" class="transition-source-img">
+          </div>
           <div id="viewer-container" class="viewer-container"></div>
           <!-- Loading overlay -->
           <div class="loading-overlay" id="canvas-loading-overlay">
@@ -1089,17 +1093,6 @@
               applyEraConfig('2026');
               updateBadge('2026');
               updateTimelineProgress('2026');
-              
-              // Hide the canvas loading overlay
-              if (window.hideCanvasLoader) {
-                window.hideCanvasLoader();
-              } else {
-                const loader = document.getElementById('canvas-loading-overlay');
-                if (loader) {
-                  loader.style.opacity = '0';
-                  setTimeout(() => { loader.style.visibility = 'hidden'; }, 500);
-                }
-              }
 
               // Update initial 3D viewer horizontal scroll offset
               if (window.jerseyViewer) {
@@ -1107,9 +1100,63 @@
                 const heroHeight = document.getElementById('hero')?.offsetHeight || 800;
                 window.jerseyViewer.updateScroll(Math.min(scrolled / heroHeight, 1.0));
               }
-            }, 2000);
+            }, 500);
           }
-        }, 200);
+        }, 100);
+
+        // Coordinated 4s / load transition
+        let modelLoaded = false;
+        let timerFinished = false;
+        let transitionTriggered = false;
+
+        setTimeout(() => {
+          timerFinished = true;
+          checkAndTriggerTransition();
+        }, 4000);
+
+        const checkModelLoadInterval = setInterval(() => {
+          if (window.jerseyViewer && window.jerseyViewer.loadingState && window.jerseyViewer.loadingState.modelLoaded) {
+            clearInterval(checkModelLoadInterval);
+            modelLoaded = true;
+            checkAndTriggerTransition();
+          }
+        }, 100);
+
+        function checkAndTriggerTransition() {
+          if (modelLoaded && timerFinished && !transitionTriggered) {
+            transitionTriggered = true;
+            triggerCinematicTransition();
+          }
+        }
+
+        function triggerCinematicTransition() {
+          // 1. Fade out the 2D image overlay
+          const overlay = document.getElementById('transition-image-overlay');
+          if (overlay) {
+            overlay.style.opacity = '0';
+            overlay.style.transform = 'scale(1.05) translateZ(0)';
+            overlay.style.filter = 'blur(10px)';
+            setTimeout(() => {
+              overlay.style.display = 'none';
+            }, 1500);
+          }
+
+          // 2. Hide the canvas loading overlay
+          if (window.hideCanvasLoader) {
+            window.hideCanvasLoader();
+          } else {
+            const loader = document.getElementById('canvas-loading-overlay');
+            if (loader) {
+              loader.style.opacity = '0';
+              setTimeout(() => { loader.style.visibility = 'hidden'; }, 500);
+            }
+          }
+
+          // 3. Play 3D showcase animation
+          if (window.jerseyViewer && window.jerseyViewer.playShowcaseAnimation) {
+            window.jerseyViewer.playShowcaseAnimation();
+          }
+        }
       }
 
       if (document.readyState === 'loading') {

@@ -95,6 +95,8 @@ class JerseyViewer {
         this.texture = null;
         this.current3DObject = null;
         this._loadId = 0; // Used to ignore stale load callbacks (race condition fix)
+        this.isAnimatingShowcase = false;
+        this.showcaseStartTime = 0;
 
         // Materials to exclude from texture application (stitches should keep original appearance)
         this.currentPart = 'front';
@@ -3603,6 +3605,9 @@ class JerseyViewer {
         // Update camera animation if active
         this.updateCameraAnimation();
 
+        // Update showcase rotation animation if active
+        this.updateShowcaseAnimation();
+
         // Update camera position in debug panel (if debug mode is enabled)
         if (DEBUG_MODE && this.updateCameraPositionDebug) {
             this.updateCameraPositionDebug();
@@ -3654,6 +3659,37 @@ class JerseyViewer {
         const shiftX = ease * maxShift;
 
         this.current3DObject.position.x = this.baseModelPosition.x + shiftX;
+    }
+
+    playShowcaseAnimation() {
+        if (!this.current3DObject) return;
+        debugLog('🎬 Playing showcase animation...');
+        this.isAnimatingShowcase = true;
+        this.showcaseStartTime = performance.now();
+    }
+
+    updateShowcaseAnimation() {
+        if (!this.isAnimatingShowcase || !this.current3DObject) return;
+
+        const currentTime = performance.now();
+        const elapsed = currentTime - this.showcaseStartTime;
+        const duration = 2500; // 2.5 seconds
+        const progress = Math.min(elapsed / duration, 1.0);
+
+        if (progress >= 1.0) {
+            this.isAnimatingShowcase = false;
+            this.current3DObject.rotation.y = 0;
+            this.current3DObject.rotation.x = 0;
+            debugLog('🎬 Showcase animation complete. Returned to rest position.');
+        } else {
+            // Sine wave for azimuth swing: completes a full period back and forth (-20 deg to +20 deg)
+            const azimuthRange = 20 * Math.PI / 180; // 20 degrees swing
+            this.current3DObject.rotation.y = Math.sin(progress * Math.PI * 2) * azimuthRange;
+
+            // Sine wave for polar tilt: subtle tilt up and down (-8 deg to +8 deg)
+            const polarRange = 8 * Math.PI / 180; // 8 degrees swing
+            this.current3DObject.rotation.x = Math.sin(progress * Math.PI * 2) * polarRange;
+        }
     }
 
     // Method to update jersey color
