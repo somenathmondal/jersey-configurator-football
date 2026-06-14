@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Camera Limits Debugger</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.181.2/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.181.2/examples/jsm/"
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --bg-color: #0d1527;
+      --bg-card: rgba(20, 32, 58, 0.65);
+      --border-glass: rgba(117, 170, 219, 0.15);
+      --accent-gold: #D4AF37;
+      --text-primary: #FFFFFF;
+      --text-secondary: #8E9FBC;
+      --font-primary: 'Outfit', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      font-family: var(--font-primary);
+      display: grid;
+      grid-template-columns: 1fr 450px;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Left - 3D Viewer Container */
+    .viewer-area {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 50%, #1a2a4c 0%, #080d19 100%);
+    }
+
+    #canvas-container {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Right - Control Panel */
+    .control-panel {
+      background: var(--bg-card);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-left: 1px solid var(--border-glass);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      overflow-y: auto;
+      height: 100%;
+    }
+
+    .panel-header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #FFF 0%, var(--accent-gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .panel-header p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 1.25rem;
+    }
+
+    .control-group h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .slider-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .slider-val {
+      font-family: monospace;
+      color: var(--accent-gold);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      outline: none;
+      -webkit-appearance: none;
+      accent-color: var(--accent-gold);
+    }
+
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent-gold);
+      cursor: pointer;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* Output Code Block */
+    .output-section {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .output-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .output-header h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .copy-btn {
+      background: var(--accent-gold);
+      color: #000;
+      border: none;
+      border-radius: 4px;
+      padding: 0.35rem 0.75rem;
+      font-family: var(--font-primary);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+
+    .copy-btn:hover {
+      opacity: 0.9;
+    }
+
+    pre {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.75rem;
+      color: #E2E8F0;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    /* Hints Overlay */
+    .viewer-hints {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 1.5rem;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .viewer-hints span {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .viewer-hints span strong {
+      color: #fff;
+      font-family: monospace;
+    }
+
+    .loading-overlay {
+      position: absolute;
+      inset: 0;
+      background: #0d1527;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      z-index: 100;
+      transition: opacity 0.5s ease;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(212, 175, 55, 0.1);
+      border-top-color: var(--accent-gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Left: 3D Scene Viewport -->
+  <div class="viewer-area">
+    <div id="canvas-container"></div>
+    
+    <!-- Real-time camera tracking values -->
+    <div class="viewer-hints">
+      <span>Current Zoom Distance: <strong id="track-dist">0.00</strong></span>
+      <span>Current Polar Angle: <strong id="track-polar">0.00°</strong></span>
+      <span>Current Azimuth Angle: <strong id="track-azimuth">0.00°</strong></span>
+    </div>
+
+    <!-- Loading Screen -->
+    <div class="loading-overlay" id="loading-overlay">
+      <div class="spinner"></div>
+      <div class="loading-text">Loading Lionel Messi Statue GLB...</div>
+    </div>
+  </div>
+
+  <!-- Right: Sliders & Controls -->
+  <div class="control-panel">
+    <div class="panel-header">
+      <h1>Camera Limits Debugger</h1>
+      <p>Adjust the OrbitControls boundary parameters below to limit rotation and zoom, then test the experience on the statue model.</p>
+    </div>
+
+    <!-- Control Group: Zoom Range -->
+    <div class="control-group">
+      <h3>Zoom (Distance)</h3>
+      <div class="slider-row">
+        <div class="slider-header">
+          <span>Min Distance</span>
+          <span class="slider-val" id="val-minDistance">1.50</span>
+        </div>
+        <input type="range" id="param-minDistance" min="0.5" max="5.0" step="0.1" value="1.5">
+      </div>
+      <div class="slider-row">
+        <div class="slider-header">
+          <span>Max Distance</span>
+          <span class="slider-val" id="val-maxDistance">6.00</span>
+        </div>
+        <input type="range" id="param-maxDistance" min="4.0" max="15.0" step="0.1" value="6.0">
+      </div>
+    </div>
+
+    <!-- Control Group: Polar Range (Vertical) -->
+    <div class="control-group">
+      <h3>Polar Angle (Vertical)</h3>
+      <div class="slider-row">
+        <div class="slider-header">
+          <span>Min Polar Angle (Top limit)</span>
+          <span class="slider-val" id="val-minPolarAngle">60°</span>
+        </div>
+        <input type="range" id="param-minPolarAngle" min="0" max="180" step="1" value="60">
+      </div>
+      <div class="slider-row">
+        <div class="slider-header">
+          <span>Max Polar Angle (Bottom limit)</span>
+          <span class="slider-val" id="val-maxPolarAngle">105°</span>
+        </div>
+        <input type="range" id="param-maxPolarAngle" min="0" max="180" step="1" value="105">
+      </div>
+    </div>
+
+    <!-- Control Group: Azimuthal Range (Horizontal) -->
+    <div class="control-group">
+      <h3>Azimuth Angle (Horizontal)</h3>
+      <div class="slider-row">
+        <div class="slider-header">
+          <span>Min Azimuth Angle (Left limit)</span>
+          <span class="slider-val" id="val-minAzimuthAngle">-45°</span>
+        </div>
+        <input type="range" id="param-minAzimuthAngle" min="-180" max="0" step="1" value="-45">
+      </div>
+      <div class="slider-row">
+        <div class="slider-header">
+          <span>Max Azimuth Angle (Right limit)</span>
+          <span class="slider-val" id="val-maxAzimuthAngle">45°</span>
+        </div>
+        <input type="range" id="param-maxAzimuthAngle" min="0" max="180" step="1" value="45">
+      </div>
+    </div>
+
+    <!-- Control Group: General Options -->
+    <div class="control-group">
+      <h3>General Settings</h3>
+      <div class="checkbox-row">
+        <input type="checkbox" id="param-enablePan">
+        <label for="param-enablePan">Enable Panning (Right click/Two-finger drag)</label>
+      </div>
+      <div style="margin-top: 0.5rem;" class="slider-row">
+        <div class="slider-header">
+          <span>Model Base Y-Rotation</span>
+          <span class="slider-val" id="val-modelRotationY">180°</span>
+        </div>
+        <input type="range" id="param-modelRotationY" min="-180" max="180" step="1" value="180">
+      </div>
+    </div>
+
+    <!-- Output Code Block -->
+    <div class="output-section">
+      <div class="output-header">
+        <h3>Configuration JSON</h3>
+        <button class="copy-btn" id="copy-btn">Copy Config</button>
+      </div>
+      <pre id="output-code">// Loading...</pre>
+    </div>
+  </div>
+
+  <!-- Three.js Setup & UI Events script -->
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+    let scene, camera, renderer, controls, statueModel;
+
+    // Elements
+    const container = document.getElementById('canvas-container');
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const trackDist = document.getElementById('track-dist');
+    const trackPolar = document.getElementById('track-polar');
+    const trackAzimuth = document.getElementById('track-azimuth');
+    const outputCode = document.getElementById('output-code');
+    const copyBtn = document.getElementById('copy-btn');
+
+    // Init 3D Scene
+    function init() {
+      // Create scene
+      scene = new THREE.Scene();
+
+      // Camera
+      camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+      camera.position.set(0, 0.45, 4.8);
+
+      // Renderer
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.shadowMap.enabled = true;
+      container.appendChild(renderer.domElement);
+
+      // Controls
+      controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.05;
+      controls.target.set(0, 0, 0);
+
+      // Lighting
+      const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+      scene.add(ambientLight);
+
+      const keyLight = new THREE.DirectionalLight(0xffffff, 0.7);
+      keyLight.position.set(-2, 2, 2);
+      scene.add(keyLight);
+
+      const fillLight = new THREE.DirectionalLight(0xffffff, 0.6);
+      fillLight.position.set(2, -1, -1);
+      scene.add(fillLight);
+
+      const backLight = new THREE.DirectionalLight(0xffffff, 0.6);
+      backLight.position.set(1, 3, -2);
+      scene.add(backLight);
+
+      // Load Messi Statue model
+      const loader = new GLTFLoader();
+      loader.load(
+        'jersey_3d_models/messi_statue.glb',
+        (gltf) => {
+          statueModel = gltf.scene;
+
+          // Scale and Center model
+          const box = new THREE.Box3().setFromObject(statueModel);
+          const center = box.getCenter(new THREE.Vector3());
+          const size = box.getSize(new THREE.Vector3());
+          const maxDim = Math.max(size.x, size.y, size.z);
+          const scale = 2 / maxDim;
+          statueModel.scale.setScalar(scale);
+          statueModel.position.sub(center.multiplyScalar(scale));
+
+          // Set initial base Y-rotation to face front
+          const baseRotationYDeg = parseInt(document.getElementById('param-modelRotationY').value);
+          statueModel.rotation.y = THREE.MathUtils.degToRad(baseRotationYDeg);
+
+          scene.add(statueModel);
+
+          // Hide loading overlay
+          loadingOverlay.style.opacity = '0';
+          setTimeout(() => loadingOverlay.style.display = 'none', 500);
+
+          updateControlsFromInputs();
+          animate();
+        },
+        null,
+        (err) => {
+          console.error('Error loading statue GLB:', err);
+          document.querySelector('.loading-text').textContent = 'Error loading statue! Make sure the model exists.';
+        }
+      );
+
+      // Handle Resize
+      window.addEventListener('resize', onWindowResize);
+    }
+
+    function onWindowResize() {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+
+      // Track active camera stats
+      trackDist.textContent = camera.position.distanceTo(controls.target).toFixed(2);
+      
+      const polarDeg = THREE.MathUtils.radToDeg(controls.getPolarAngle());
+      trackPolar.textContent = polarDeg.toFixed(1) + '°';
+
+      const azimuthDeg = THREE.MathUtils.radToDeg(controls.getAzimuthalAngle());
+      trackAzimuth.textContent = azimuthDeg.toFixed(1) + '°';
+
+      renderer.render(scene, camera);
+    }
+
+    // Connect Sliders to Controls
+    function updateControlsFromInputs() {
+      if (!controls) return;
+
+      // Distance
+      const minDistance = parseFloat(document.getElementById('param-minDistance').value);
+      const maxDistance = parseFloat(document.getElementById('param-maxDistance').value);
+      controls.minDistance = minDistance;
+      controls.maxDistance = maxDistance;
+      document.getElementById('val-minDistance').textContent = minDistance.toFixed(2);
+      document.getElementById('val-maxDistance').textContent = maxDistance.toFixed(2);
+
+      // Polar
+      const minPolarAngleDeg = parseInt(document.getElementById('param-minPolarAngle').value);
+      const maxPolarAngleDeg = parseInt(document.getElementById('param-maxPolarAngle').value);
+      controls.minPolarAngle = THREE.MathUtils.degToRad(minPolarAngleDeg);
+      controls.maxPolarAngle = THREE.MathUtils.degToRad(maxPolarAngleDeg);
+      document.getElementById('val-minPolarAngle').textContent = minPolarAngleDeg + '°';
+      document.getElementById('val-maxPolarAngle').textContent = maxPolarAngleDeg + '°';
+
+      // Azimuth
+      const minAzimuthAngleDeg = parseInt(document.getElementById('param-minAzimuthAngle').value);
+      const maxAzimuthAngleDeg = parseInt(document.getElementById('param-maxAzimuthAngle').value);
+      controls.minAzimuthAngle = THREE.MathUtils.degToRad(minAzimuthAngleDeg);
+      controls.maxAzimuthAngle = THREE.MathUtils.degToRad(maxAzimuthAngleDeg);
+      document.getElementById('val-minAzimuthAngle').textContent = minAzimuthAngleDeg + '°';
+      document.getElementById('val-maxAzimuthAngle').textContent = maxAzimuthAngleDeg + '°';
+
+      // Panning
+      const enablePan = document.getElementById('param-enablePan').checked;
+      controls.enablePan = enablePan;
+
+      // Model Base Y rotation
+      if (statueModel) {
+        const rotationYDeg = parseInt(document.getElementById('param-modelRotationY').value);
+        statueModel.rotation.y = THREE.MathUtils.degToRad(rotationYDeg);
+        document.getElementById('val-modelRotationY').textContent = rotationYDeg + '°';
+      }
+
+      generateCodeBlock(minDistance, maxDistance, minPolarAngleDeg, maxPolarAngleDeg, minAzimuthAngleDeg, maxAzimuthAngleDeg, enablePan);
+    }
+
+    // Generate Config JSON block
+    function generateCodeBlock(minD, maxD, minP, maxP, minA, maxA, enablePan) {
+      const codeStr = `const CAMERA_LIMITS = {
+    enablePan: ${enablePan},
+    minDistance: ${minD.toFixed(1)},
+    maxDistance: ${maxD.toFixed(1)},
+    minPolarAngle: Math.PI / ${(180 / minP).toFixed(2)},   // ${minP}°
+    maxPolarAngle: Math.PI / ${(180 / maxP).toFixed(2)},   // ${maxP}°
+    minAzimuthAngle: -Math.PI / ${(180 / Math.abs(minA)).toFixed(2)}, // ${minA}°
+    maxAzimuthAngle: Math.PI / ${(180 / maxA).toFixed(2)}  // ${maxA}°
+};`;
+      outputCode.textContent = codeStr;
+    }
+
+    // Attach Listeners
+    const inputs = [
+      'param-minDistance', 'param-maxDistance',
+      'param-minPolarAngle', 'param-maxPolarAngle',
+      'param-minAzimuthAngle', 'param-maxAzimuthAngle',
+      'param-enablePan', 'param-modelRotationY'
+    ];
+
+    inputs.forEach(id => {
+      document.getElementById(id).addEventListener('input', updateControlsFromInputs);
+      document.getElementById(id).addEventListener('change', updateControlsFromInputs);
+    });
+
+    // Copy to clipboard
+    copyBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(outputCode.textContent)
+        .then(() => {
+          copyBtn.textContent = 'Copied!';
+          setTimeout(() => copyBtn.textContent = 'Copy Config', 2000);
+        })
+        .catch(err => {
+          console.error('Could not copy text: ', err);
+        });
+    });
+
+    // Run
+    init();
+  </script>
+</body>
+</html>

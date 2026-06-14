@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AFA Albiceleste 3D Customizer</title>
+  <link rel="icon" type="image/x-icon" href="images/gf_sports.ico">
+  <meta name="description" content="Experience the legendary 3-star Argentina home jersey in real-time interactive 3D. Customize collars, shoulders, stripes, and badges.">
+  
+  <link rel="stylesheet" href="customizer-styles.css">
+
+  <!-- Import map for Three.js modules -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.181.2/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.181.2/examples/jsm/"
+      }
+    }
+  </script>
+
+  <!-- Fabric.js for 2D canvas texture generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+</head>
+
+<body>
+  <!-- Global Navigation Header -->
+  <header class="header">
+    <div class="header-content">
+      <a href="index.html" class="brand">
+        <img class="brand-logo" src="images/argentina_crest.svg" alt="AFA Logo">
+        <span class="brand-name">Argentina Jersey 3D</span>
+      </a>
+      <div class="header-links">
+        <a href="index.html" class="nav-link">Story</a>
+        <a href="customizer.html" class="nav-link active">Customizer</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Hero Layout -->
+  <main class="main-layout">
+    
+    <!-- Left Column: Controls -->
+    <section class="control-section">
+      <div class="hero-text">
+        <div class="brand-badge">AFA Albiceleste Edition</div>
+        <h1>Albiceleste Customizer</h1>
+        <p>
+          Configure the legendary 3-star Argentine home kit in interactive 3D. Fine-tune stripes, switch collar/shoulder templates, and toggle the golden crests.
+        </p>
+      </div>
+
+      <!-- Model Style Selector Panel -->
+      <div class="glass-panel">
+        <h2 class="panel-title">Model Template</h2>
+        <div class="settings-grid">
+          <div class="input-group">
+            <label for="collar-selector" class="input-label">Collar Style</label>
+            <select id="collar-selector" class="select-input">
+              <option value="v_neck">V-Neck (Classic)</option>
+              <option value="round">Round Collar</option>
+              <option value="insert">Insert Collar</option>
+              <option value="v_neck_crossed">V-Neck Crossed</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="shoulder-selector" class="input-label">Shoulder Cut</label>
+            <select id="shoulder-selector" class="select-input">
+              <option value="reglan">Raglan (Sleek)</option>
+              <option value="set_in">Set-In (Traditional)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="toggle-group">
+          <span class="input-label">Ribbed Fabric Texture</span>
+          <label class="switch-container">
+            <input type="checkbox" id="ribbed-collar-checkbox-colors" checked>
+            <span class="slider-switch"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Color & Stripes Customization Panel -->
+      <div class="glass-panel" id="colors-tab">
+        <h2 class="panel-title">Design &amp; Stripes</h2>
+        
+        <div class="settings-grid">
+          <div class="input-group">
+            <label for="jersey-part-select-colors" class="input-label">Part to Customize</label>
+            <select id="jersey-part-select-colors" class="select-input">
+              <option value="front">Body Front</option>
+              <option value="back">Body Back</option>
+              <option value="left-sleeve">Left Sleeve</option>
+              <option value="right-sleeve">Right Sleeve</option>
+              <option value="collar">Collar Rim</option>
+              <option value="collar2">Collar Insert</option>
+              <option value="hem">Hem Bottom</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Base Fabric Color</label>
+            <div class="color-preset-group" id="base-color-presets">
+              <button type="button" class="preset-swatch active" data-color="#75AADB" style="background-color: #75AADB;" title="Albiceleste Blue"></button>
+              <button type="button" class="preset-swatch" data-color="#FFFFFF" style="background-color: #FFFFFF;" title="White"></button>
+              <button type="button" class="preset-swatch" data-color="#D4AF37" style="background-color: #D4AF37;" title="AFA Gold"></button>
+              <button type="button" class="preset-swatch" data-color="#1A1F36" style="background-color: #1A1F36;" title="Navy Black"></button>
+              <div class="color-picker-custom">
+                <input type="color" id="jersey-part-color" class="color-picker-input" value="#75AADB">
+                <span id="base-color-hex" class="hex-code">#75AADB</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stripe Layer 1 Controls (Main stripes) -->
+        <div class="stripe-controls">
+          <div class="toggle-group">
+            <span class="input-label">Enable Stripes</span>
+            <label class="switch-container">
+              <input type="checkbox" id="jersey-stripes-toggle-tab1" checked>
+              <span class="slider-switch"></span>
+            </label>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">Stripe Color</label>
+            <div class="color-preset-group" id="stripe-color-presets">
+              <button type="button" class="preset-swatch active" data-color="#FFFFFF" style="background-color: #FFFFFF;" title="White"></button>
+              <button type="button" class="preset-swatch" data-color="#75AADB" style="background-color: #75AADB;" title="Albiceleste Blue"></button>
+              <button type="button" class="preset-swatch" data-color="#1A1F36" style="background-color: #1A1F36;" title="Navy Black"></button>
+              <button type="button" class="preset-swatch" data-color="#D4AF37" style="background-color: #D4AF37;" title="AFA Gold"></button>
+              <div class="color-picker-custom">
+                <input type="color" id="jersey-stripes-color-tab1" class="color-picker-input" value="#FFFFFF">
+                <span id="stripe-color-hex" class="hex-code">#FFFFFF</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-group range-group">
+            <div class="range-header">
+              <span>Stripe Width</span>
+              <span class="range-value" id="stripe-thickness-val">10</span>
+            </div>
+            <input type="range" class="range-input" min="5" max="40" value="10" step="0.5" id="jersey-stripes-thickness-tab1">
+          </div>
+
+          <div class="settings-group range-group">
+            <div class="range-header">
+              <span>Gap Between Stripes</span>
+              <span class="range-value" id="stripe-gap-val">10</span>
+            </div>
+            <input type="range" class="range-input" min="5" max="40" value="10" step="1" id="jersey-stripes-gap-tab1">
+          </div>
+
+          <div class="settings-group range-group">
+            <div class="range-header">
+              <span>Pattern Offset (Centering)</span>
+              <span class="range-value" id="stripe-position-val">11.6</span>
+            </div>
+            <input type="range" class="range-input" min="0" max="20" value="11.6" step="0.1" id="jersey-stripes-position-tab1">
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="btn-group">
+          <button id="download-button" class="btn btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export Design
+          </button>
+          <button id="reset-button" class="btn btn-secondary">
+            Reset Kit
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right Column: 3D Viewport -->
+    <section class="viewer-section">
+      <div class="viewer-wrapper">
+        <!-- 3D Scene Container -->
+        <div id="viewer-container" class="viewer-container"></div>
+        
+        <!-- Loading overlay -->
+        <div class="loading-overlay" id="canvas-loading-overlay">
+          <div class="loading-spinner"></div>
+          <div class="loading-text">Assembling 3D Jersey...</div>
+        </div>
+
+        <!-- Interactive hint -->
+        <div class="viewer-hint">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m10 15 5-3-5-3v6z"/></svg>
+          Drag to rotate | Scroll to zoom
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Fabric.js background canvases (Hidden, used for texture generation) -->
+  <canvas id="fabric-canvas-front" width="2048" height="2048" data-debug="false"></canvas>
+  <canvas id="fabric-canvas-back" width="2048" height="2048" data-debug="false"></canvas>
+  <canvas id="fabric-canvas-right-sleeve" width="2048" height="2048" data-debug="false"></canvas>
+  <canvas id="fabric-canvas-left-sleeve" width="2048" height="2048" data-debug="false"></canvas>
+  <canvas id="fabric-canvas-collar" width="2048" height="2048" data-debug="false"></canvas>
+  <canvas id="fabric-canvas-collar2" width="2048" height="2048" data-debug="false"></canvas>
+  <canvas id="fabric-canvas-hem" width="2048" height="2048" data-debug="false"></canvas>
+
+  <!-- ==================== HIDDEN COMPATIBILITY UI ELEMENTS ==================== -->
+  <!-- These elements are queried by script.js but not needed in our landing UI. -->
+  <div class="hidden-ui settings-group scale-group">
+    <span class="range-value" style="display:none;"></span>
+    <input type="radio" name="jersey-tab" value="colors" id="tab-colors-radio" checked>
+    <input type="radio" name="jersey-tab" value="designs" id="tab-designs-radio">
+    
+    <input type="radio" name="jersey-orientation" value="vertical" checked>
+    <input type="radio" name="jersey-orientation" value="horizontal">
+    
+    <div id="designs-tab"></div>
+    <div id="color-selection-group"></div>
+    <div id="design-thumbnails"></div>
+    <div id="family-name"></div>
+    <button id="back-button"></button>
+    <div id="design-customization-panel"></div>
+    <div id="ribbed-collar-group-designs"></div>
+    <input type="checkbox" id="ribbed-collar-checkbox-designs">
+    <input type="checkbox" id="ribbed-collar-checkbox">
+    <select id="jersey-part-select"><option value="front"></option></select>
+    
+    <input type="color" id="jersey-color-1">
+    <input type="color" id="jersey-color-2">
+    <input type="color" id="jersey-color-3">
+    
+    <input type="range" id="logo-scale" value="1">
+    <input type="range" id="logo-rotate" value="0">
+    <input type="range" id="logo-scale-colors" value="1">
+    <input type="range" id="logo-rotate-colors" value="0">
+
+    <!-- Hide unused tabs for stripes layers 2, 3, 4 -->
+    <input type="checkbox" id="jersey-stripes-toggle-tab2">
+    <input type="color" id="jersey-stripes-color-tab2" value="#eaeef1">
+    <input type="range" id="jersey-stripes-position-tab2" value="0">
+    <input type="range" id="jersey-stripes-gap-tab2" value="10">
+    <input type="range" id="jersey-stripes-thickness-tab2" value="5">
+    <input type="range" id="jersey-stripes-rotation-tab2" value="0">
+
+    <input type="checkbox" id="jersey-stripes-toggle-tab3">
+    <input type="color" id="jersey-stripes-color-tab3" value="#eaeef1">
+    <input type="range" id="jersey-stripes-position-tab3" value="0">
+    <input type="range" id="jersey-stripes-gap-tab3" value="10">
+    <input type="range" id="jersey-stripes-thickness-tab3" value="5">
+    <input type="range" id="jersey-stripes-rotation-tab3" value="0">
+
+    <input type="checkbox" id="jersey-stripes-toggle-tab4">
+    <input type="color" id="jersey-stripes-color-tab4" value="#eaeef1">
+    <input type="range" id="jersey-stripes-position-tab4" value="0">
+    <input type="range" id="jersey-stripes-gap-tab4" value="10">
+    <input type="range" id="jersey-stripes-thickness-tab4" value="5">
+    <input type="range" id="jersey-stripes-rotation-tab4" value="0">
+  </div>
+
+  <!-- Supabase / Auth Scripts -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script src="auth.js"></script>
+  
+  <!-- Main Controllers -->
+  <script src="script.js"></script>
+  <script type="module" src="threeD-script.js"></script>
+
+  <!-- Landing Page Custom Sync Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Sync Range Slider Displays
+      const setupSliderDisplay = (sliderId, valId, suffix = '') => {
+        const slider = document.getElementById(sliderId);
+        const display = document.getElementById(valId);
+        if (slider && display) {
+          display.textContent = slider.value + suffix;
+          slider.addEventListener('input', () => {
+            display.textContent = slider.value + suffix;
+          });
+        }
+      };
+
+      setupSliderDisplay('jersey-stripes-thickness-tab1', 'stripe-thickness-val');
+      setupSliderDisplay('jersey-stripes-gap-tab1', 'stripe-gap-val');
+      setupSliderDisplay('jersey-stripes-position-tab1', 'stripe-position-val');
+
+      // Color Input Hex Text Sync & Preset Swatches Sync
+      const setupColorPresets = (containerId, pickerId, textId) => {
+        const container = document.getElementById(containerId);
+        const picker = document.getElementById(pickerId);
+        const textLabel = document.getElementById(textId);
+        if (!container || !picker) return;
+
+        // Custom Swatch Click logic
+        container.querySelectorAll('.preset-swatch').forEach(swatch => {
+          swatch.addEventListener('click', () => {
+            const color = swatch.dataset.color;
+            picker.value = color;
+            if (textLabel) textLabel.textContent = color.toUpperCase();
+            
+            // Dispatch input and change events to trigger fabric texture generation
+            picker.dispatchEvent(new Event('input', { bubbles: true }));
+            picker.dispatchEvent(new Event('change', { bubbles: true }));
+
+            // Update active state class
+            container.querySelectorAll('.preset-swatch').forEach(s => s.classList.remove('active'));
+            swatch.classList.add('active');
+          });
+        });
+
+        // Sync Hex Label and Swatch active state when picker values change
+        picker.addEventListener('input', () => {
+          const val = picker.value.toLowerCase();
+          if (textLabel) textLabel.textContent = picker.value.toUpperCase();
+          
+          let matched = false;
+          container.querySelectorAll('.preset-swatch').forEach(swatch => {
+            if (swatch.dataset.color.toLowerCase() === val) {
+              swatch.classList.add('active');
+              matched = true;
+            } else {
+              swatch.classList.remove('active');
+            }
+          });
+        });
+      };
+
+      setupColorPresets('base-color-presets', 'jersey-part-color', 'base-color-hex');
+      setupColorPresets('stripe-color-presets', 'jersey-stripes-color-tab1', 'stripe-color-hex');
+
+      // Collar and Shoulder Selectors url parameter sync
+      const collarSelector = document.getElementById('collar-selector');
+      const shoulderSelector = document.getElementById('shoulder-selector');
+
+      // Parse current URL params
+      const urlParams = new URLSearchParams(window.location.search);
+      const currentCollar = urlParams.get('collar') || 'v_neck';
+      const currentShoulder = urlParams.get('shoulder') || 'reglan';
+
+      // Set selector values
+      if (collarSelector) collarSelector.value = currentCollar;
+      if (shoulderSelector) shoulderSelector.value = currentShoulder;
+
+      // Handle selector changes
+      const handleModelTemplateChange = () => {
+        const newCollar = collarSelector.value;
+        const newShoulder = shoulderSelector.value;
+
+        // Update URL
+        const nextUrl = new URL(window.location.href);
+        nextUrl.searchParams.set('collar', newCollar);
+        nextUrl.searchParams.set('shoulder', newShoulder);
+        window.history.replaceState({}, '', nextUrl);
+
+        // Reload 3D model
+        if (window.jerseyViewer && typeof window.jerseyViewer.loadModel === 'function') {
+          // Show loader overlay
+          const loader = document.getElementById('canvas-loading-overlay');
+          if (loader) loader.style.opacity = '1';
+          if (loader) loader.style.visibility = 'visible';
+
+          // Get model path and load it
+          const modelPath = window.getModelPath(newCollar, newShoulder);
+          window.jerseyViewer.loadModel(modelPath);
+
+          // Hide loader after loading model
+          setTimeout(() => {
+            if (loader) {
+              loader.style.opacity = '0';
+              setTimeout(() => {
+                loader.style.visibility = 'hidden';
+              }, 500);
+            }
+          }, 1200);
+        }
+      };
+
+      if (collarSelector) collarSelector.addEventListener('change', handleModelTemplateChange);
+      if (shoulderSelector) shoulderSelector.addEventListener('change', handleModelTemplateChange);
+
+      // Reset Kit Button
+      const resetButton = document.getElementById('reset-button');
+      if (resetButton) {
+        resetButton.addEventListener('click', () => {
+          localStorage.removeItem('jerseyConfig');
+          window.location.href = window.location.pathname; // Reload clear
+        });
+      }
+    });
+
+    // Helper functions to control loading spinner visibility globally
+    window.hideCanvasLoader = function() {
+      const loader = document.getElementById('canvas-loading-overlay');
+      if (loader) {
+        loader.style.opacity = '0';
+        setTimeout(() => {
+          loader.style.visibility = 'hidden';
+        }, 500);
+      }
+    };
+
+    window.showCanvasLoader = function() {
+      const loader = document.getElementById('canvas-loading-overlay');
+      if (loader) {
+        loader.style.opacity = '1';
+        loader.style.visibility = 'visible';
+      }
+    };
+  </script>
+</body>
+
+</html>

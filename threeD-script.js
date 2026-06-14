@@ -66,16 +66,8 @@ function getBasePath() {
 
 // Helper function to get model path based on selections
 function getModelPath(collar, shoulder) {
-    const key = `${collar}_${shoulder}`;
-    const filename = MODEL_MAP[key];
     const basePath = getBasePath();
-
-    if (!filename) {
-        console.warn(`No model found for ${collar} + ${shoulder}, using default`);
-        return `${basePath}jersey_3d_models/insert_collar_reglan_01.glb`;
-    }
-
-    return `${basePath}jersey_3d_models/${filename}`;
+    return `${basePath}jersey_3d_models/messi_statue.glb`;
 }
 
 
@@ -405,13 +397,24 @@ class JerseyViewer {
         }
         this.container.appendChild(this.renderer.domElement);
 
-        // Create controls
+        // Create controls with specific camera limits for a premium, guided experience (front-facing focus for the statue)
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
         this.controls.enableDamping = true;
         this.controls.dampingFactor = 0.05;
-        this.controls.minDistance = 1.2;  // Allow much closer zoom for detail viewing
-        this.controls.maxDistance = 10;
         this.controls.target.set(0, 0, 0);
+
+        // Enforce boundary limits for the Messi statue view
+        this.controls.enablePan = false;
+        this.controls.minDistance = 3.0;
+        this.controls.maxDistance = 5.0;
+
+        // Polar Angle (Vertical rotation): Restrict looking directly under/over (60 deg to 105 deg)
+        this.controls.minPolarAngle = Math.PI / 3;     // 60 deg
+        this.controls.maxPolarAngle = Math.PI / 1.714; // 105 deg
+
+        // Azimuth Angle (Horizontal rotation): Restrict rotating to the backside (-25 deg to +25 deg)
+        this.controls.minAzimuthAngle = -25 * Math.PI / 180;  // -25 deg
+        this.controls.maxAzimuthAngle = 25 * Math.PI / 180;   // +25 deg
     }
 
     createLights() {
@@ -2831,6 +2834,7 @@ class JerseyViewer {
 
                 let meshCount = 0;
                 let texturedMeshCount = 0;
+                const isStatue = modelPath.includes('messi_statue.glb');
 
                 // First pass: Log all materials found in the model
                 debugLog('🔍 === MATERIAL DISCOVERY ===');
@@ -2845,100 +2849,106 @@ class JerseyViewer {
                 debugLog('🗺️ Current material mapping:', this.materialToPartMap);
                 debugLog('🔍 === END MATERIAL DISCOVERY ===\n');
 
-                // Apply texture to all meshes in the model while preserving AO and normal maps
-                this.current3DObject.traverse((child) => {
-                    if (child.isMesh) {
-                        meshCount++;
+                if (!isStatue) {
+                    // Apply texture to all meshes in the model while preserving AO and normal maps
+                    this.current3DObject.traverse((child) => {
+                        if (child.isMesh) {
+                            meshCount++;
 
-                        // Skip stitch materials - they should keep their original appearance
-                        if (this.shouldExcludeMaterial(child.material)) {
-                            debugLog(`⏭️ Skipping material: "${child.material.name}" (stitch material)`);
-                            return; // Skip this mesh
-                        }
+                            // Skip stitch materials - they should keep their original appearance
+                            if (this.shouldExcludeMaterial(child.material)) {
+                                debugLog(`⏭️ Skipping material: "${child.material.name}" (stitch material)`);
+                                return; // Skip this mesh
+                            }
 
-                        // Get the material name and find corresponding part
-                        const materialName = child.material?.name || '';
-                        const partName = this.materialToPartMap[materialName];
+                            // Get the material name and find corresponding part
+                            const materialName = child.material?.name || '';
+                            const partName = this.materialToPartMap[materialName];
 
-                        if (!partName) {
-                            console.warn(`⚠️ No part mapping for material: "${materialName}" - This material will not receive textures!`);
-                            return;
-                        }
+                            if (!partName) {
+                                console.warn(`⚠️ No part mapping for material: "${materialName}" - This material will not receive textures!`);
+                                return;
+                            }
 
-                        // Get the texture for this part
-                        const partTexture = this.partTextures[partName];
-                        if (!partTexture) {
-                            console.warn(`⚠️ No texture found for part: "${partName}"`);
-                            return;
-                        }
+                            // Get the texture for this part
+                            const partTexture = this.partTextures[partName];
+                            if (!partTexture) {
+                                console.warn(`⚠️ No texture found for part: "${partName}"`);
+                                return;
+                            }
 
-                        // Log UV coordinates for debugging
-                        if (child.geometry.attributes.uv) {
-                            const uvs = child.geometry.attributes.uv;
-                            debugLog(`🔍 Mesh "${child.name}" (${materialName}) UV range:`, {
-                                count: uvs.count,
-                                itemSize: uvs.itemSize
-                            });
-                        } else {
-                            console.warn(`⚠️ Mesh "${child.name}" has NO UV mapping!`);
-                        }
+                            // Log UV coordinates for debugging
+                            if (child.geometry.attributes.uv) {
+                                const uvs = child.geometry.attributes.uv;
+                                debugLog(`🔍 Mesh "${child.name}" (${materialName}) UV range:`, {
+                                    count: uvs.count,
+                                    itemSize: uvs.itemSize
+                                });
+                            } else {
+                                console.warn(`⚠️ Mesh "${child.name}" has NO UV mapping!`);
+                            }
 
-                        // Preserve the original material properties (AO, normal maps, etc.)
-                        const originalMaterial = child.material;
+                            // Preserve the original material properties (AO, normal maps, etc.)
+                            const originalMaterial = child.material;
 
-                        // Clone the material to avoid modifying the original
-                        if (originalMaterial.isMeshStandardMaterial || originalMaterial.isMeshPhysicalMaterial) {
-                            child.material = originalMaterial.clone();
+                            // Clone the material to avoid modifying the original
+                            if (originalMaterial.isMeshStandardMaterial || originalMaterial.isMeshPhysicalMaterial) {
+                                child.material = originalMaterial.clone();
 
-                            // Apply the part-specific texture while preserving other maps
-                            child.material.map = partTexture;
+                                // Apply the part-specific texture while preserving other maps
+                                child.material.map = partTexture;
 
-                            // Log what maps are present
-                            debugLog(`📦 Mesh "${child.name}" (${materialName} → ${partName}) maps:`, {
-                                hasAO: !!child.material.aoMap,
-                                hasNormal: !!child.material.normalMap,
-                                hasRoughness: !!child.material.roughnessMap,
-                                hasMetalness: !!child.material.metalnessMap
-                            });
-                        } else {
-                            // Fallback: create new material if original is not PBR
-                            child.material = new THREE.MeshStandardMaterial({
-                                map: this.texture,
-                                roughness: 0.5,
-                                metalness: 0.1,
-                                side: THREE.DoubleSide
-                            });
-                        }
+                                // Log what maps are present
+                                debugLog(`📦 Mesh "${child.name}" (${materialName} → ${partName}) maps:`, {
+                                    hasAO: !!child.material.aoMap,
+                                    hasNormal: !!child.material.normalMap,
+                                    hasRoughness: !!child.material.roughnessMap,
+                                    hasMetalness: !!child.material.metalnessMap
+                                });
+                            } else {
+                                // Fallback: create new material if original is not PBR
+                                child.material = new THREE.MeshStandardMaterial({
+                                    map: this.texture,
+                                    roughness: 0.5,
+                                    metalness: 0.1,
+                                    side: THREE.DoubleSide
+                                });
+                            }
 
-                        // Apply texture filtering and wrapping for crisp rendering
-                        if (child.material.map) {
-                            child.material.map.magFilter = THREE.LinearFilter;
-                            child.material.map.minFilter = THREE.LinearMipmapLinearFilter;
+                            // Apply texture filtering and wrapping for crisp rendering
+                            if (child.material.map) {
+                                child.material.map.magFilter = THREE.LinearFilter;
+                                child.material.map.minFilter = THREE.LinearMipmapLinearFilter;
 
-                            // Enable texture wrapping (important for UV mapping)
-                            child.material.map.wrapS = THREE.RepeatWrapping;
-                            child.material.map.wrapT = THREE.RepeatWrapping;
+                                // Enable texture wrapping (important for UV mapping)
+                                child.material.map.wrapS = THREE.RepeatWrapping;
+                                child.material.map.wrapT = THREE.RepeatWrapping;
 
-                            // Force texture update
-                            child.material.map.needsUpdate = true;
+                                // Force texture update
+                                child.material.map.needsUpdate = true;
+                                child.material.needsUpdate = true;
+
+                                texturedMeshCount++;
+                            }
+
+                            // Ensure material updates
                             child.material.needsUpdate = true;
-
-                            texturedMeshCount++;
                         }
+                    });
 
-                        // Ensure material updates
-                        child.material.needsUpdate = true;
-                    }
-                });
-
-                debugLog(`✅ Model loaded: ${meshCount} meshes found, ${texturedMeshCount} textured`);
+                    debugLog(`✅ Model loaded: ${meshCount} meshes found, ${texturedMeshCount} textured`);
+                } else {
+                    debugLog(`🗿 Statue model detected - bypassing custom canvas texture loop`);
+                    // Rotate statue to face camera (z-axis positive)
+                    this.current3DObject.rotation.y = Math.PI;
+                }
 
                 // Scale and position the model appropriately
                 const box = new THREE.Box3().setFromObject(this.current3DObject);
                 const center = box.getCenter(new THREE.Vector3());
                 const size = box.getSize(new THREE.Vector3());
 
-                // Scale to fit in view (target size of 4 units)
+                // Scale to fit in view (target size of 2 units)
                 const maxDim = Math.max(size.x, size.y, size.z);
                 const scale = 2 / maxDim;
                 this.current3DObject.scale.setScalar(scale);
@@ -2949,8 +2959,10 @@ class JerseyViewer {
                 this.scene.add(this.current3DObject);
                 debugLog('📦 Model positioned and added to scene');
 
-                // Store original normal maps for collar/hem materials (for ribbed collar toggle)
-                this.storeOriginalCollarNormalMaps();
+                if (!isStatue) {
+                    // Store original normal maps for collar/hem materials (for ribbed collar toggle)
+                    this.storeOriginalCollarNormalMaps();
+                }
 
                 // Mark model as loaded (for tracking)
                 this.markModelLoaded();
@@ -3620,6 +3632,28 @@ class JerseyViewer {
 
             this.renderer.setSize(width, height);
         });
+    }
+
+    updateScroll(scrollPercent) {
+        if (!this.current3DObject) return;
+
+        // Store base centered position of the 3D model if not already stored
+        if (!this.baseModelPosition) {
+            this.baseModelPosition = this.current3DObject.position.clone();
+        }
+
+        // Shift statue to the right as we scroll into the timeline.
+        // At scrollPercent = 0 (landing page), centered (shift = 0)
+        // At scrollPercent = 1 (timeline), shifted to the right (shift = 0.65 units)
+        // We use a smooth ease-in-out interpolation for a more premium feel.
+        const ease = scrollPercent < 0.5 
+            ? 2 * scrollPercent * scrollPercent 
+            : 1 - Math.pow(-2 * scrollPercent + 2, 2) / 2;
+
+        const maxShift = 0.65; 
+        const shiftX = ease * maxShift;
+
+        this.current3DObject.position.x = this.baseModelPosition.x + shiftX;
     }
 
     // Method to update jersey color
