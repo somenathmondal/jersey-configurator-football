@@ -1339,14 +1339,17 @@ canvas[id^="fabric-canvas-"] {
 /* ---- Hero Stats Counters ---- */
 .hero-stats {
   display: flex;
-  gap: 2.5rem;
-  margin: 2rem 0 1.5rem 0;
+  justify-content: center;
+  gap: 3.5rem;
+  margin: 2.5rem 0;
+  opacity: 0;
+  animation: fadeInUp 0.8s var(--transition-smooth) 1.0s forwards;
 }
 
 .stat-item {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .stat-number {
