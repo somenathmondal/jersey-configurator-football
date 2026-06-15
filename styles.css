@@ -1403,6 +1403,35 @@ canvas[id^="fabric-canvas-"] {
   mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
 }
 
+/* Creator Overlay Image (Fade-in when creator section is active) */
+.creator-image-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2005; /* Sits above Three.js canvas but below transition overlay */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-darkest);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+  overflow: hidden;
+}
+
+.creator-image-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.creator-overlay-img {
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  filter: drop-shadow(0 20px 50px rgba(0,0,0,0.35));
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+}
+
 /* ---- Hero Stats Counters ---- */
 .hero-stats {
   display: flex;

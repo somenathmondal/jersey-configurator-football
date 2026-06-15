@@ -428,6 +428,10 @@
             <img src="images/messi_cup_source.jpg" alt="Lionel Messi 2022 World Cup" class="transition-source-img">
           </div>
           <div id="viewer-container" class="viewer-container"></div>
+          <!-- Creator Overlay Image (shown at the end of scroll) -->
+          <div id="creator-image-overlay" class="creator-image-overlay">
+            <img src="images/creator_3d_overlay.jpg" alt="Creator Portrait Overlay" class="creator-overlay-img">
+          </div>
           <!-- Loading overlay -->
           <div class="loading-overlay" id="canvas-loading-overlay">
             <div class="loading-spinner"></div>
@@ -1148,6 +1152,19 @@
             if (heroContent) {
               heroContent.style.opacity = Math.max(0, opacity);
               heroContent.style.transform = `translateY(${translateY}px)`;
+            }
+          }
+
+          // Toggle creator-image-overlay class when the creator-section enters
+          const creatorSec = document.querySelector('.creator-section');
+          const creatorOverlay = document.getElementById('creator-image-overlay');
+          if (creatorSec && creatorOverlay) {
+            const rect = creatorSec.getBoundingClientRect();
+            // Show overlay if the creator section enters the viewport
+            if (rect.top < window.innerHeight * 0.7) {
+              creatorOverlay.classList.add('active');
+            } else {
+              creatorOverlay.classList.remove('active');
             }
           }
 
