@@ -485,8 +485,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ========== DYNAMIC POLL & FAN CARD GENERATOR LOGIC ==========
-  document.addEventListener('DOMContentLoaded', () => {
-    // 1. World Cup Memory Poll Logic
+  // 1. World Cup Memory Poll Logic
     const pollContainer = document.getElementById('poll-options-container');
     const pollButtons = document.querySelectorAll('.poll-btn');
 
@@ -564,6 +563,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const shareTwitter = document.getElementById('share-twitter');
     const shareWhatsapp = document.getElementById('share-whatsapp');
 
+    // Modal overlay elements
+    const modal = document.getElementById('fan-card-modal');
+    const btnCloseModal = document.getElementById('btn-close-modal');
+
+    // Close modal handlers
+    if (btnCloseModal && modal) {
+      btnCloseModal.addEventListener('click', () => {
+        modal.style.display = 'none';
+      });
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+    }
+
     if (btnGenerate && canvas) {
       const ctx = canvas.getContext('2d');
 
@@ -578,99 +593,149 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         const config = eraLabels[era];
 
-        // Draw Fan Card template
-        canvas.style.display = 'block';
-        actionsBox.style.display = 'flex';
-        
-        // Background
-        ctx.fillStyle = '#0F2038'; // Deep blue primary
-        ctx.fillRect(0, 0, 400, 560);
-
-        // Golden Frame Borders
-        ctx.strokeStyle = '#D4AF37';
-        ctx.lineWidth = 6;
-        ctx.strokeRect(15, 15, 370, 530);
-
-        ctx.strokeStyle = '#D4AF37';
-        ctx.lineWidth = 1;
-        ctx.strokeRect(22, 22, 356, 516);
-
-        // Top Header Star Icons
-        ctx.font = '22px sans-serif';
-        ctx.fillStyle = '#D4AF37';
-        ctx.textAlign = 'center';
-        ctx.fillText('★ ★ ★', 200, 55);
-
-        // Center card photo slot with RedSands gradient mesh layout
-        const grad = ctx.createLinearGradient(0, 80, 0, 340);
-        grad.addColorStop(0, '#1E3557');
-        grad.addColorStop(1, '#081223');
-        ctx.fillStyle = grad;
-        ctx.fillRect(40, 80, 320, 260);
-        ctx.strokeRect(40, 80, 320, 260);
-
-        // Draw stylized sun details (Sol de Mayo) behind text
-        ctx.fillStyle = 'rgba(212, 175, 55, 0.08)';
-        ctx.beginPath();
-        ctx.arc(200, 210, 70, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Print 'MESSI' watermarked silhouette indicator text
-        ctx.font = '700 80px Outfit, sans-serif';
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
-        ctx.textAlign = 'center';
-        ctx.fillText('GOAT', 200, 230);
-
-        // Draw card details
-        ctx.fillStyle = '#FFFFFF';
-        ctx.font = '600 24px Outfit, sans-serif';
-        ctx.fillText(name.toUpperCase(), 200, 385);
-
-        // Gold divider
-        ctx.fillStyle = '#D4AF37';
-        ctx.fillRect(120, 405, 160, 2);
-
-        // Era title details
-        ctx.fillStyle = '#75AADB'; // Albiceleste Blue
-        ctx.font = '700 16px Outfit, sans-serif';
-        ctx.fillText(config.title, 200, 435);
-
-        ctx.fillStyle = '#EBF2F7';
-        ctx.font = '500 11px Outfit, sans-serif';
-        ctx.fillText(config.desc, 200, 460);
-
-        // Footer Brand watermark details
-        ctx.font = '8px sans-serif';
-        ctx.fillStyle = 'rgba(255,255,255,0.3)';
-        ctx.fillText('MESSI WORLD CUP FEATURETTE · 2006-2026', 200, 510);
-
-        // 3. Set up action links
-        // Download handler
-        btnDownload.onclick = () => {
-          const image = canvas.toDataURL('image/png');
-          const link = document.createElement('a');
-          link.download = `${name.toLowerCase().replace(/\s+/g, '_')}_fan_card.png`;
-          link.href = image;
-          link.click();
-        };
-
-        // Twitter share builder
-        const shareUrl = window.location.href;
-        const twitterText = encodeURIComponent(`Check out my official personalized fan card for Messi's legendary World Cup journey! Generated my Albiceleste ID for the ${config.title} era here:`);
-        shareTwitter.href = `https://twitter.com/intent/tweet?text=${twitterText}&url=${encodeURIComponent(shareUrl)}&hashtags=Messi,Albiceleste`;
-
-        // WhatsApp share builder
-        const whatsappText = encodeURIComponent(`Check out my Albiceleste Fan ID for the Messi World Cup journey! Generate yours here: ${shareUrl}`);
-        shareWhatsapp.href = `https://api.whatsapp.com/send?text=${whatsappText}`;
-
-        if (typeof gtag === 'function') {
-          gtag('event', 'generate_fan_card', {
-            'event_category': 'Personalization',
-            'event_label': era,
-            'value': name.length
-          });
+        // Open Modal immediately
+        if (modal) {
+          modal.style.display = 'flex';
         }
+
+        // Randomly select between the 2 available Messi card images
+        const cardImages = ['images/card_messi.webp', 'images/card_messi_2.jpg'];
+        const randomImageSrc = cardImages[Math.floor(Math.random() * cardImages.length)];
+
+        const messiImg = new Image();
+        messiImg.src = randomImageSrc;
+        messiImg.onload = () => {
+          // Show items
+          canvas.style.display = 'block';
+          actionsBox.style.display = 'flex';
+
+          // 1. Background (Iconic Albiceleste sky blue & white stripes)
+          const stripeWidth = 400 / 5;
+          for (let i = 0; i < 5; i++) {
+            ctx.fillStyle = (i % 2 === 0) ? '#75AADB' : '#FFFFFF';
+            ctx.fillRect(i * stripeWidth, 0, stripeWidth, 560);
+          }
+
+          // Translucent dark card frame overlay to soften background stripes
+          ctx.fillStyle = 'rgba(15, 32, 56, 0.25)';
+          ctx.fillRect(15, 15, 370, 530);
+
+          // 2. Draw Messi's Photo (calculating cover aspect ratio to prevent squishing)
+          const targetW = 320;
+          const targetH = 260;
+          const targetX = 40;
+          const targetY = 80;
+
+          const imgW = messiImg.width;
+          const imgH = messiImg.height;
+          
+          let sx, sy, sWidth, sHeight;
+          const targetRatio = targetW / targetH;
+          const imgRatio = imgW / imgH;
+          
+          if (imgRatio > targetRatio) {
+            // Image is wider than target
+            sHeight = imgH;
+            sWidth = imgH * targetRatio;
+            sx = (imgW - sWidth) / 2;
+            sy = 0;
+          } else {
+            // Image is taller than target
+            sWidth = imgW;
+            sHeight = imgW / targetRatio;
+            sx = 0;
+            sy = (imgH - sHeight) / 2;
+          }
+          
+          ctx.drawImage(messiImg, sx, sy, sWidth, sHeight, targetX, targetY, targetW, targetH);
+
+          // Translucent dark bottom panel for text readability
+          ctx.fillStyle = 'rgba(15, 32, 56, 0.85)';
+          ctx.fillRect(40, 355, 320, 135);
+          ctx.strokeStyle = 'rgba(212, 175, 55, 0.35)';
+          ctx.lineWidth = 1;
+          ctx.strokeRect(40, 355, 320, 135);
+
+          // 3. Golden Frame Borders
+          ctx.strokeStyle = '#D4AF37';
+          ctx.lineWidth = 6;
+          ctx.strokeRect(15, 15, 370, 530);
+
+          ctx.strokeStyle = '#D4AF37';
+          ctx.lineWidth = 1;
+          ctx.strokeRect(22, 22, 356, 516);
+
+          // 4. Top Header Star Icons
+          ctx.font = '22px sans-serif';
+          ctx.fillStyle = '#D4AF37';
+          ctx.textAlign = 'center';
+          ctx.fillText('★ ★ ★', 200, 55);
+
+          // 5. Draw stylized sun details (Sol de Mayo) behind text
+          ctx.fillStyle = 'rgba(212, 175, 55, 0.06)';
+          ctx.beginPath();
+          ctx.arc(200, 440, 60, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Print 'MESSI' watermarked silhouette indicator text
+          ctx.font = '700 75px Outfit, sans-serif';
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
+          ctx.textAlign = 'center';
+          ctx.fillText('GOAT', 200, 230);
+
+          // 6. Draw Spanish Support text & Name
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = '600 20px Outfit, sans-serif';
+          ctx.fillText('¡GRACIAS, ' + name.toUpperCase() + '!', 200, 382);
+
+          // Gold divider
+          ctx.fillStyle = '#D4AF37';
+          ctx.fillRect(120, 396, 160, 2);
+
+          ctx.fillStyle = '#D9C5C5';
+          ctx.font = '500 13px Outfit, sans-serif';
+          ctx.fillText('¡Gracias por tu apoyo incondicional!', 200, 420);
+
+          // Era details
+          ctx.fillStyle = '#75AADB'; // Albiceleste Blue
+          ctx.font = '700 15px Outfit, sans-serif';
+          ctx.fillText('FAN ID · ' + config.title, 200, 452);
+
+          ctx.fillStyle = '#EBF2F7';
+          ctx.font = '500 10px Outfit, sans-serif';
+          ctx.fillText(config.desc, 200, 474);
+
+          // Footer Brand watermark details
+          ctx.font = '8px sans-serif';
+          ctx.fillStyle = 'rgba(15, 32, 56, 0.65)';
+          ctx.fillText('MESSI WORLD CUP FEATURETTE · 2006-2026', 200, 515);
+
+          // 7. Set up action links after drawing is complete
+          btnDownload.onclick = () => {
+            const image = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.download = `${name.toLowerCase().replace(/\s+/g, '_')}_fan_card.png`;
+            link.href = image;
+            link.click();
+          };
+
+          // Twitter share builder
+          const shareUrl = window.location.href;
+          const twitterText = encodeURIComponent(`I just generated my Albiceleste Fan Card for Messi's legendary World Cup journey! Get your personalized ${config.title} ID here:`);
+          shareTwitter.href = `https://twitter.com/intent/tweet?text=${twitterText}&url=${encodeURIComponent(shareUrl)}&hashtags=Messi,Albiceleste`;
+
+          // WhatsApp share builder
+          const whatsappText = encodeURIComponent(`Check out my Albiceleste Fan ID for the Messi World Cup journey! Generate yours here: ${shareUrl}`);
+          shareWhatsapp.href = `https://api.whatsapp.com/send?text=${whatsappText}`;
+
+          if (typeof gtag === 'function') {
+            gtag('event', 'generate_fan_card', {
+              'event_category': 'Personalization',
+              'event_label': era,
+              'value': name.length
+            });
+          }
+        };
       });
     }
   });
-});
