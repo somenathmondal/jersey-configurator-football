@@ -1126,10 +1126,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Initialize: Load design configuration and then display design families
-(async function initializeDesigns() {
-  await loadDesignConfig();
-  loadDesignFamilies();
-})();
+window.addEventListener('load', () => {
+  setTimeout(async function initializeDesigns() {
+    await loadDesignConfig();
+    loadDesignFamilies();
+  }, 120);
+});
 
 // Colors & Stripes Panel Functionality
 // Stripe Orientation Radio Group

@@ -16,17 +16,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 
-// Model mapping configuration
-const MODEL_MAP = {
-    'round_reglan': 'round_collar_reglan_01.glb',
-    'round_set_in': 'round_collar_set_in_02.glb',
-    'insert_reglan': 'insert_collar_reglan_01.glb',
-    'insert_set_in': 'insert_collar_set_in_03.glb',
-    'v_neck_reglan': 'v_neck_reglan_01.glb',
-    'v_neck_set_in': 'v_neck_set_in_01.glb',
-    'v_neck_crossed_reglan': 'v_neck_crossed_reglan_01.glb',
-    'v_neck_crossed_set_in': 'v_neck_crossed_set_in_01.glb'
-};
+// Model mapping configuration has been removed as all pages now use the Messi Statue model.
 
 const CAMERA_POSITION_FOR_PART = {
     'front': { x: 0.00, y: 0.45, z: 4.80 },
@@ -551,10 +541,14 @@ class JerseyViewer {
                 return;
             }
 
+            // Detect mobile/tablet to reduce fabric canvas dimensions for memory/performance relief
+            const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) || window.innerWidth < 1024;
+            const canvasSize = isMobile ? 1024 : 2048;
+
             // Initialize Fabric.js canvas (optimized for performance)
             this.partCanvases[part] = new fabric.Canvas(fabricCanvasElement, {
-                width: 2048,  // Reduced from 4096 for 75% memory reduction
-                height: 2048,
+                width: canvasSize,
+                height: canvasSize,
                 backgroundColor: '#ffffff',
                 enableRetinaScaling: false  // Disabled for consistent memory usage
             });
@@ -3764,11 +3758,10 @@ window.JerseyViewer = JerseyViewer;
 
 // Only auto-initialize if not on share page
 if (!window.location.pathname.includes('/jersey-configurator/share/')) {
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initViewer);
-    } else {
-        initViewer();
-    }
+    window.addEventListener('load', () => {
+        // Run in a non-blocking timeout to ensure the main thread has fully updated the UI and enabled smooth scrolling first
+        setTimeout(initViewer, 100);
+    });
 }
 
 function initViewer() {
