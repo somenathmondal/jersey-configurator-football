@@ -52,10 +52,6 @@
         "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.181.2/examples/jsm/"
       }
     }
-  </script>
-
-  <!-- Fabric.js for 2D canvas texture generation -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
 </head>
 
 <body>
@@ -802,105 +798,6 @@
     </div>
   </div>
 
-  <!-- Fabric.js background canvases (Hidden, used for texture generation) -->
-  <canvas id="fabric-canvas-front" width="2048" height="2048" data-debug="false"></canvas>
-  <canvas id="fabric-canvas-back" width="2048" height="2048" data-debug="false"></canvas>
-  <canvas id="fabric-canvas-right-sleeve" width="2048" height="2048" data-debug="false"></canvas>
-  <canvas id="fabric-canvas-left-sleeve" width="2048" height="2048" data-debug="false"></canvas>
-  <canvas id="fabric-canvas-collar" width="2048" height="2048" data-debug="false"></canvas>
-  <canvas id="fabric-canvas-collar2" width="2048" height="2048" data-debug="false"></canvas>
-  <canvas id="fabric-canvas-hem" width="2048" height="2048" data-debug="false"></canvas>
-
-  <!-- ==================== HIDDEN COMPATIBILITY UI ELEMENTS ==================== -->
-  <!-- These elements are queried by script.js / threeD-script.js but hidden in featurette mode. -->
-  <div class="hidden-ui settings-group scale-group">
-    <span class="range-value" style="display:none;"></span>
-    <input type="radio" name="jersey-tab" value="colors" id="tab-colors-radio" checked>
-    <input type="radio" name="jersey-tab" value="designs" id="tab-designs-radio">
-    
-    <input type="radio" name="jersey-orientation" value="vertical" checked>
-    <input type="radio" name="jersey-orientation" value="horizontal">
-    
-    <div id="designs-tab"></div>
-    <div id="colors-tab" class="active"></div>
-    <div id="color-selection-group"></div>
-    <div id="design-thumbnails"></div>
-    <div id="family-name"></div>
-    <button id="back-button"></button>
-    <div id="design-customization-panel"></div>
-    <div id="ribbed-collar-group-designs"></div>
-    <input type="checkbox" id="ribbed-collar-checkbox-designs">
-    <input type="checkbox" id="ribbed-collar-checkbox">
-    <input type="checkbox" id="ribbed-collar-checkbox-colors" checked>
-    <select id="jersey-part-select"><option value="front"></option></select>
-    <select id="jersey-part-select-colors">
-      <option value="front">Body Front</option>
-      <option value="back">Body Back</option>
-      <option value="left-sleeve">Left Sleeve</option>
-      <option value="right-sleeve">Right Sleeve</option>
-      <option value="collar">Collar Rim</option>
-      <option value="collar2">Collar Insert</option>
-      <option value="hem">Hem Bottom</option>
-    </select>
-    <select id="jersey-part-select-working"><option value="front">Body Front</option></select>
-    
-    <select id="collar-selector">
-      <option value="v_neck">V-Neck</option>
-      <option value="round">Round Collar</option>
-      <option value="insert">Insert Collar</option>
-      <option value="v_neck_crossed">V-Neck Crossed</option>
-    </select>
-    <select id="shoulder-selector">
-      <option value="reglan">Raglan</option>
-      <option value="set_in">Set-In</option>
-    </select>
-
-    <input type="color" id="jersey-part-color" value="#75AADB">
-    <input type="color" id="jersey-color-1">
-    <input type="color" id="jersey-color-2">
-    <input type="color" id="jersey-color-3">
-    
-    <input type="range" id="logo-scale" value="1">
-    <input type="range" id="logo-rotate" value="0">
-    <input type="range" id="logo-scale-colors" value="1">
-    <input type="range" id="logo-rotate-colors" value="0">
-
-    <!-- Stripe controls for all 4 tabs -->
-    <input type="checkbox" id="jersey-stripes-toggle-tab1" checked>
-    <input type="color" id="jersey-stripes-color-tab1" value="#FFFFFF">
-    <input type="range" id="jersey-stripes-position-tab1" value="11.6">
-    <input type="range" id="jersey-stripes-gap-tab1" value="10">
-    <input type="range" id="jersey-stripes-thickness-tab1" value="10">
-
-    <input type="checkbox" id="jersey-stripes-toggle-tab2">
-    <input type="color" id="jersey-stripes-color-tab2" value="#eaeef1">
-    <input type="range" id="jersey-stripes-position-tab2" value="0">
-    <input type="range" id="jersey-stripes-gap-tab2" value="10">
-    <input type="range" id="jersey-stripes-thickness-tab2" value="5">
-    <input type="range" id="jersey-stripes-rotation-tab2" value="0">
-
-    <input type="checkbox" id="jersey-stripes-toggle-tab3">
-    <input type="color" id="jersey-stripes-color-tab3" value="#eaeef1">
-    <input type="range" id="jersey-stripes-position-tab3" value="0">
-    <input type="range" id="jersey-stripes-gap-tab3" value="10">
-    <input type="range" id="jersey-stripes-thickness-tab3" value="5">
-    <input type="range" id="jersey-stripes-rotation-tab3" value="0">
-
-    <input type="checkbox" id="jersey-stripes-toggle-tab4">
-    <input type="color" id="jersey-stripes-color-tab4" value="#eaeef1">
-    <input type="range" id="jersey-stripes-position-tab4" value="0">
-    <input type="range" id="jersey-stripes-gap-tab4" value="10">
-    <input type="range" id="jersey-stripes-thickness-tab4" value="5">
-    <input type="range" id="jersey-stripes-rotation-tab4" value="0">
-
-    <button id="download-button"></button>
-    <button id="reset-button"></button>
-  </div>
-
-  <!-- Supabase / Auth Scripts -->
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-  <script src="auth.js?v=1.0.2"></script>
-  
   <!-- Main Controllers -->
   <script src="script.js?v=1.0.2"></script>
   <script type="module" src="threeD-script.js?v=1.0.2"></script>
@@ -972,76 +869,10 @@
         const config = ERA_CONFIGS[year];
         if (!config || !window.jerseyViewer) return;
 
-        // Bypassing 3D model reload and texture changes as we only show the statue model.
-        // We still keep the collar/shoulder selector values updated for compatibility.
         const collarSel = document.getElementById('collar-selector');
         const shoulderSel = document.getElementById('shoulder-selector');
         if (collarSel) collarSel.value = config.collar;
         if (shoulderSel) shoulderSel.value = config.shoulder;
-      }
-
-      function applyStripesToViewer(viewer, config) {
-        const parts = ['front', 'back'];
-        const sleeves = ['left-sleeve', 'right-sleeve'];
-        const collarParts = ['collar', 'collar2', 'hem'];
-
-        // Apply to front and back
-        parts.forEach(part => {
-          const canvas = viewer.partCanvases[part];
-          if (canvas) {
-            canvas.backgroundColor = config.bgColor;
-            canvas.renderAll();
-          }
-
-          viewer.stripeLayersByPart[part] = {
-            tab1: {
-              enabled: true,
-              color: config.stripeColor,
-              position: config.stripePosition,
-              gap: config.stripeGap,
-              thickness: config.stripeWidth,
-              defaultCounts: { horizontal: 4, vertical: 3 }
-            },
-            tab2: { enabled: false, color: '#eaeef1', position: 15, gap: 10, thickness: 10, defaultCounts: { horizontal: 4, vertical: 3 } },
-            tab3: { enabled: false, color: '#eaeef1', position: 20, gap: 10, thickness: 10, defaultCounts: { horizontal: 4, vertical: 3 } },
-            tab4: { enabled: false, color: '#eaeef1', position: 10, gap: 10, thickness: 10, defaultCounts: { horizontal: 4, vertical: 3 } }
-          };
-
-          viewer.stripeOrientationByPart[part] = 'vertical';
-          viewer.regenerateStripesForPart(part);
-        });
-
-        // Apply background color to sleeves
-        sleeves.forEach(part => {
-          const canvas = viewer.partCanvases[part];
-          if (canvas) {
-            canvas.backgroundColor = config.sleeveColor || config.bgColor;
-            canvas.renderAll();
-          }
-          viewer.stripeLayersByPart[part] = {
-            tab1: { enabled: false, color: '#eaeef1', position: 15, gap: 10, thickness: 10, defaultCounts: { horizontal: 3, vertical: 2 } },
-            tab2: { enabled: false, color: '#eaeef1', position: 10, gap: 10, thickness: 10, defaultCounts: { horizontal: 3, vertical: 2 } },
-            tab3: { enabled: false, color: '#eaeef1', position: 15, gap: 10, thickness: 10, defaultCounts: { horizontal: 3, vertical: 2 } },
-            tab4: { enabled: false, color: '#eaeef1', position: 20, gap: 10, thickness: 10, defaultCounts: { horizontal: 3, vertical: 2 } }
-          };
-          viewer.stripeOrientationByPart[part] = 'vertical';
-          viewer.regenerateStripesForPart(part);
-        });
-
-        // Apply collar, collar2, hem colors
-        collarParts.forEach(part => {
-          const canvas = viewer.partCanvases[part];
-          if (canvas) {
-            if (part === 'collar') canvas.backgroundColor = config.collarColor || '#FFFFFF';
-            else if (part === 'collar2') canvas.backgroundColor = config.collar2Color || '#FFFFFF';
-            else if (part === 'hem') canvas.backgroundColor = config.hemColor || config.bgColor;
-            canvas.renderAll();
-            // Manually trigger texture update as they don't have stripes
-            if (viewer.updateTexture) {
-              viewer.updateTexture(part);
-            }
-          }
-        });
       }
 
       // ---- Update viewer badge ----
@@ -1204,7 +1035,7 @@
 
         // Apply initial era config once the viewer is ready
         const waitForViewer = setInterval(() => {
-          if (window.jerseyViewer && window.jerseyViewer.partCanvases && window.jerseyViewer.partCanvases['front']) {
+          if (window.jerseyViewer) {
             clearInterval(waitForViewer);
             
             // Small delay to let model finish loading
