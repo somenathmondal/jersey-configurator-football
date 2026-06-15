@@ -795,6 +795,79 @@
         </div>
       </section>
 
+      <!-- ========== FAN ZONE: PERSONALIZATION & POLL ========== -->
+      <section class="fan-zone-section" id="fan-zone">
+        <div class="fan-zone-container">
+          <!-- Memory Poll Card -->
+          <div class="fan-card-wrapper poll-card">
+            <span class="fan-zone-overline">VOX POPULI</span>
+            <h2 class="fan-zone-title">Favorite World Cup Campaign?</h2>
+            <p class="fan-zone-subtitle">Which Messi World Cup era meant the most to you? Vote to see live fan standings.</p>
+            
+            <div class="poll-options" id="poll-options-container">
+              <button class="poll-btn" data-era="2022">
+                <span class="poll-btn-year">2022</span>
+                <span class="poll-btn-label">Qatar (The Coronation)</span>
+                <span class="poll-bar"></span>
+                <span class="poll-percentage">0%</span>
+              </button>
+              <button class="poll-btn" data-era="2014">
+                <span class="poll-btn-year">2014</span>
+                <span class="poll-btn-label">Brazil (So Close, So Far)</span>
+                <span class="poll-bar"></span>
+                <span class="poll-percentage">0%</span>
+              </button>
+              <button class="poll-btn" data-era="2018">
+                <span class="poll-btn-year">2018</span>
+                <span class="poll-btn-label">Russia (The Darkest Chapter)</span>
+                <span class="poll-bar"></span>
+                <span class="poll-percentage">0%</span>
+              </button>
+              <button class="poll-btn" data-era="2006">
+                <span class="poll-btn-year">2006</span>
+                <span class="poll-btn-label">Germany (The Beginning)</span>
+                <span class="poll-bar"></span>
+                <span class="poll-percentage">0%</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Fan Card Generator Card -->
+          <div class="fan-card-wrapper generator-card">
+            <span class="fan-zone-overline">ALBICELESTE ID</span>
+            <h2 class="fan-zone-title">Create Your Fan Card</h2>
+            <p class="fan-zone-subtitle">Generate a custom-themed digital trading card with your name to share Messi's journey.</p>
+            
+            <div class="generator-controls">
+              <div class="input-group">
+                <input type="text" id="fan-name-input" placeholder="Your Name" maxlength="15" autocomplete="off">
+              </div>
+              <div class="input-group">
+                <select id="fan-era-select">
+                  <option value="2022">Qatar 2022 — Champion</option>
+                  <option value="2014">Brazil 2014 — Finalist</option>
+                  <option value="2018">Russia 2018 — R16</option>
+                  <option value="2006">Germany 2006 — Debut</option>
+                </select>
+              </div>
+              <button id="btn-generate-card" class="generator-btn">Generate Card</button>
+            </div>
+
+            <!-- Canvas Container -->
+            <div class="canvas-preview-box">
+              <canvas id="fan-card-canvas" width="400" height="560"></canvas>
+              <div class="canvas-actions" id="canvas-actions-container" style="display: none;">
+                <button id="btn-download-card" class="action-btn-share download">Download PNG</button>
+                <div class="social-share-group">
+                  <a href="#" id="share-twitter" target="_blank" rel="noopener" class="action-btn-share twitter">Share on X</a>
+                  <a href="#" id="share-whatsapp" target="_blank" rel="noopener" class="action-btn-share whatsapp">WhatsApp</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- Impossible is Nothing Poster (Mobile Only) -->
       <section class="impossible-mobile-section">
         <img src="images/creator_3d_overlay.jpg" alt="Impossible is Nothing" class="impossible-mobile-img" loading="lazy">

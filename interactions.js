@@ -483,4 +483,194 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }, 300);
   });
+
+  // ========== DYNAMIC POLL & FAN CARD GENERATOR LOGIC ==========
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. World Cup Memory Poll Logic
+    const pollContainer = document.getElementById('poll-options-container');
+    const pollButtons = document.querySelectorAll('.poll-btn');
+
+    // Default stats if none exist in localStorage
+    const defaultPollStats = { '2022': 185, '2014': 76, '2018': 24, '2006': 42 };
+    
+    function getPollStats() {
+      const saved = localStorage.getItem('messi_poll_stats');
+      return saved ? JSON.parse(saved) : defaultPollStats;
+    }
+
+    function renderPollResults(stats, userVote = null) {
+      const total = Object.values(stats).reduce((a, b) => a + b, 0);
+      
+      pollButtons.forEach(btn => {
+        const era = btn.dataset.era;
+        const votes = stats[era];
+        const percentage = total > 0 ? Math.round((votes / total) * 100) : 0;
+        
+        const bar = btn.querySelector('.poll-bar');
+        const percentText = btn.querySelector('.poll-percentage');
+        
+        if (bar) bar.style.width = `${percentage}%`;
+        if (percentText) percentText.textContent = `${percentage}%`;
+        
+        // Highlight user's vote
+        if (userVote === era) {
+          btn.style.borderColor = 'var(--accent-gold)';
+          btn.style.background = 'rgba(212, 175, 55, 0.05)';
+        }
+      });
+      
+      pollContainer.classList.add('voted');
+    }
+
+    // Initialize Poll State
+    const hasVoted = localStorage.getItem('messi_poll_user_vote');
+    const currentStats = getPollStats();
+
+    if (hasVoted) {
+      renderPollResults(currentStats, hasVoted);
+    } else {
+      pollButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const selectedEra = btn.dataset.era;
+          localStorage.setItem('messi_poll_user_vote', selectedEra);
+          
+          // Increment stats
+          const stats = getPollStats();
+          stats[selectedEra] = (stats[selectedEra] || 0) + 1;
+          localStorage.setItem('messi_poll_stats', JSON.stringify(stats));
+          
+          // Animate and render
+          renderPollResults(stats, selectedEra);
+          
+          if (typeof gtag === 'function') {
+            gtag('event', 'cast_poll_vote', {
+              'event_category': 'Engagement',
+              'event_label': selectedEra
+            });
+          }
+        });
+      });
+    }
+
+    // 2. Interactive Fan Card Canvas Generator
+    const btnGenerate = document.getElementById('btn-generate-card');
+    const inputName = document.getElementById('fan-name-input');
+    const selectEra = document.getElementById('fan-era-select');
+    const canvas = document.getElementById('fan-card-canvas');
+    const actionsBox = document.getElementById('canvas-actions-container');
+    const btnDownload = document.getElementById('btn-download-card');
+    
+    // Social share buttons
+    const shareTwitter = document.getElementById('share-twitter');
+    const shareWhatsapp = document.getElementById('share-whatsapp');
+
+    if (btnGenerate && canvas) {
+      const ctx = canvas.getContext('2d');
+
+      btnGenerate.addEventListener('click', () => {
+        const name = inputName.value.trim() || 'ALBICLESTE FAN';
+        const era = selectEra.value;
+        const eraLabels = {
+          '2022': { title: 'QATAR 2022', desc: 'THE CORONATION · CHAMPION', color: '#75AADB' },
+          '2014': { title: 'BRAZIL 2014', desc: 'THE RUNNER-UP · FINALIST', color: '#6CACE4' },
+          '2018': { title: 'RUSSIA 2018', desc: 'THE DARKEST CHAPTER · R16', color: '#85BBE6' },
+          '2006': { title: 'GERMANY 2006', desc: 'THE DEBUT · QUARTER-FINAL', color: '#75AADB' }
+        };
+        const config = eraLabels[era];
+
+        // Draw Fan Card template
+        canvas.style.display = 'block';
+        actionsBox.style.display = 'flex';
+        
+        // Background
+        ctx.fillStyle = '#0F2038'; // Deep blue primary
+        ctx.fillRect(0, 0, 400, 560);
+
+        // Golden Frame Borders
+        ctx.strokeStyle = '#D4AF37';
+        ctx.lineWidth = 6;
+        ctx.strokeRect(15, 15, 370, 530);
+
+        ctx.strokeStyle = '#D4AF37';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(22, 22, 356, 516);
+
+        // Top Header Star Icons
+        ctx.font = '22px sans-serif';
+        ctx.fillStyle = '#D4AF37';
+        ctx.textAlign = 'center';
+        ctx.fillText('★ ★ ★', 200, 55);
+
+        // Center card photo slot with RedSands gradient mesh layout
+        const grad = ctx.createLinearGradient(0, 80, 0, 340);
+        grad.addColorStop(0, '#1E3557');
+        grad.addColorStop(1, '#081223');
+        ctx.fillStyle = grad;
+        ctx.fillRect(40, 80, 320, 260);
+        ctx.strokeRect(40, 80, 320, 260);
+
+        // Draw stylized sun details (Sol de Mayo) behind text
+        ctx.fillStyle = 'rgba(212, 175, 55, 0.08)';
+        ctx.beginPath();
+        ctx.arc(200, 210, 70, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Print 'MESSI' watermarked silhouette indicator text
+        ctx.font = '700 80px Outfit, sans-serif';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
+        ctx.textAlign = 'center';
+        ctx.fillText('GOAT', 200, 230);
+
+        // Draw card details
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '600 24px Outfit, sans-serif';
+        ctx.fillText(name.toUpperCase(), 200, 385);
+
+        // Gold divider
+        ctx.fillStyle = '#D4AF37';
+        ctx.fillRect(120, 405, 160, 2);
+
+        // Era title details
+        ctx.fillStyle = '#75AADB'; // Albiceleste Blue
+        ctx.font = '700 16px Outfit, sans-serif';
+        ctx.fillText(config.title, 200, 435);
+
+        ctx.fillStyle = '#EBF2F7';
+        ctx.font = '500 11px Outfit, sans-serif';
+        ctx.fillText(config.desc, 200, 460);
+
+        // Footer Brand watermark details
+        ctx.font = '8px sans-serif';
+        ctx.fillStyle = 'rgba(255,255,255,0.3)';
+        ctx.fillText('MESSI WORLD CUP FEATURETTE · 2006-2026', 200, 510);
+
+        // 3. Set up action links
+        // Download handler
+        btnDownload.onclick = () => {
+          const image = canvas.toDataURL('image/png');
+          const link = document.createElement('a');
+          link.download = `${name.toLowerCase().replace(/\s+/g, '_')}_fan_card.png`;
+          link.href = image;
+          link.click();
+        };
+
+        // Twitter share builder
+        const shareUrl = window.location.href;
+        const twitterText = encodeURIComponent(`Check out my official personalized fan card for Messi's legendary World Cup journey! Generated my Albiceleste ID for the ${config.title} era here:`);
+        shareTwitter.href = `https://twitter.com/intent/tweet?text=${twitterText}&url=${encodeURIComponent(shareUrl)}&hashtags=Messi,Albiceleste`;
+
+        // WhatsApp share builder
+        const whatsappText = encodeURIComponent(`Check out my Albiceleste Fan ID for the Messi World Cup journey! Generate yours here: ${shareUrl}`);
+        shareWhatsapp.href = `https://api.whatsapp.com/send?text=${whatsappText}`;
+
+        if (typeof gtag === 'function') {
+          gtag('event', 'generate_fan_card', {
+            'event_category': 'Personalization',
+            'event_label': era,
+            'value': name.length
+          });
+        }
+      });
+    }
+  });
 });
