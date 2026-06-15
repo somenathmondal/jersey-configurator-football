@@ -780,9 +780,17 @@ canvas[id^="fabric-canvas-"] {
     width: calc(100% - 3rem);
   }
 
+  .narrative-track {
+    position: relative;
+    z-index: 10;
+    background-color: var(--bg-darkest);
+    width: 100%;
+  }
+
   .era-section {
     min-height: auto;
     padding: 3rem 1.5rem;
+    background-color: var(--bg-darkest);
   }
 
   .era-card {
@@ -801,15 +809,6 @@ canvas[id^="fabric-canvas-"] {
 @media (max-width: 640px) {
   .hero-subtitle {
     font-size: 0.9rem;
-  }
-
-  .viewer-sticky {
-    height: 45vh;
-    padding: 1rem;
-  }
-
-  .viewer-wrapper {
-    max-width: 250px;
   }
 
   .era-stats {
@@ -1277,30 +1276,71 @@ canvas[id^="fabric-canvas-"] {
 }
 
 @media (max-width: 1024px) {
+  .hero-intro {
+    padding-top: 80px;
+    height: 100vh;
+    min-height: 100vh;
+  }
+
   .hero-split {
+    display: flex;
     flex-direction: column;
-    min-height: auto;
-    height: auto;
-    padding-bottom: 2rem;
+    height: 100vh;
+    min-height: 100vh;
+    padding-bottom: 0;
   }
   
   .hero-left-content {
+    position: absolute;
+    inset: 0;
     width: 100%;
-    padding: 2rem 1.5rem;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     align-items: center;
+    padding: 3rem 1.5rem 5rem 1.5rem;
+    background: linear-gradient(to top, rgba(15, 32, 56, 0.95) 0%, rgba(15, 32, 56, 0.45) 60%, transparent 100%);
+    text-align: center;
   }
   
   .hero-content {
     text-align: center;
+    width: 100%;
+    margin-bottom: 0;
   }
   
   .hero-title {
     align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .hero-title-line {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  .hero-subtitle {
+    font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+    margin: 0 auto 1.5rem;
+    text-align: center;
+  }
+
+  .hero-stats {
+    gap: 2rem;
+    margin: 1.5rem 0 1rem -1rem;
+  }
+
+  .stat-number {
+    font-size: 2.75rem;
+  }
+
+  .stat-label {
+    font-size: 0.7rem;
   }
   
   .scroll-indicator {
     align-items: center;
-    margin: 2rem auto 0;
+    margin: 1.5rem auto 0;
   }
   
   .hero-right-space {
