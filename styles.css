@@ -1362,7 +1362,7 @@ canvas[id^="fabric-canvas-"] {
 
   .stat-label {
     font-size: 0.7rem;
-    color: rgba(255, 255, 255, 0.7) !important; /* Lighter label text on mobile */
+    color: rgb(54 135 236 / 70%) !important; /* Lighter label text on mobile */
   }
   
   .scroll-indicator {
