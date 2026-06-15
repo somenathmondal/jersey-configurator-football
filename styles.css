@@ -1423,3 +1423,226 @@ canvas[id^="fabric-canvas-"] {
   letter-spacing: 0.12em;
   color: var(--text-secondary);
 }
+
+/* ============================================================
+   CREATOR SECTION
+   ============================================================ */
+
+.creator-section {
+  padding: 6rem 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.creator-card {
+  width: 100%;
+  max-width: 480px;
+  text-align: left;
+}
+
+.creator-overline {
+  font-family: var(--font-primary);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--accent-gold);
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.creator-title-section {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 2rem;
+  line-height: 1.2;
+}
+
+.creator-title-section .creator-accent {
+  background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-hover) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.creator-box {
+  background: var(--bg-darker);
+  border: 1px solid var(--border-glass);
+  padding: 2.5rem;
+  border-radius: 24px;
+  box-shadow: var(--shadow-premium);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.creator-box:hover {
+  border-color: rgba(212, 175, 55, 0.4);
+  transform: translateY(-4px);
+}
+
+.creator-box::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  left: -60px;
+  width: 120px;
+  height: 120px;
+  background: rgba(212, 175, 55, 0.04);
+  border-radius: 50%;
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.creator-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.creator-avatar {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-hover) 100%);
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2);
+}
+
+.creator-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.creator-name {
+  font-family: var(--font-primary);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.creator-role {
+  font-family: var(--font-primary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.1em;
+  margin-top: 0.15rem;
+}
+
+.creator-bio {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.creator-bio-secondary {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+.creator-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border-top: 1px solid var(--border-glass);
+  padding-top: 1.5rem;
+}
+
+.creator-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.creator-btn.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--text-secondary);
+  color: var(--text-secondary);
+}
+
+.creator-btn.btn-secondary:hover {
+  background: var(--bg-darkest);
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+}
+
+.creator-btn.btn-primary {
+  background: var(--accent-gold);
+  border: 1px solid var(--accent-gold);
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.25);
+}
+
+.creator-btn.btn-primary:hover {
+  background: var(--accent-gold-hover);
+  border-color: var(--accent-gold-hover);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+  transform: translateY(-1px);
+}
+
+/* Make sure creator section is readable on mobile dark background */
+@media (max-width: 1024px) {
+  .creator-section {
+    background-color: var(--bg-darkest);
+    padding: 4rem 1.5rem;
+  }
+
+  .creator-box {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .creator-title-section {
+    color: #FFFFFF !important;
+  }
+
+  .creator-name {
+    color: #FFFFFF !important;
+  }
+
+  .creator-role {
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+
+  .creator-bio {
+    color: rgba(255, 255, 255, 0.85) !important;
+  }
+
+  .creator-bio-secondary {
+    color: rgba(255, 255, 255, 0.55) !important;
+  }
+
+  .creator-btn.btn-secondary {
+    border-color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .creator-btn.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #FFFFFF;
+    color: #FFFFFF;
+  }
+}
