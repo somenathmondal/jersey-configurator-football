@@ -383,11 +383,21 @@ class JerseyViewer {
         // Create renderer with proper PBR settings
         this.renderer = new THREE.WebGLRenderer({
             antialias: true,
-            alpha: true
+            alpha: true,
+            powerPreference: "high-performance",
+            precision: "mediump"
         });
         this.renderer.setSize(width, height);
-        this.renderer.setPixelRatio(window.devicePixelRatio);
-        this.renderer.shadowMap.enabled = true;
+        
+        // Detect mobile to optimize performance
+        const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) || window.innerWidth < 1024;
+        
+        // Limit pixel ratio to max 1.5 on mobile for substantial GPU relief
+        const maxPixelRatio = isMobile ? Math.min(window.devicePixelRatio, 1.5) : Math.min(window.devicePixelRatio, 2);
+        this.renderer.setPixelRatio(maxPixelRatio);
+        
+        // Disable shadows on mobile to free up CPU/GPU cycles
+        this.renderer.shadowMap.enabled = !isMobile;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
         // Configure tone mapping and exposure for neutral lighting
