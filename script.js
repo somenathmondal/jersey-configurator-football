@@ -307,6 +307,9 @@ function initializeJerseyTabs() {
 
 // Initialize tabs when DOM is ready - use multiple methods to ensure it runs
 function initTabsOnReady() {
+  const isCustomizerPage = window.location.pathname.includes('customizer.html') || window.location.pathname.includes('/admin-design/');
+  if (!isCustomizerPage) return;
+
   // Try to initialize immediately if DOM is ready
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
     setTimeout(initializeJerseyTabs, 50);
@@ -324,6 +327,9 @@ initTabsOnReady();
 
 // Also try on window load as backup
 window.addEventListener('load', () => {
+  const isCustomizerPage = window.location.pathname.includes('customizer.html') || window.location.pathname.includes('/admin-design/');
+  if (!isCustomizerPage) return;
+
   // Double-check tabs are initialized
   const designsTab = document.getElementById('designs-tab');
   const colorsTab = document.getElementById('colors-tab');
@@ -1396,7 +1402,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Toggle normal maps on collar materials
-        if (window.jerseyViewer) {
+        if (window.jerseyViewer && typeof window.jerseyViewer.toggleCollarNormalMaps === 'function') {
           window.jerseyViewer.toggleCollarNormalMaps(isRibbed);
         }
         markDesignDirty();
@@ -4116,7 +4122,7 @@ function loadJerseyConfiguration(isSavedDesign) {
 
       // Apply normal map setting to 3D model
       setTimeout(() => {
-        if (window.jerseyViewer) {
+        if (window.jerseyViewer && typeof window.jerseyViewer.toggleCollarNormalMaps === 'function') {
           window.jerseyViewer.toggleCollarNormalMaps(config.ribbedCollar);
         }
       }, 500); // Wait for 3D model to load
