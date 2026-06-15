@@ -804,7 +804,8 @@ canvas[id^="fabric-canvas-"] {
     padding: 1.5rem;
   }
 
-  .stat-label {
+  .stat-label,
+  .stat-value {
     color: #000000 !important;
     font-weight: 600 !important;
   }
