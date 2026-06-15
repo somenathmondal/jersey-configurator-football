@@ -23,7 +23,7 @@ function getBasePath() {
 // Helper function to get model path based on selections (retained for backward compatibility)
 function getModelPath() {
     const basePath = getBasePath();
-    return `${basePath}jersey_3d_models/messi_statue.glb`;
+    return `${basePath}jersey_3d_models/messi_statue_opt.glb`;
 }
 
 // Make paths available globally
