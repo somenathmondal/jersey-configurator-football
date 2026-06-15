@@ -1197,10 +1197,10 @@
             }
           };
 
-          // Delay starting counter slightly to match the 1.0s fadeInUp CSS animation delay
+          // Delay starting counter to 2.0s to allow full transition and static viewing first
           setTimeout(() => {
             requestAnimationFrame(animateCounter);
-          }, 1000);
+          }, 2000);
         });
       }
 
