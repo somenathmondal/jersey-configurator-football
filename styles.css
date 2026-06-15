@@ -1382,7 +1382,7 @@ canvas[id^="fabric-canvas-"] {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--bg-darkest);
+  background-color: transparent;
   overflow: hidden;
   border-radius: 0;
   width: 100%;
