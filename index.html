@@ -1178,27 +1178,28 @@
         statsNumbers.forEach(num => {
           const target = +num.getAttribute('data-target');
           const duration = 1500; // 1.5 seconds
-          const startTime = performance.now();
-
-          const animateCounter = (currentTime) => {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1.0);
-            
-            // Ease out quad
-            const ease = progress * (2 - progress);
-            const currentVal = Math.floor(ease * target);
-            
-            num.textContent = currentVal;
-
-            if (progress < 1.0) {
-              requestAnimationFrame(animateCounter);
-            } else {
-              num.textContent = target; // Ensure exact final value
-            }
-          };
 
           // Delay starting counter to 2.0s to allow full transition and static viewing first
           setTimeout(() => {
+            const startTime = performance.now();
+
+            const animateCounter = (currentTime) => {
+              const elapsed = currentTime - startTime;
+              const progress = Math.min(elapsed / duration, 1.0);
+              
+              // Ease out quad
+              const ease = progress * (2 - progress);
+              const currentVal = Math.floor(ease * target);
+              
+              num.textContent = currentVal;
+
+              if (progress < 1.0) {
+                requestAnimationFrame(animateCounter);
+              } else {
+                num.textContent = target; // Ensure exact final value
+              }
+            };
+
             requestAnimationFrame(animateCounter);
           }, 2000);
         });
