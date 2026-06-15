@@ -42,8 +42,21 @@
             <span class="hero-title-line accent">&</span>
             <span class="hero-title-line">The Albiceleste</span>
           </h1>
+          <div class="hero-stats">
+            <div class="stat-item">
+              <span class="stat-number" data-target="6">0</span>
+              <span class="stat-label">World Cups</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number" data-target="20">0</span>
+              <span class="stat-label">Years</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number" data-target="1">0</span>
+              <span class="stat-label">Destiny</span>
+            </div>
+          </div>
           <p class="hero-subtitle">
-            Six World Cups. Twenty years. One destiny.<br>
             The story of the greatest, told through the jersey he wore.
           </p>
           <div class="scroll-indicator" id="scroll-indicator">
@@ -1159,6 +1172,36 @@
             }
           }, 2500);
         }
+
+        // Stats Counter Animation
+        const statsNumbers = document.querySelectorAll('.stat-number');
+        statsNumbers.forEach(num => {
+          const target = +num.getAttribute('data-target');
+          const duration = 1500; // 1.5 seconds
+          const startTime = performance.now();
+
+          const animateCounter = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1.0);
+            
+            // Ease out quad
+            const ease = progress * (2 - progress);
+            const currentVal = Math.floor(ease * target);
+            
+            num.textContent = currentVal;
+
+            if (progress < 1.0) {
+              requestAnimationFrame(animateCounter);
+            } else {
+              num.textContent = target; // Ensure exact final value
+            }
+          };
+
+          // Delay starting counter slightly for cinematic entrance
+          setTimeout(() => {
+            requestAnimationFrame(animateCounter);
+          }, 500);
+        });
       }
 
       if (document.readyState === 'loading') {
