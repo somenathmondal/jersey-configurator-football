@@ -804,6 +804,11 @@ canvas[id^="fabric-canvas-"] {
     padding: 1.5rem;
   }
 
+  .stat-label {
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
   .era-number {
     font-size: 3.5rem;
     top: 2rem;
