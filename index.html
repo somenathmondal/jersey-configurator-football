@@ -4,6 +4,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BCFFGCS8HR"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-BCFFGCS8HR');
+  </script>
   <title>Messi & The Albiceleste — World Cup Jerseys 2006–2026</title>
   <link rel="icon" type="image/x-icon" href="images/gf_sports.ico">
   <meta name="description" content="A visual journey through Lionel Messi's six World Cup campaigns with Argentina, told through the iconic Albiceleste jerseys — from the 2006 debut to the 2026 farewell.">
@@ -754,11 +763,11 @@
               </div>
             </div>
             <div class="creator-actions">
-              <a href="https://www.linkedin.com/in/somenath-mondal-xr-tech/" target="_blank" rel="noopener noreferrer" class="creator-btn btn-secondary">
+              <a href="https://www.linkedin.com/in/somenath-mondal-xr-tech/" target="_blank" rel="noopener noreferrer" class="creator-btn btn-secondary" onclick="if(typeof gtag==='function')gtag('event','click_linkedin',{'event_category':'Outbound Links'});">
                 <span>LinkedIn Profile</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"/></svg>
               </a>
-              <a href="https://somenath-portfolio-3d.vercel.app/" target="_blank" rel="noopener noreferrer" class="creator-btn btn-primary">
+              <a href="https://somenath-portfolio-3d.vercel.app/" target="_blank" rel="noopener noreferrer" class="creator-btn btn-primary" onclick="if(typeof gtag==='function')gtag('event','click_portfolio',{'event_category':'Outbound Links'});">
                 <span>Explore 3D Portfolio</span>
               </a>
             </div>
@@ -1056,6 +1065,14 @@
                 applyEraConfig(year);
                 updateBadge(year);
                 updateTimelineProgress(year);
+
+                // Track era viewing event in Google Analytics
+                if (typeof gtag === 'function') {
+                  gtag('event', 'view_era', {
+                    'event_category': 'Timeline Scroll',
+                    'event_label': year
+                  });
+                }
               }
             }
           });
@@ -1076,6 +1093,13 @@
             if (target) {
               target.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
+            // Track dot click event in Google Analytics
+            if (typeof gtag === 'function') {
+              gtag('event', 'select_era_dot', {
+                'event_category': 'Timeline Navigation',
+                'event_label': year
+              });
+            }
           });
         });
       }
@@ -1087,6 +1111,13 @@
           indicator.addEventListener('click', () => {
             const timeline = document.getElementById('timeline');
             if (timeline) timeline.scrollIntoView({ behavior: 'smooth' });
+            // Track main journey start event
+            if (typeof gtag === 'function') {
+              gtag('event', 'click_begin_journey', {
+                'event_category': 'Engagement',
+                'event_label': 'Hero Scroll Indicator'
+              });
+            }
           });
         }
       }
@@ -1365,6 +1396,15 @@
               likeBtn.classList.add('pulse');
               setTimeout(() => likeBtn.classList.remove('pulse'), 300);
             }
+
+            // Track reel like action in Google Analytics
+            if (typeof gtag === 'function') {
+              gtag('event', 'like_reel', {
+                'event_category': 'Reels Engagement',
+                'event_label': `Card ${cardId}`,
+                'value': nextState ? 1 : 0
+              });
+            }
           });
         }
 
@@ -1380,6 +1420,14 @@
               setTimeout(() => {
                 heartPop.classList.remove('active');
               }, 800);
+            }
+
+            // Track double tap like action in Google Analytics
+            if (typeof gtag === 'function') {
+              gtag('event', 'double_tap_reel', {
+                'event_category': 'Reels Engagement',
+                'event_label': `Card ${cardId}`
+              });
             }
           });
         }
