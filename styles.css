@@ -1317,12 +1317,18 @@ canvas[id^="fabric-canvas-"] {
 
   .hero-title-line {
     font-size: clamp(2.5rem, 6vw, 4.5rem);
+    color: #FFFFFF !important; /* White for strong contrast on dark mobile backdrop */
+  }
+
+  .hero-title-line.accent {
+    color: var(--accent-gold) !important;
   }
 
   .hero-subtitle {
     font-size: clamp(0.9rem, 1.8vw, 1.1rem);
     margin: 0 auto 1.5rem;
     text-align: center;
+    color: rgba(255, 255, 255, 0.85) !important; /* Soft white for readability */
   }
 
   .hero-stats {
@@ -1332,15 +1338,22 @@ canvas[id^="fabric-canvas-"] {
 
   .stat-number {
     font-size: 2.75rem;
+    color: var(--accent-gold) !important;
   }
 
   .stat-label {
     font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.7) !important; /* Lighter label text on mobile */
   }
   
   .scroll-indicator {
     align-items: center;
     margin: 1.5rem auto 0;
+  }
+
+  .scroll-indicator span,
+  .scroll-indicator svg {
+    color: rgba(255, 255, 255, 0.85) !important;
   }
   
   .hero-right-space {

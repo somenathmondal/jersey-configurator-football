@@ -16,6 +16,8 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 
+let jerseyViewer;
+
 // Model mapping configuration
 const MODEL_MAP = {
     'round_reglan': 'round_collar_reglan_01.glb',
@@ -373,8 +375,10 @@ class JerseyViewer {
         this.scene = new THREE.Scene();
         this.scene.background = null; // Enable transparent canvas background
 
-        // Create camera
-        const aspect = this.container.clientWidth / this.container.clientHeight;
+        // Create camera with safe container dimension fallbacks
+        const width = this.container.clientWidth || window.innerWidth || 800;
+        const height = this.container.clientHeight || window.innerHeight || 600;
+        const aspect = width / height;
         this.camera = new THREE.PerspectiveCamera(30, aspect, 0.1, 1000);
         this.camera.position.set(this.initialCameraPosition.x, this.initialCameraPosition.y, this.initialCameraPosition.z);
 
@@ -383,7 +387,7 @@ class JerseyViewer {
             antialias: true,
             alpha: true
         });
-        this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
+        this.renderer.setSize(width, height);
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -3629,13 +3633,14 @@ class JerseyViewer {
         window.addEventListener('resize', () => {
             if (!this.container) return;
 
-            const width = this.container.clientWidth;
-            const height = this.container.clientHeight;
+            const width = this.container.clientWidth || window.innerWidth || 800;
+            const height = this.container.clientHeight || window.innerHeight || 600;
 
-            this.camera.aspect = width / height;
-            this.camera.updateProjectionMatrix();
-
-            this.renderer.setSize(width, height);
+            if (width > 0 && height > 0) {
+                this.camera.aspect = width / height;
+                this.camera.updateProjectionMatrix();
+                this.renderer.setSize(width, height);
+            }
         });
     }
 
