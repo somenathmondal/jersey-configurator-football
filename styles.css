@@ -1435,10 +1435,12 @@ canvas[id^="fabric-canvas-"] {
    ============================================================ */
 
 .creator-section {
-  padding: 6rem 3rem 0;
+  min-height: 100vh;
+  padding: 4rem 3rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .creator-card {
@@ -1635,7 +1637,9 @@ canvas[id^="fabric-canvas-"] {
 @media (max-width: 1024px) {
   .creator-section {
     background-color: var(--bg-darkest);
-    padding: 4rem 1.5rem 0;
+    padding: 3rem 1.5rem;
+    min-height: 100vh;
+    box-sizing: border-box;
   }
 
   .creator-box {
