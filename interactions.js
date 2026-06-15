@@ -164,6 +164,17 @@
         } else {
           creatorOverlay.classList.remove('active');
         }
+
+        // On mobile, hide the sticky 3D model container when scrolling below the creator section
+        if (window.innerWidth <= 1024) {
+          if (rect.bottom < window.innerHeight * 0.5) {
+            document.body.classList.add('hide-viewer-mobile');
+          } else {
+            document.body.classList.remove('hide-viewer-mobile');
+          }
+        } else {
+          document.body.classList.remove('hide-viewer-mobile');
+        }
       }
 
       // Keep 3D viewer centered in its right-side column
