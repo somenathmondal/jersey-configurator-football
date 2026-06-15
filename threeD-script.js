@@ -16,8 +16,6 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 
-let jerseyViewer;
-
 // Model mapping configuration
 const MODEL_MAP = {
     'round_reglan': 'round_collar_reglan_01.glb',
