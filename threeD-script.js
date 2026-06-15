@@ -21,9 +21,29 @@ function getBasePath() {
 }
 
 // Helper function to get model path based on selections (retained for backward compatibility)
+// Helper function to get model path based on network bandwidth conditions
 function getModelPath() {
     const basePath = getBasePath();
-    return `${basePath}jersey_3d_models/messi_statue_100k_opt.glb`;
+    
+    // Check network speed capabilities (downlink in Mbps, effectiveType)
+    const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    let useLowBandwidthModel = false;
+    
+    if (conn) {
+        debugLog(`📶 Connection details: effectiveType=${conn.effectiveType}, downlink=${conn.downlink}Mbps`);
+        // If speed is less than 5Mbps, or on a 2g/3g profile, use the optimized model
+        if (conn.downlink < 5 || ['slow-2g', '2g', '3g'].includes(conn.effectiveType)) {
+            useLowBandwidthModel = true;
+        }
+    }
+    
+    if (useLowBandwidthModel) {
+        debugLog("🚀 Low bandwidth/slow connection detected: loading optimized model (4.8MB)");
+        return `${basePath}jersey_3d_models/messi_statue_100k_opt.glb`;
+    } else {
+        debugLog("💎 Good bandwidth detected: loading high-fidelity original model (18.8MB)");
+        return `${basePath}jersey_3d_models/messi_statue.glb`;
+    }
 }
 
 // Make paths available globally
