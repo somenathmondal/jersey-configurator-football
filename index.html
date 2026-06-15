@@ -1101,6 +1101,9 @@
             
             // Small delay to let model finish loading
             setTimeout(() => {
+              // Ensure container dimensions are correctly calculated
+              window.dispatchEvent(new Event('resize'));
+              
               currentEra = '2026';
               currentModelKey = 'v_neck_reglan'; // default from threeD-script
               applyEraConfig('2026');
@@ -1143,6 +1146,9 @@
         }
 
         function triggerCinematicTransition() {
+          // Force Three.js canvas to resize and fit the mobile/desktop container correctly
+          window.dispatchEvent(new Event('resize'));
+
           // 1. Fade out the 2D image overlay
           const overlay = document.getElementById('transition-image-overlay');
           if (overlay) {
