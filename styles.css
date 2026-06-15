@@ -326,8 +326,8 @@ canvas[id^="fabric-canvas-"] {
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  background: var(--bg-color);
-  backdrop-filter: blur(12px);
+  background: transparent;
+  backdrop-filter: none;
   z-index: 2000;
   transition: opacity 0.5s ease, visibility 0.5s ease;
 }
