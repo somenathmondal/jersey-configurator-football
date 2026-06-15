@@ -1341,7 +1341,7 @@ canvas[id^="fabric-canvas-"] {
   display: flex;
   justify-content: center;
   gap: 3.5rem;
-  margin: 2.5rem 0;
+  margin: 2.5rem 0 2.5rem -1.5rem; /* Shift slightly left for optical balance */
   opacity: 0;
   animation: fadeInUp 0.8s var(--transition-smooth) 1.0s forwards;
 }
