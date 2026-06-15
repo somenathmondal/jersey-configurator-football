@@ -2941,8 +2941,8 @@ class JerseyViewer {
                     debugLog(`✅ Model loaded: ${meshCount} meshes found, ${texturedMeshCount} textured`);
                 } else {
                     debugLog(`🗿 Statue model detected - bypassing custom canvas texture loop`);
-                    // Rotate statue to 190 degrees Y base position
-                    //this.current3DObject.rotation.y = -10 * Math.PI / 180;
+                    // Rotate statue to -10 degrees Y base position to match reference photo
+                    this.current3DObject.rotation.y = -10 * Math.PI / 180;
                 }
 
                 // Scale and position the model appropriately
@@ -3678,22 +3678,46 @@ class JerseyViewer {
 
         if (progress >= 1.0) {
             this.isAnimatingShowcase = false;
-            this.current3DObject.rotation.y = 0;
-            this.current3DObject.rotation.x = 0;
-            debugLog('🎬 Showcase animation complete. Returned to rest position.');
+            
+            // Reset camera to initial front position
+            const defaultPos = CAMERA_POSITION_FOR_PART['front'];
+            this.camera.position.set(defaultPos.x, defaultPos.y, defaultPos.z);
+            this.controls.target.set(0, 0, 0);
+            this.controls.update();
+            
+            debugLog('🎬 Showcase camera animation complete. Returned to rest position.');
         } else {
             // Cubic ease-in-out curve
             const ease = progress < 0.5 
                 ? 4 * progress * progress * progress 
                 : 1 - Math.pow(-2 * progress + 2, 3) / 2;
 
-            // Sine wave for azimuth swing with ease-in-out applied to the phase
-            const azimuthRange = 20 * Math.PI / 180; // 20 degrees swing
-            this.current3DObject.rotation.y = Math.sin(ease * Math.PI * 2) * azimuthRange;
+            // Circular orbit camera animation:
+            // Get the base radius and phi/theta from the default position
+            const defaultPos = CAMERA_POSITION_FOR_PART['front'];
+            
+            // Calculate default spherical coordinates
+            const radius = Math.sqrt(defaultPos.x * defaultPos.x + defaultPos.y * defaultPos.y + defaultPos.z * defaultPos.z);
+            const defaultPhi = Math.acos(defaultPos.y / radius); // Polar angle (from top y-axis)
+            const defaultTheta = Math.atan2(defaultPos.x, defaultPos.z); // Azimuthal angle (from z-axis)
 
-            // Sine wave for polar tilt with ease-in-out applied to the phase
-            const polarRange = 8 * Math.PI / 180; // 8 degrees swing
-            this.current3DObject.rotation.x = Math.sin(ease * Math.PI * 2) * polarRange;
+            // Let's swing theta (horizontal) and phi (vertical)
+            // Azimuth swing: completes one full cycle (sine wave) with 20 deg amplitude
+            const azimuthRange = 20 * Math.PI / 180;
+            const theta = defaultTheta + Math.sin(ease * Math.PI * 2) * azimuthRange;
+
+            // Polar swing: subtle vertical tilt (cosine wave offset) with 8 deg amplitude to create a circular path rather than diagonal
+            const polarRange = 8 * Math.PI / 180;
+            const phi = defaultPhi + (Math.cos(ease * Math.PI * 2) - 1) * polarRange;
+
+            // Convert spherical back to cartesian
+            const x = radius * Math.sin(phi) * Math.sin(theta);
+            const y = radius * Math.cos(phi);
+            const z = radius * Math.sin(phi) * Math.cos(theta);
+
+            this.camera.position.set(x, y, z);
+            this.controls.target.set(0, 0, 0);
+            this.controls.update();
         }
     }
 
