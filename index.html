@@ -799,7 +799,6 @@
   </div>
 
   <!-- Main Controllers -->
-  <script src="script.js?v=1.0.2"></script>
   <script type="module" src="threeD-script.js?v=1.0.2"></script>
 
   <!-- ========== FEATURETTE SCROLL ENGINE ========== -->
@@ -810,54 +809,12 @@
       // ---- World Cup Era Configurations ----
       const ERA_ORDER = ['2026', '2022', '2018', '2014', '2010', '2006'];
       const ERA_CONFIGS = {
-        '2006': {
-          collar: 'v_neck', shoulder: 'set_in',
-          bgColor: '#75AADB', stripeColor: '#FFFFFF',
-          stripeWidth: 18, stripeGap: 18, stripePosition: 10,
-          sleeveColor: '#75AADB',
-          collarColor: '#FFFFFF', collar2Color: '#D4AF37', hemColor: '#75AADB',
-          tournament: 'Germany'
-        },
-        '2010': {
-          collar: 'round', shoulder: 'set_in',
-          bgColor: '#75AADB', stripeColor: '#FFFFFF',
-          stripeWidth: 15, stripeGap: 15, stripePosition: 11,
-          sleeveColor: '#75AADB',
-          collarColor: '#FFFFFF', collar2Color: '#FFFFFF', hemColor: '#75AADB',
-          tournament: 'South Africa'
-        },
-        '2014': {
-          collar: 'v_neck', shoulder: 'set_in',
-          bgColor: '#6CACE4', stripeColor: '#FFFFFF',
-          stripeWidth: 14, stripeGap: 14, stripePosition: 11.5,
-          sleeveColor: '#FFFFFF',
-          collarColor: '#FFFFFF', collar2Color: '#1A1F36', hemColor: '#6CACE4',
-          tournament: 'Brazil'
-        },
-        '2018': {
-          collar: 'v_neck', shoulder: 'reglan',
-          bgColor: '#85BBE6', stripeColor: '#FFFFFF',
-          stripeWidth: 8, stripeGap: 6, stripePosition: 12,
-          sleeveColor: '#FFFFFF',
-          collarColor: '#FFFFFF', collar2Color: '#FFFFFF', hemColor: '#FFFFFF',
-          tournament: 'Russia'
-        },
-        '2022': {
-          collar: 'round', shoulder: 'reglan',
-          bgColor: '#75AADB', stripeColor: '#FFFFFF',
-          stripeWidth: 10, stripeGap: 10, stripePosition: 11.6,
-          sleeveColor: '#75AADB',
-          collarColor: '#1A1F36', collar2Color: '#1A1F36', hemColor: '#1A1F36',
-          tournament: 'Qatar'
-        },
-        '2026': {
-          collar: 'v_neck', shoulder: 'reglan',
-          bgColor: '#75AADB', stripeColor: '#FFFFFF',
-          stripeWidth: 12, stripeGap: 10, stripePosition: 11,
-          sleeveColor: '#FFFFFF',
-          collarColor: '#FFFFFF', collar2Color: '#D4AF37', hemColor: '#D4AF37',
-          tournament: 'North America'
-        }
+        '2006': { tournament: 'Germany' },
+        '2010': { tournament: 'South Africa' },
+        '2014': { tournament: 'Brazil' },
+        '2018': { tournament: 'Russia' },
+        '2022': { tournament: 'Qatar' },
+        '2026': { tournament: 'North America' }
       };
 
       let currentEra = null;
@@ -866,13 +823,7 @@
 
       // ---- Apply jersey configuration for an era ----
       function applyEraConfig(year) {
-        const config = ERA_CONFIGS[year];
-        if (!config || !window.jerseyViewer) return;
-
-        const collarSel = document.getElementById('collar-selector');
-        const shoulderSel = document.getElementById('shoulder-selector');
-        if (collarSel) collarSel.value = config.collar;
-        if (shoulderSel) shoulderSel.value = config.shoulder;
+        // Retained for tracking current active year in the viewer context
       }
 
       // ---- Update viewer badge ----
