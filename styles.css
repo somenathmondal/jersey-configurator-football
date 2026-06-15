@@ -1504,18 +1504,14 @@ canvas[id^="fabric-canvas-"] {
   margin-bottom: 1.5rem;
 }
 
-.creator-avatar {
+.creator-avatar-img {
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 14px;
-  background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-hover) 100%);
-  color: #FFFFFF;
-  font-weight: 700;
-  font-size: 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2);
+  object-fit: cover;
+  box-shadow: 0 8px 20px rgba(15, 32, 56, 0.08);
+  border: 1px solid var(--border-glass);
+  flex-shrink: 0;
 }
 
 .creator-info {
@@ -1603,7 +1599,7 @@ canvas[id^="fabric-canvas-"] {
   transform: translateY(-1px);
 }
 
-/* Make sure creator section is readable on mobile dark background */
+/* Make sure creator section is readable on mobile light background */
 @media (max-width: 1024px) {
   .creator-section {
     background-color: var(--bg-darkest);
@@ -1611,38 +1607,8 @@ canvas[id^="fabric-canvas-"] {
   }
 
   .creator-box {
-    background: rgba(255, 255, 255, 0.03);
-    border-color: rgba(255, 255, 255, 0.1);
-  }
-
-  .creator-title-section {
-    color: #FFFFFF !important;
-  }
-
-  .creator-name {
-    color: #FFFFFF !important;
-  }
-
-  .creator-role {
-    color: rgba(255, 255, 255, 0.7) !important;
-  }
-
-  .creator-bio {
-    color: rgba(255, 255, 255, 0.85) !important;
-  }
-
-  .creator-bio-secondary {
-    color: rgba(255, 255, 255, 0.55) !important;
-  }
-
-  .creator-btn.btn-secondary {
-    border-color: rgba(255, 255, 255, 0.3);
-    color: rgba(255, 255, 255, 0.85);
-  }
-
-  .creator-btn.btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: #FFFFFF;
-    color: #FFFFFF;
+    background: var(--bg-darker);
+    border-color: var(--border-glass);
+    box-shadow: var(--shadow-premium);
   }
 }
