@@ -1629,6 +1629,14 @@ canvas[id^="fabric-canvas-"] {
   transition: transform 0.3s ease;
 }
 
+.gallery-item:first-child img {
+  transform: scale(1.2);
+}
+
+.gallery-item:first-child:hover img {
+  transform: scale(1.3);
+}
+
 .gallery-item:hover img {
   transform: scale(1.05);
 }
