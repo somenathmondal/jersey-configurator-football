@@ -755,6 +755,11 @@ canvas[id^="fabric-canvas-"] {
     transform: translateY(-50px);
   }
 
+  /* Force pointer-events none on the sticky container track completely on mobile when viewer is hidden */
+  .hide-viewer-mobile .timeline-container {
+    pointer-events: none !important;
+  }
+
   .viewer-sticky {
     height: 100%;
     border-left: none;
@@ -1709,5 +1714,33 @@ canvas[id^="fabric-canvas-"] {
     background: var(--bg-darker);
     border-color: var(--border-glass);
     box-shadow: var(--shadow-premium);
+  }
+}
+
+/* Hide the mobile impossible section on desktop viewports by default */
+.impossible-mobile-section {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .impossible-mobile-section {
+    display: block;
+    width: 100%;
+    height: 100vh;
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+    z-index: 10;
+    padding: 0;
+    margin: 0;
+    background-color: #000;
+  }
+
+  .impossible-mobile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
   }
 }
