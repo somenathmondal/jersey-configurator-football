@@ -805,8 +805,8 @@ canvas[id^="fabric-canvas-"] {
   }
 
   .stat-label {
-    color: var(--text-secondary);
-    font-weight: 600;
+    color: var(--text-secondary) !important;
+    font-weight: 600 !important;
   }
 
   .era-number {
