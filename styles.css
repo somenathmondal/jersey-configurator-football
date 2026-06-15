@@ -1181,7 +1181,8 @@ canvas[id^="fabric-canvas-"] {
 .viewer-hint,
 .timeline-progress,
 .scroll-indicator,
-.closing-card {
+.closing-card,
+.creator-card {
   pointer-events: auto;
 }
 
