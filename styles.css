@@ -1432,7 +1432,7 @@ canvas[id^="fabric-canvas-"] {
    ============================================================ */
 
 .creator-section {
-  padding: 6rem 3rem;
+  padding: 6rem 3rem 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1610,7 +1610,7 @@ canvas[id^="fabric-canvas-"] {
 
 .gallery-item {
   flex: 1;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 3 / 4; /* Portrait ratio for a longer/taller display */
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid var(--border-glass);
@@ -1632,7 +1632,7 @@ canvas[id^="fabric-canvas-"] {
 @media (max-width: 1024px) {
   .creator-section {
     background-color: var(--bg-darkest);
-    padding: 4rem 1.5rem;
+    padding: 4rem 1.5rem 0;
   }
 
   .creator-box {
