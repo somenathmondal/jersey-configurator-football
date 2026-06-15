@@ -723,6 +723,15 @@ function getDesignIdFromSvgPath(svgPath) {
 
 // Load design configuration from JSON file
 async function loadDesignConfig() {
+  // Check if we are on index.html (landing showcase mode) or if customizer is not present
+  const isCustomizerPage = window.location.pathname.includes('customizer.html') || window.location.pathname.includes('/admin-design/');
+  if (!isCustomizerPage) {
+    debugLog('Landing page detected: bypassing design-config.json fetch call, using fallback definitions.');
+    familyOrder = fallbackFamilyOrder;
+    designOrder = fallbackDesignOrder;
+    return true;
+  }
+
   try {
     // Use getBasePath() to resolve path correctly from both main page and share subdirectory
     const basePath = typeof getBasePath === 'function' ? getBasePath() : './';
@@ -1128,8 +1137,11 @@ document.addEventListener('DOMContentLoaded', () => {
 // Initialize: Load design configuration and then display design families
 window.addEventListener('load', () => {
   setTimeout(async function initializeDesigns() {
+    const isCustomizerPage = window.location.pathname.includes('customizer.html') || window.location.pathname.includes('/admin-design/');
     await loadDesignConfig();
-    loadDesignFamilies();
+    if (isCustomizerPage) {
+      loadDesignFamilies();
+    }
   }, 120);
 });
 
