@@ -1552,7 +1552,7 @@ canvas[id^="fabric-canvas-"] {
 .creator-avatar-img {
   width: 3.5rem;
   height: 3.5rem;
-  border-radius: 14px;
+  border-radius: 50%;
   object-fit: cover;
   box-shadow: 0 8px 20px rgba(15, 32, 56, 0.08);
   border: 1px solid var(--border-glass);
