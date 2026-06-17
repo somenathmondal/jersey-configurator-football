@@ -741,16 +741,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 3. Interactive Gallery Accordion state toggles
     const panels = document.querySelectorAll('.gallery-panel');
+    const galleryContainer = document.querySelector('.gallery-container');
+
     panels.forEach(panel => {
       panel.addEventListener('click', () => {
         panels.forEach(p => p.classList.remove('active'));
         panel.classList.add('active');
 
-        // Smoothly scroll active card into view on mobile vertical viewports
+        // Smoothly scroll active card into view on mobile/desktop
         if (window.innerWidth <= 1024) {
-          setTimeout(() => {
-            panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          }, 300);
+          panel.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
         }
 
         // Track gallery interaction in Google Analytics
@@ -762,4 +762,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     });
+
+    // Sync active state with scroll position on mobile horizontal scroll
+    if (galleryContainer) {
+      let isScrolling;
+      galleryContainer.addEventListener('scroll', () => {
+        if (window.innerWidth > 1024) return;
+        window.clearTimeout(isScrolling);
+        isScrolling = setTimeout(() => {
+          const containerRect = galleryContainer.getBoundingClientRect();
+          const containerCenter = containerRect.left + containerRect.width / 2;
+          let closestPanel = null;
+          let minDistance = Infinity;
+
+          panels.forEach(panel => {
+            const panelRect = panel.getBoundingClientRect();
+            const panelCenter = panelRect.left + panelRect.width / 2;
+            const distance = Math.abs(panelCenter - containerCenter);
+            if (distance < minDistance) {
+              minDistance = distance;
+              closestPanel = panel;
+            }
+          });
+
+          if (closestPanel && !closestPanel.classList.contains('active')) {
+            panels.forEach(p => p.classList.remove('active'));
+            closestPanel.classList.add('active');
+          }
+        }, 50);
+      }, { passive: true });
+    }
   });

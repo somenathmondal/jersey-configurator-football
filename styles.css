@@ -2281,81 +2281,105 @@ canvas[id^="fabric-canvas-"] {
 
 @media (max-width: 1024px) {
   .horizontal-gallery-section {
-    padding: 4rem 1.5rem;
+    padding: 4rem 0 5rem;
+    overflow: hidden;
+  }
+
+  .gallery-header {
+    padding: 0 1.5rem;
   }
 
   .gallery-container {
-    flex-direction: column;
-    height: auto;
-    gap: 0.75rem;
+    flex-direction: row;
+    height: 440px;
+    gap: 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 0 2rem;
+    scroll-padding: 0 2rem;
+  }
+
+  .gallery-container::-webkit-scrollbar {
+    display: none;
   }
 
   .gallery-panel {
-    flex: none;
-    height: 70px;
-    width: 100%;
-    background-color: #3B1E1E;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: height 0.6s cubic-bezier(0.25, 1, 0.3, 1), background-color 0.6s ease;
+    flex: 0 0 calc(100vw - 5rem);
+    margin-right: 1rem;
+    scroll-snap-align: center;
+    height: 100%;
+    position: relative;
+    border-radius: 20px;
+    background-color: #1a1a1a;
+    transform: scale(0.93);
+    opacity: 0.55;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.3, 1), opacity 0.5s ease;
+  }
+
+  .gallery-panel:last-child {
+    margin-right: 0;
   }
 
   .gallery-panel.active {
-    flex: none;
-    height: 340px;
-    background-color: transparent;
+    transform: scale(1);
+    opacity: 1;
     border-color: rgba(212, 175, 55, 0.4);
+    box-shadow: var(--shadow-premium);
   }
 
   .panel-background {
-    opacity: 0;
-    transition: opacity 0.5s ease, transform 0.8s cubic-bezier(0.25, 1, 0.3, 1);
-  }
-
-  .gallery-panel.active .panel-background {
     opacity: 1;
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.3, 1);
   }
 
   .panel-overlay {
-    opacity: 0;
-    transition: opacity 0.5s ease;
-  }
-
-  .gallery-panel.active .panel-overlay {
     opacity: 1;
   }
 
   .panel-year-label {
-    top: 50%;
-    left: 2rem;
-    transform: translateY(-50%) rotate(0deg);
-    font-size: 1.5rem;
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    left: auto;
+    transform: none;
+    font-size: 1.15rem;
+    font-weight: 800;
     color: #FFFFFF;
+    background: rgba(15, 32, 56, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 0.35rem 0.75rem;
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
     display: flex;
     align-items: center;
     pointer-events: none;
-    opacity: 1;
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    opacity: 1 !important;
+    transition: none;
   }
 
   .panel-year-label::after {
-    content: " · " attr(data-tournament);
-    font-family: var(--font-primary);
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--accent-gold);
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    margin-left: 0.75rem;
-    display: inline-block;
+    display: none;
   }
 
   .gallery-panel.active .panel-year-label {
-    opacity: 0;
-    transform: translateY(-50%) scale(0.9);
+    opacity: 1 !important;
+    transform: none;
   }
 
   .panel-content {
     padding: 1.75rem;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .gallery-panel.active .panel-content {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.1s;
   }
 }
 
