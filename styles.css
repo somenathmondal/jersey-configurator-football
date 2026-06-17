@@ -2281,24 +2281,19 @@ canvas[id^="fabric-canvas-"] {
 
 @media (max-width: 1024px) {
   .horizontal-gallery-section {
-    padding: 4rem 0 5rem;
-    overflow: hidden;
-  }
-
-  .gallery-header {
-    padding: 0 1.5rem;
+    padding: 3rem 1.5rem;
   }
 
   .gallery-container {
     flex-direction: row;
-    height: 440px;
+    height: 450px;
     gap: 0;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    padding: 0 2rem;
-    scroll-padding: 0 2rem;
+    border-radius: 16px;
+    box-shadow: var(--shadow-premium);
   }
 
   .gallery-container::-webkit-scrollbar {
@@ -2306,58 +2301,49 @@ canvas[id^="fabric-canvas-"] {
   }
 
   .gallery-panel {
-    flex: 0 0 calc(100vw - 5rem);
-    margin-right: 1rem;
+    flex: 0 0 100%;
     scroll-snap-align: center;
     height: 100%;
     position: relative;
-    border-radius: 20px;
-    background-color: #1a1a1a;
-    transform: scale(0.93);
-    opacity: 0.55;
-    transition: transform 0.5s cubic-bezier(0.25, 1, 0.3, 1), opacity 0.5s ease;
-  }
-
-  .gallery-panel:last-child {
-    margin-right: 0;
+    border-radius: 0;
+    transform: none !important;
+    opacity: 1 !important;
+    transition: none;
   }
 
   .gallery-panel.active {
-    transform: scale(1);
-    opacity: 1;
-    border-color: rgba(212, 175, 55, 0.4);
-    box-shadow: var(--shadow-premium);
+    box-shadow: none;
+    border-color: var(--border-glass);
   }
 
   .panel-background {
-    opacity: 1;
-    transition: transform 0.8s cubic-bezier(0.25, 1, 0.3, 1);
+    opacity: 1 !important;
+    transform: none !important;
   }
 
   .panel-overlay {
-    opacity: 1;
+    opacity: 1 !important;
   }
 
   .panel-year-label {
     position: absolute;
-    top: 1.25rem;
-    right: 1.25rem;
+    top: 1rem;
+    right: 1rem;
     left: auto;
-    transform: none;
-    font-size: 1.15rem;
+    transform: none !important;
+    font-size: 0.95rem;
     font-weight: 800;
     color: #FFFFFF;
     background: rgba(15, 32, 56, 0.75);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    padding: 0.35rem 0.75rem;
-    border-radius: 40px;
+    padding: 0.3rem 0.65rem;
+    border-radius: 30px;
     border: 1px solid rgba(255, 255, 255, 0.15);
     display: flex;
     align-items: center;
     pointer-events: none;
     opacity: 1 !important;
-    transition: none;
   }
 
   .panel-year-label::after {
@@ -2366,20 +2352,18 @@ canvas[id^="fabric-canvas-"] {
 
   .gallery-panel.active .panel-year-label {
     opacity: 1 !important;
-    transform: none;
+    transform: none !important;
   }
 
   .panel-content {
-    padding: 1.75rem;
-    opacity: 0;
-    transform: translateY(15px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    padding: 1.5rem;
+    opacity: 1 !important;
+    transform: none !important;
   }
 
   .gallery-panel.active .panel-content {
-    opacity: 1;
-    transform: translateY(0);
-    transition-delay: 0.1s;
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 
