@@ -2395,6 +2395,10 @@ canvas[id^="fabric-canvas-"] {
   }
 
   @supports (animation-timeline: scroll()) {
+    .horizontal-gallery-section {
+      timeline-scope: --gallery-timeline;
+    }
+
     .gallery-container {
       scroll-timeline: --gallery-timeline inline;
     }
