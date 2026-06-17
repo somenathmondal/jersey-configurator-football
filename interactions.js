@@ -738,4 +738,28 @@ document.addEventListener('DOMContentLoaded', () => {
         };
       });
     }
+
+    // 3. Interactive Gallery Accordion state toggles
+    const panels = document.querySelectorAll('.gallery-panel');
+    panels.forEach(panel => {
+      panel.addEventListener('click', () => {
+        panels.forEach(p => p.classList.remove('active'));
+        panel.classList.add('active');
+
+        // Smoothly scroll active card into view on mobile vertical viewports
+        if (window.innerWidth <= 1024) {
+          setTimeout(() => {
+            panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }, 300);
+        }
+
+        // Track gallery interaction in Google Analytics
+        if (typeof gtag === 'function') {
+          gtag('event', 'expand_gallery_panel', {
+            'event_category': 'Engagement',
+            'event_label': panel.dataset.year
+          });
+        }
+      });
+    });
   });

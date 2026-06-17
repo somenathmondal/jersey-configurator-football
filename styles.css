@@ -2126,3 +2126,196 @@ canvas[id^="fabric-canvas-"] {
   }
 }
 
+/* ============================================================
+   HORIZONTAL ACCORDION GALLERY
+   ============================================================ */
+
+.horizontal-gallery-section {
+  padding: 6rem 3rem;
+  background-color: var(--bg-darkest);
+  border-top: 1px solid var(--border-glass);
+  position: relative;
+  z-index: 10;
+}
+
+.gallery-header {
+  max-width: 800px;
+  margin: 0 auto 3rem;
+  text-align: center;
+}
+
+.gallery-overline {
+  font-family: var(--font-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--accent-gold);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.gallery-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+}
+
+.gallery-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.gallery-container {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  height: 550px;
+  margin: 0 auto;
+  gap: 1rem;
+}
+
+.gallery-panel {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  border-radius: 20px;
+  cursor: pointer;
+  border: 1px solid var(--border-glass);
+  box-shadow: var(--shadow-card);
+  transition: all 0.7s cubic-bezier(0.25, 1, 0.3, 1);
+}
+
+.gallery-panel.active {
+  flex: 4;
+  border-color: rgba(212, 175, 55, 0.4);
+  box-shadow: var(--shadow-premium);
+}
+
+.panel-background {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.8s cubic-bezier(0.25, 1, 0.3, 1);
+}
+
+.gallery-panel:hover .panel-background {
+  transform: scale(1.05);
+}
+
+.panel-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(15, 32, 56, 0.9) 0%, rgba(15, 32, 56, 0.3) 50%, rgba(15, 32, 56, 0.1) 100%);
+  transition: opacity 0.5s ease;
+}
+
+.panel-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2.5rem;
+  z-index: 2;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s cubic-bezier(0.25, 1, 0.3, 1), transform 0.5s cubic-bezier(0.25, 1, 0.3, 1);
+}
+
+.gallery-panel.active .panel-content {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.2s;
+}
+
+.panel-tag {
+  font-family: var(--font-primary);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.panel-header {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+}
+
+.panel-desc {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+.panel-year-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.25);
+  pointer-events: none;
+  letter-spacing: 0.1em;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.gallery-panel.active .panel-year-label {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.8) rotate(-90deg);
+}
+
+@media (max-width: 1024px) {
+  .horizontal-gallery-section {
+    padding: 4rem 1.5rem;
+  }
+
+  .gallery-container {
+    flex-direction: column;
+    height: auto;
+    gap: 1rem;
+  }
+
+  .gallery-panel {
+    flex: none;
+    height: 100px;
+    width: 100%;
+    transition: height 0.6s cubic-bezier(0.25, 1, 0.3, 1);
+  }
+
+  .gallery-panel.active {
+    flex: none;
+    height: 320px;
+  }
+
+  .panel-year-label {
+    top: 50%;
+    left: 2.5rem;
+    transform: translateY(-50%) rotate(0deg);
+    font-size: 1.8rem;
+  }
+
+  .gallery-panel.active .panel-year-label {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.8);
+  }
+
+  .panel-content {
+    padding: 1.5rem;
+  }
+}
+
