@@ -763,6 +763,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Sync active state with scroll position on mobile horizontal scroll
     if (galleryContainer) {
+      let lastActiveIndex = 0;
       galleryContainer.addEventListener('scroll', () => {
         if (window.innerWidth > 1024) return;
 
@@ -785,6 +786,18 @@ document.addEventListener('DOMContentLoaded', () => {
         dots.forEach((dot, index) => {
           dot.classList.toggle('active', index === closestIndex);
         });
+
+        // Fire Google Analytics event when active slide changes on scroll
+        if (closestIndex !== lastActiveIndex) {
+          lastActiveIndex = closestIndex;
+          const year = panels[closestIndex].dataset.year;
+          if (typeof gtag === 'function') {
+            gtag('event', 'swipe_gallery_panel', {
+              'event_category': 'Engagement',
+              'event_label': year
+            });
+          }
+        }
       }, { passive: true });
     }
   });
