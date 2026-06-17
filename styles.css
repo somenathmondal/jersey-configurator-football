@@ -1741,6 +1741,7 @@ canvas[id^="fabric-canvas-"] {
     padding: 0;
     margin: 0;
     background-color: #000;
+    pointer-events: auto !important;
   }
 
   .impossible-mobile-img {
