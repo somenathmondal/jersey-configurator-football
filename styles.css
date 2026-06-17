@@ -2286,7 +2286,7 @@ canvas[id^="fabric-canvas-"] {
 
   .gallery-container {
     flex-direction: row;
-    height: 450px;
+    height: auto;
     gap: 0;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
@@ -2303,7 +2303,8 @@ canvas[id^="fabric-canvas-"] {
   .gallery-panel {
     flex: 0 0 100%;
     scroll-snap-align: center;
-    height: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
     position: relative;
     border-radius: 0;
     transform: none !important;
