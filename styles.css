@@ -2279,7 +2279,7 @@ canvas[id^="fabric-canvas-"] {
   transform: translate(-50%, -50%) scale(0.8) rotate(-90deg);
 }
 
-.gallery-scroll-indicator {
+.gallery-dots-indicator {
   display: none;
 }
 
@@ -2371,48 +2371,25 @@ canvas[id^="fabric-canvas-"] {
     transform: none !important;
   }
 
-  .gallery-scroll-indicator {
-    display: block;
-    width: 120px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.1);
-    margin: 1.5rem auto 0;
-    border-radius: 2px;
-    position: relative;
-    overflow: hidden;
+  .gallery-dots-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
   }
 
-  .indicator-bar-fill {
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 100%;
+  .gallery-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+
+  .gallery-dot.active {
     background: var(--accent-gold);
-    transform-origin: 0 50%;
-    transform: scaleX(0.166); /* Fallback initial (1 of 6 panels active) */
-    transition: transform 0.15s ease-out;
-  }
-
-  @supports (animation-timeline: scroll()) {
-    .horizontal-gallery-section {
-      timeline-scope: --gallery-timeline;
-    }
-
-    .gallery-container {
-      scroll-timeline: --gallery-timeline inline;
-    }
-    
-    @keyframes gallery-scroll-progress {
-      from { transform: scaleX(0.166); }
-      to { transform: scaleX(1); }
-    }
-
-    .gallery-scroll-indicator .indicator-bar-fill {
-      animation: gallery-scroll-progress auto linear;
-      animation-timeline: --gallery-timeline;
-      transition: none;
-    }
+    transform: scale(1.25);
   }
 }
 

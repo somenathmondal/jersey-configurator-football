@@ -766,19 +766,25 @@ document.addEventListener('DOMContentLoaded', () => {
       galleryContainer.addEventListener('scroll', () => {
         if (window.innerWidth > 1024) return;
 
-        // JS Fallback for visual scroll progress indicator if CSS scroll-timeline is unsupported
-        if (!CSS.supports('animation-timeline', 'scroll()')) {
-          const scrollable = galleryContainer.scrollWidth - galleryContainer.clientWidth;
-          const scrolled = galleryContainer.scrollLeft;
-          if (scrollable > 0) {
-            // Map scroll ratio to scaleX from 0.166 (first card) to 1.0 (last card)
-            const progress = 0.166 + (scrolled / scrollable) * (1 - 0.166);
-            const fill = document.querySelector('.indicator-bar-fill');
-            if (fill) {
-              fill.style.transform = `scaleX(${progress})`;
-            }
+        const containerRect = galleryContainer.getBoundingClientRect();
+        const containerCenter = containerRect.left + containerRect.width / 2;
+        let closestIndex = 0;
+        let minDistance = Infinity;
+
+        panels.forEach((panel, index) => {
+          const panelRect = panel.getBoundingClientRect();
+          const panelCenter = panelRect.left + panelRect.width / 2;
+          const distance = Math.abs(panelCenter - containerCenter);
+          if (distance < minDistance) {
+            minDistance = distance;
+            closestIndex = index;
           }
-        }
+        });
+
+        const dots = document.querySelectorAll('.gallery-dot');
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('active', index === closestIndex);
+        });
       }, { passive: true });
     }
   });
