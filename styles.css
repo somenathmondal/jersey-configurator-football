@@ -2317,6 +2317,7 @@ canvas[id^="fabric-canvas-"] {
   }
 
   .gallery-panel.active {
+    flex: 0 0 100%;
     box-shadow: none;
     border-color: var(--border-glass);
   }
