@@ -768,6 +768,21 @@ document.addEventListener('DOMContentLoaded', () => {
       let isScrolling;
       galleryContainer.addEventListener('scroll', () => {
         if (window.innerWidth > 1024) return;
+
+        // JS Fallback for visual scroll progress indicator if CSS scroll-timeline is unsupported
+        if (!CSS.supports('animation-timeline', 'scroll()')) {
+          const scrollable = galleryContainer.scrollWidth - galleryContainer.clientWidth;
+          const scrolled = galleryContainer.scrollLeft;
+          if (scrollable > 0) {
+            // Map scroll ratio to scaleX from 0.166 (first card) to 1.0 (last card)
+            const progress = 0.166 + (scrolled / scrollable) * (1 - 0.166);
+            const fill = document.querySelector('.indicator-bar-fill');
+            if (fill) {
+              fill.style.transform = `scaleX(${progress})`;
+            }
+          }
+        }
+
         window.clearTimeout(isScrolling);
         isScrolling = setTimeout(() => {
           const containerRect = galleryContainer.getBoundingClientRect();
