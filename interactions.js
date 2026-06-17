@@ -745,13 +745,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     panels.forEach(panel => {
       panel.addEventListener('click', () => {
+        // Simple native horizontal scroll on mobile, no click active class transitions needed
+        if (window.innerWidth <= 1024) return;
+
         panels.forEach(p => p.classList.remove('active'));
         panel.classList.add('active');
-
-        // Smoothly scroll active card into view on mobile/desktop
-        if (window.innerWidth <= 1024) {
-          panel.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-        }
 
         // Track gallery interaction in Google Analytics
         if (typeof gtag === 'function') {
@@ -765,7 +763,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Sync active state with scroll position on mobile horizontal scroll
     if (galleryContainer) {
-      let isScrolling;
       galleryContainer.addEventListener('scroll', () => {
         if (window.innerWidth > 1024) return;
 
@@ -782,29 +779,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
           }
         }
-
-        window.clearTimeout(isScrolling);
-        isScrolling = setTimeout(() => {
-          const containerRect = galleryContainer.getBoundingClientRect();
-          const containerCenter = containerRect.left + containerRect.width / 2;
-          let closestPanel = null;
-          let minDistance = Infinity;
-
-          panels.forEach(panel => {
-            const panelRect = panel.getBoundingClientRect();
-            const panelCenter = panelRect.left + panelRect.width / 2;
-            const distance = Math.abs(panelCenter - containerCenter);
-            if (distance < minDistance) {
-              minDistance = distance;
-              closestPanel = panel;
-            }
-          });
-
-          if (closestPanel && !closestPanel.classList.contains('active')) {
-            panels.forEach(p => p.classList.remove('active'));
-            closestPanel.classList.add('active');
-          }
-        }, 50);
       }, { passive: true });
     }
   });
