@@ -184,12 +184,83 @@
     }, { passive: true });
   }
 
+  // ---- Fetch and update Messi's 2026 World Cup stats from Wikipedia ----
+  async function update2026Stats() {
+    try {
+      const response = await fetch('https://en.wikipedia.org/w/api.php?action=parse&page=List_of_international_goals_scored_by_Lionel_Messi&section=3&prop=text&format=json&origin=*');
+      if (!response.ok) return;
+      const data = await response.json();
+      const htmlText = data?.parse?.text?.['*'];
+      if (!htmlText) return;
+
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(htmlText, 'text/html');
+      
+      const tables = doc.querySelectorAll('table.wikitable');
+      let targetTable = null;
+      for (const table of tables) {
+        const caption = table.querySelector('caption');
+        if (caption && caption.textContent.toLowerCase().includes('goals by competition')) {
+          targetTable = table;
+          break;
+        }
+      }
+
+      if (!targetTable && tables.length > 1) {
+        targetTable = tables[1]; // Fallback to second table
+      }
+
+      if (!targetTable) return;
+
+      const rows = targetTable.querySelectorAll('tr');
+      let wcRow = null;
+      for (const row of rows) {
+        const firstCell = row.querySelector('td, th');
+        if (firstCell && firstCell.textContent.trim().includes('FIFA World Cup') && !firstCell.textContent.trim().includes('qualification')) {
+          wcRow = row;
+          break;
+        }
+      }
+
+      if (!wcRow) return;
+
+      const cells = wcRow.querySelectorAll('td');
+      if (cells.length < 2) return;
+
+      // Clean the citation/footnote indicators (e.g. [u], etc.)
+      const totalApps = parseInt(cells[0].textContent.replace(/\[.*?\]/g, '').trim(), 10);
+      const totalGoals = parseInt(cells[1].textContent.replace(/\[.*?\]/g, '').trim(), 10);
+
+      if (isNaN(totalApps) || isNaN(totalGoals)) return;
+
+      // Prior to the 2026 FIFA World Cup, Messi had 26 Apps and 13 Goals across 2006, 2010, 2014, 2018, and 2022
+      const pre2026Apps = 26;
+      const pre2026Goals = 13;
+
+      const wc2026Apps = Math.max(0, totalApps - pre2026Apps);
+      const wc2026Goals = Math.max(0, totalGoals - pre2026Goals);
+
+      const appsVal = document.getElementById('stats-2026-apps');
+      const goalsVal = document.getElementById('stats-2026-goals');
+
+      if (appsVal) {
+        appsVal.textContent = wc2026Apps > 0 ? wc2026Apps : '—';
+      }
+      if (goalsVal) {
+        goalsVal.textContent = wc2026Goals;
+      }
+    } catch (e) {
+      console.error('Failed to fetch/parse Messi 2026 stats:', e);
+    }
+  }
+
   // ---- Initialize everything after DOM ready and viewer loaded ----
   function init() {
     initScrollObserver();
     initDotNavigation();
     initScrollIndicator();
     initHeroParallax();
+    update2026Stats();
 
     // Apply initial era config once the viewer is ready
     const waitForViewer = setInterval(() => {
