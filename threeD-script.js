@@ -163,6 +163,10 @@ class JerseyViewer {
         // Azimuth Angle (Horizontal rotation): Restrict rotating to the backside (-25 deg to +25 deg)
         this.controls.minAzimuthAngle = -25 * Math.PI / 180;  // -25 deg
         this.controls.maxAzimuthAngle = 25 * Math.PI / 180;   // +25 deg
+
+        if (DEBUG_MODE) {
+            this.initDebugControls();
+        }
     }
 
     createLights() {
@@ -278,11 +282,58 @@ class JerseyViewer {
                 const scale = 2 / maxDim;
                 this.current3DObject.scale.setScalar(scale);
                 this.current3DObject.position.sub(center.multiplyScalar(scale));
+                // Shift Messi slightly to the right (positive X) to make sure the trophy in his hand is fully visible
+                this.current3DObject.position.x += 0.07;
 
-                this.scene.add(this.current3DObject);
-                debugLog('📦 Model loaded and positioned');
+                // Compile shaders and upload textures asynchronously off the main thread to prevent frame drops
+                this.renderer.compileAsync(gltf.scene, this.scene).then(() => {
+                    if (loadId !== this._loadId) return;
+                    this.scene.add(this.current3DObject);
+                    debugLog('📦 Model loaded, compiled asynchronously, and positioned');
+                    this.markModelLoaded();
+                }).catch((err) => {
+                    console.error('Asynchronous model compilation failed, falling back to synchronous rendering:', err);
+                    if (loadId !== this._loadId) return;
+                    this.scene.add(this.current3DObject);
+                    this.markModelLoaded();
+                });
 
-                this.markModelLoaded();
+                // Load the trophy GLTF and attach it to Messi
+                const trophyPath = `${getBasePath()}jersey_3d_models/world_cup_trophy.glb`;
+                this.gltfLoader.load(
+                    trophyPath,
+                    (trophyGltf) => {
+                        if (loadId !== this._loadId) {
+                            trophyGltf.scene.traverse((child) => {
+                                if (child.geometry) child.geometry.dispose();
+                                if (child.material) {
+                                    if (Array.isArray(child.material)) child.material.forEach(m => m.dispose());
+                                    else child.material.dispose();
+                                }
+                            });
+                            return;
+                        }
+
+                        this.trophyObject = trophyGltf.scene;
+                        
+                        // Positioned manually and verified using the debug tool
+                        this.trophyObject.scale.setScalar(0.0009);
+                        this.trophyObject.position.set(-0.3259, -0.0374, 0.2294);
+                        this.trophyObject.rotation.set(-0.0999, 1.0600, 0.4203);
+
+                        this.current3DObject.add(this.trophyObject);
+                        debugLog('🏆 Trophy loaded and attached to Messi');
+
+                        // Compile trophy shaders asynchronously
+                        this.renderer.compileAsync(this.trophyObject, this.scene).catch(err => {
+                            console.warn('Trophy compileAsync failed:', err);
+                        });
+                    },
+                    undefined,
+                    (err) => {
+                        console.error('Error loading trophy:', err);
+                    }
+                );
             },
             (progress) => {
                 debugLog('Loading progress:', (progress.loaded / progress.total * 100) + '%');
@@ -389,6 +440,55 @@ class JerseyViewer {
             this.controls.target.set(0, 0, 0);
             this.controls.update();
         }
+    }
+
+    initDebugControls() {
+        console.log("🛠️ Debug controls active. Use the following keys to position the World Cup trophy:");
+        console.log("Position (X): A/D, (Y): W/S, (Z): Q/E");
+        console.log("Rotation (X): T/G, (Y): F/H, (Z): R/Y");
+        console.log("Scale (+/-): X/Z");
+        console.log("Press 'P' to print configuration to console.");
+
+        window.addEventListener('keydown', (e) => {
+            if (!this.trophyObject) return;
+
+            const step = e.shiftKey ? 0.001 : 0.01;
+            const rotStep = e.shiftKey ? 0.01 : 0.05;
+            const scaleStep = e.shiftKey ? 0.001 : 0.005;
+
+            switch (e.key.toLowerCase()) {
+                case 'a': this.trophyObject.position.x -= step; break;
+                case 'd': this.trophyObject.position.x += step; break;
+                case 'w': this.trophyObject.position.y += step; break;
+                case 's': this.trophyObject.position.y -= step; break;
+                case 'q': this.trophyObject.position.z -= step; break;
+                case 'e': this.trophyObject.position.z += step; break;
+
+                case 't': this.trophyObject.rotation.x += rotStep; break;
+                case 'g': this.trophyObject.rotation.x -= rotStep; break;
+                case 'f': this.trophyObject.rotation.y += rotStep; break;
+                case 'h': this.trophyObject.rotation.y -= rotStep; break;
+                case 'r': this.trophyObject.rotation.z += rotStep; break;
+                case 'y': this.trophyObject.rotation.z -= rotStep; break;
+
+                case 'z': 
+                    this.trophyObject.scale.setScalar(Math.max(0.001, this.trophyObject.scale.x - scaleStep)); 
+                    break;
+                case 'x': 
+                    this.trophyObject.scale.setScalar(this.trophyObject.scale.x + scaleStep); 
+                    break;
+
+                case 'p':
+                    console.log(`🏆 Trophy Config:
+position: { x: ${this.trophyObject.position.x.toFixed(4)}, y: ${this.trophyObject.position.y.toFixed(4)}, z: ${this.trophyObject.position.z.toFixed(4)} },
+rotation: { x: ${this.trophyObject.rotation.x.toFixed(4)}, y: ${this.trophyObject.rotation.y.toFixed(4)}, z: ${this.trophyObject.rotation.z.toFixed(4)} },
+scale: ${this.trophyObject.scale.x.toFixed(4)}
+`);
+                    break;
+            }
+
+            console.log(`Pos: [${this.trophyObject.position.x.toFixed(3)}, ${this.trophyObject.position.y.toFixed(3)}, ${this.trophyObject.position.z.toFixed(3)}], Rot: [${this.trophyObject.rotation.x.toFixed(2)}, ${this.trophyObject.rotation.y.toFixed(2)}, ${this.trophyObject.rotation.z.toFixed(2)}], Scale: ${this.trophyObject.scale.x.toFixed(4)}`);
+        });
     }
 
     dispose() {

@@ -17,6 +17,50 @@
   let currentEra = null;
   let currentModelKey = null;
 
+  // ---- Translation Logic ----
+  function setLanguage(lang) {
+    if (!window.translations || !window.translations[lang]) return;
+    const t = window.translations[lang];
+    
+    // Set document lang attribute
+    document.documentElement.lang = lang;
+    
+    // Set document title
+    if (t.doc_title) {
+      document.title = t.doc_title;
+    }
+    
+    // Update data-i18n elements
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[key]) {
+        el.innerHTML = t[key];
+      }
+    });
+    
+    // Update placeholders
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.getAttribute('data-i18n-placeholder');
+      if (t[key]) {
+        el.placeholder = t[key];
+      }
+    });
+    
+    // Update switcher active states
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+    });
+    
+    // Save to local storage
+    localStorage.setItem('preferred-locale', lang);
+    
+    // Sync current active badge if set
+    if (currentEra) {
+      updateBadge(currentEra);
+    }
+  }
+  window.setLanguage = setLanguage;
+
   // ---- Apply jersey configuration for an era ----
   function applyEraConfig(year) {
     // Retained for tracking current active year in the viewer context
@@ -29,7 +73,11 @@
     const badgeYear = document.getElementById('badge-year');
     const badgeTourney = document.getElementById('badge-tournament');
     if (badgeYear) badgeYear.textContent = year;
-    if (badgeTourney) badgeTourney.textContent = config.tournament;
+    if (badgeTourney) {
+      const activeLang = document.documentElement.lang || 'en';
+      const key = `badge_tourney_${year}`;
+      badgeTourney.textContent = (window.translations && window.translations[activeLang] && window.translations[activeLang][key]) || config.tournament;
+    }
   }
 
   // ---- Update timeline progress ----
@@ -127,59 +175,66 @@
   // ---- Parallax on hero ----
   function initHeroParallax() {
     const hero = document.getElementById('hero');
+    let ticking = false;
     window.addEventListener('scroll', () => {
-      const scrolled = window.scrollY;
-      const heroHeight = hero?.offsetHeight || 800;
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrolled = window.scrollY;
+          const heroHeight = hero?.offsetHeight || 800;
 
-      // Toggle timeline-active class on body to fade-in timeline UI when timeline container enters viewport
-      const timeline = document.getElementById('timeline');
-      if (timeline) {
-        const rect = timeline.getBoundingClientRect();
-        if (rect.top < window.innerHeight * 0.65) {
-          document.body.classList.add('timeline-active');
-        } else {
-          document.body.classList.remove('timeline-active');
-        }
-      }
-
-      // Parallax for hero text
-      if (scrolled < heroHeight) {
-        const opacity = 1 - (scrolled / heroHeight);
-        const translateY = scrolled * 0.3;
-        const heroContent = hero?.querySelector('.hero-content');
-        if (heroContent) {
-          heroContent.style.opacity = Math.max(0, opacity);
-          heroContent.style.transform = `translateY(${translateY}px)`;
-        }
-      }
-
-      // Toggle creator-image-overlay class when the creator-section enters
-      const creatorSec = document.querySelector('.creator-section');
-      const creatorOverlay = document.getElementById('creator-image-overlay');
-      if (creatorSec && creatorOverlay) {
-        const rect = creatorSec.getBoundingClientRect();
-        // Show overlay if the creator section enters the viewport
-        if (rect.top < window.innerHeight * 0.7) {
-          creatorOverlay.classList.add('active');
-        } else {
-          creatorOverlay.classList.remove('active');
-        }
-
-        // On mobile, hide the sticky 3D model container when scrolling below the creator section
-        if (window.innerWidth <= 1024) {
-          if (rect.bottom < window.innerHeight * 0.5) {
-            document.body.classList.add('hide-viewer-mobile');
-          } else {
-            document.body.classList.remove('hide-viewer-mobile');
+          // Toggle timeline-active class on body to fade-in timeline UI when timeline container enters viewport
+          const timeline = document.getElementById('timeline');
+          if (timeline) {
+            const rect = timeline.getBoundingClientRect();
+            if (rect.top < window.innerHeight * 0.65) {
+              document.body.classList.add('timeline-active');
+            } else {
+              document.body.classList.remove('timeline-active');
+            }
           }
-        } else {
-          document.body.classList.remove('hide-viewer-mobile');
-        }
-      }
 
-      // Keep 3D viewer centered in its right-side column
-      if (window.jerseyViewer) {
-        window.jerseyViewer.updateScroll(0);
+          // Parallax for hero text
+          if (scrolled < heroHeight) {
+            const opacity = 1 - (scrolled / heroHeight);
+            const translateY = scrolled * 0.3;
+            const heroContent = hero?.querySelector('.hero-content');
+            if (heroContent) {
+              heroContent.style.opacity = Math.max(0, opacity);
+              heroContent.style.transform = `translateY(${translateY}px)`;
+            }
+          }
+
+          // Toggle creator-image-overlay class when the creator-section enters
+          const creatorSec = document.querySelector('.creator-section');
+          const creatorOverlay = document.getElementById('creator-image-overlay');
+          if (creatorSec && creatorOverlay) {
+            const rect = creatorSec.getBoundingClientRect();
+            // Show overlay if the creator section enters the viewport
+            if (rect.top < window.innerHeight * 0.7) {
+              creatorOverlay.classList.add('active');
+            } else {
+              creatorOverlay.classList.remove('active');
+            }
+
+            // On mobile, hide the sticky 3D model container when scrolling below the creator section
+            if (window.innerWidth <= 1024) {
+              if (rect.bottom < window.innerHeight * 0.5) {
+                document.body.classList.add('hide-viewer-mobile');
+              } else {
+                document.body.classList.remove('hide-viewer-mobile');
+              }
+            } else {
+              document.body.classList.remove('hide-viewer-mobile');
+            }
+          }
+
+          // Keep 3D viewer centered in its right-side column
+          if (window.jerseyViewer) {
+            window.jerseyViewer.updateScroll(0);
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
     }, { passive: true });
   }
@@ -256,6 +311,22 @@
 
   // ---- Initialize everything after DOM ready and viewer loaded ----
   function init() {
+    // Bind click events on switcher buttons
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lang = btn.getAttribute('data-lang');
+        setLanguage(lang);
+      });
+    });
+
+    // Detect language and run setLanguage
+    let detectedLang = localStorage.getItem('preferred-locale');
+    if (!detectedLang) {
+      const browserLang = navigator.language || navigator.userLanguage;
+      detectedLang = (browserLang && browserLang.startsWith('es')) ? 'es' : 'en';
+    }
+    setLanguage(detectedLang);
+
     initScrollObserver();
     initDotNavigation();
     initScrollIndicator();
@@ -656,11 +727,13 @@ document.addEventListener('DOMContentLoaded', () => {
       btnGenerate.addEventListener('click', () => {
         const name = inputName.value.trim() || 'ALBICLESTE FAN';
         const era = selectEra.value;
+        const activeLang = document.documentElement.lang || 'en';
+        const t = (window.translations && window.translations[activeLang]) || window.translations['en'];
         const eraLabels = {
-          '2022': { title: 'QATAR 2022', desc: 'THE CORONATION · CHAMPION', color: '#75AADB' },
-          '2014': { title: 'BRAZIL 2014', desc: 'THE RUNNER-UP · FINALIST', color: '#6CACE4' },
-          '2018': { title: 'RUSSIA 2018', desc: 'THE DARKEST CHAPTER · R16', color: '#85BBE6' },
-          '2006': { title: 'GERMANY 2006', desc: 'THE DEBUT · QUARTER-FINAL', color: '#75AADB' }
+          '2022': { title: t.card_title_2022, desc: t.card_desc_2022, color: '#75AADB' },
+          '2014': { title: t.card_title_2014, desc: t.card_desc_2014, color: '#6CACE4' },
+          '2018': { title: t.card_title_2018, desc: t.card_desc_2018, color: '#85BBE6' },
+          '2006': { title: t.card_title_2006, desc: t.card_desc_2006, color: '#75AADB' }
         };
         const config = eraLabels[era];
 
@@ -754,10 +827,11 @@ document.addEventListener('DOMContentLoaded', () => {
           ctx.textAlign = 'center';
           ctx.fillText('GOAT', 200, 230);
 
-          // 6. Draw Spanish Support text & Name
+          // 6. Draw Localized Support text & Name
           ctx.fillStyle = '#FFFFFF';
           ctx.font = '600 20px Outfit, sans-serif';
-          ctx.fillText('¡GRACIAS, ' + name.toUpperCase() + '!', 200, 382);
+          const thanksText = t.card_thanks_name.replace('{NAME}', name.toUpperCase());
+          ctx.fillText(thanksText, 200, 382);
 
           // Gold divider
           ctx.fillStyle = '#D4AF37';
@@ -765,7 +839,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
           ctx.fillStyle = '#D9C5C5';
           ctx.font = '500 13px Outfit, sans-serif';
-          ctx.fillText('¡Gracias por tu apoyo incondicional!', 200, 420);
+          ctx.fillText(t.card_support_text, 200, 420);
 
           // Era details
           ctx.fillStyle = '#75AADB'; // Albiceleste Blue
@@ -835,39 +909,46 @@ document.addEventListener('DOMContentLoaded', () => {
     // Sync active state with scroll position on mobile horizontal scroll
     if (galleryContainer) {
       let lastActiveIndex = 0;
+      let ticking = false;
       galleryContainer.addEventListener('scroll', () => {
         if (window.innerWidth > 1024) return;
 
-        const containerRect = galleryContainer.getBoundingClientRect();
-        const containerCenter = containerRect.left + containerRect.width / 2;
-        let closestIndex = 0;
-        let minDistance = Infinity;
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            const containerRect = galleryContainer.getBoundingClientRect();
+            const containerCenter = containerRect.left + containerRect.width / 2;
+            let closestIndex = 0;
+            let minDistance = Infinity;
 
-        panels.forEach((panel, index) => {
-          const panelRect = panel.getBoundingClientRect();
-          const panelCenter = panelRect.left + panelRect.width / 2;
-          const distance = Math.abs(panelCenter - containerCenter);
-          if (distance < minDistance) {
-            minDistance = distance;
-            closestIndex = index;
-          }
-        });
-
-        const dots = document.querySelectorAll('.gallery-dot');
-        dots.forEach((dot, index) => {
-          dot.classList.toggle('active', index === closestIndex);
-        });
-
-        // Fire Google Analytics event when active slide changes on scroll
-        if (closestIndex !== lastActiveIndex) {
-          lastActiveIndex = closestIndex;
-          const year = panels[closestIndex].dataset.year;
-          if (typeof gtag === 'function') {
-            gtag('event', 'swipe_gallery_panel', {
-              'event_category': 'Engagement',
-              'event_label': year
+            panels.forEach((panel, index) => {
+              const panelRect = panel.getBoundingClientRect();
+              const panelCenter = panelRect.left + panelRect.width / 2;
+              const distance = Math.abs(panelCenter - containerCenter);
+              if (distance < minDistance) {
+                minDistance = distance;
+                closestIndex = index;
+              }
             });
-          }
+
+            const dots = document.querySelectorAll('.gallery-dot');
+            dots.forEach((dot, index) => {
+              dot.classList.toggle('active', index === closestIndex);
+            });
+
+            // Fire Google Analytics event when active slide changes on scroll
+            if (closestIndex !== lastActiveIndex) {
+              lastActiveIndex = closestIndex;
+              const year = panels[closestIndex].dataset.year;
+              if (typeof gtag === 'function') {
+                gtag('event', 'swipe_gallery_panel', {
+                  'event_category': 'Engagement',
+                  'event_label': year
+                });
+              }
+            }
+            ticking = false;
+          });
+          ticking = true;
         }
       }, { passive: true });
     }

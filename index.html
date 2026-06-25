@@ -13,14 +13,14 @@
 
     gtag('config', 'G-BCFFGCS8HR');
   </script>
-  <title>Messi & The Albiceleste — World Cup Jerseys 2006–2026</title>
+  <title data-i18n="doc_title">Messi & The Albiceleste — World Cup Jerseys 2006–2026</title>
   <link rel="icon" type="image/png" href="images/somenath_profile.png">
   <meta name="description" content="A visual journey through Lionel Messi's six World Cup campaigns with Argentina, told through the iconic Albiceleste jerseys — from the 2006 debut to the 2026 farewell.">
   <meta name="keywords" content="Lionel Messi, Argentina World Cup Jerseys, Albiceleste, 3D Jersey Configurator, Football Jerseys, Messi 2022 World Cup, Three.js, WebGL">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://messi-in-world-cups-3d.vercel.app/">
 
-  <!-- Open Graph / Facebook / WhatsApp -->
+  <!-- Open Graph / Facebook / <span data-i18n="fanzone_btn_whatsapp">WhatsApp</span> -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://messi-in-world-cups-3d.vercel.app/">
   <meta property="og:title" content="Messi & The Albiceleste — World Cup Jerseys 2006–2026">
@@ -55,37 +55,42 @@
 </head>
 
 <body>
+  <!-- Floating Language Switcher -->
+  <div class="lang-switcher">
+    <button class="lang-btn active" data-lang="en">EN</button>
+    <button class="lang-btn" data-lang="es">ES</button>
+  </div>
   <!-- ========== HERO INTRO ========== -->
   <section class="hero-intro" id="hero">
     <div class="hero-particles" id="hero-particles"></div>
     <div class="hero-split">
       <div class="hero-left-content">
         <div class="hero-content">
-          <div class="hero-overline">A Visual Journey · 2006 – 2026</div>
+          <div class="hero-overline" data-i18n="hero_overline">A Visual Journey · 2006 – 2026</div>
           <h1 class="hero-title">
-            <span class="hero-title-line">Messi</span>
-            <span class="hero-title-line accent">&</span>
-            <span class="hero-title-line">The Albiceleste</span>
+            <span class="hero-title-line" data-i18n="hero_title_line_1">Messi</span>
+            <span class="hero-title-line accent" data-i18n="hero_title_ampersand">&</span>
+            <span class="hero-title-line" data-i18n="hero_title_line_2">The Albiceleste</span>
           </h1>
           <div class="hero-stats">
             <div class="stat-item">
               <span class="stat-number" data-target="6">0</span>
-              <span class="stat-label">World Cups</span>
+              <span class="stat-label" data-i18n="hero_stat_world_cups">World Cups</span>
             </div>
             <div class="stat-item">
               <span class="stat-number" data-target="20">0</span>
-              <span class="stat-label">Years</span>
+              <span class="stat-label" data-i18n="hero_stat_years">Years</span>
             </div>
             <div class="stat-item">
               <span class="stat-number" data-target="1">0</span>
-              <span class="stat-label">Destiny</span>
+              <span class="stat-label" data-i18n="hero_stat_destiny">Destiny</span>
             </div>
           </div>
-          <p class="hero-subtitle">
+          <p class="hero-subtitle" data-i18n="hero_subtitle">
             The story of the <strong>#GOAT</strong> 🐐, told through the jersey he wore.
           </p>
           <div class="scroll-indicator" id="scroll-indicator">
-            <span>Begin the Journey</span>
+            <span data-i18n="scroll_hint">Begin the Journey</span>
             <div class="scroll-arrow">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
             </div>
@@ -101,9 +106,9 @@
   <!-- Interactive Accordion Gallery Section -->
   <section class="horizontal-gallery-section" id="gallery-section">
     <div class="gallery-header">
-      <span class="gallery-overline">HIGHLIGHTS</span>
-      <h2 class="gallery-title">Moments of Glory</h2>
-      <p class="gallery-subtitle">Click or hover over each campaign to expand Messi's memorable World Cup moments.</p>
+      <span class="gallery-overline" data-i18n="gallery_overline">HIGHLIGHTS</span>
+      <h2 class="gallery-title" data-i18n="gallery_title">Moments of Glory</h2>
+      <p class="gallery-subtitle" data-i18n="gallery_subtitle">Click or hover over each campaign to expand Messi's memorable World Cup moments.</p>
     </div>
     <div class="gallery-container">
       <!-- 2026 -->
@@ -111,9 +116,9 @@
         <div class="panel-background" style="background-image: url('images/gallery_2026.jpg');"></div>
         <div class="panel-overlay"></div>
         <div class="panel-content">
-          <span class="panel-tag">USA · CAN · MEX 2026</span>
-          <h3 class="panel-header">The Final Chapter</h3>
-          <p class="panel-desc">Messi's historic farewell World Cup campaign, leading the Albiceleste as reigning world champions.</p>
+          <span class="panel-tag" data-i18n="gallery_2026_tag">USA · CAN · MEX 2026</span>
+          <h3 class="panel-header" data-i18n="gallery_2026_title">The Final Chapter</h3>
+          <p class="panel-desc" data-i18n="gallery_2026_desc">Messi's historic farewell World Cup campaign, leading the Albiceleste as reigning world champions.</p>
         </div>
         <span class="panel-year-label" data-tournament="USA · CAN · MEX">2026</span>
       </div>
@@ -122,9 +127,9 @@
         <div class="panel-background" style="background-image: url('images/gallery_2022.jpg');"></div>
         <div class="panel-overlay"></div>
         <div class="panel-content">
-          <span class="panel-tag">QATAR 2022</span>
-          <h3 class="panel-header">The Coronation</h3>
-          <p class="panel-desc">Eternal glory achieved in Lusail. Triumphant in one of the greatest football finals in history.</p>
+          <span class="panel-tag" data-i18n="gallery_2022_tag">QATAR 2022</span>
+          <h3 class="panel-header" data-i18n="gallery_2022_title">The Coronation</h3>
+          <p class="panel-desc" data-i18n="gallery_2022_desc">Eternal glory achieved in Lusail. Triumphant in one of the greatest football finals in history.</p>
         </div>
         <span class="panel-year-label" data-tournament="Qatar">2022</span>
       </div>
@@ -133,9 +138,9 @@
         <div class="panel-background" style="background-image: url('images/gallery_2018.jpg');"></div>
         <div class="panel-overlay"></div>
         <div class="panel-content">
-          <span class="panel-tag">RUSSIA 2018</span>
-          <h3 class="panel-header">Resilience in Adversity</h3>
-          <p class="panel-desc">A dramatic campaign of intense struggle, featuring Messi's magical strike against Nigeria.</p>
+          <span class="panel-tag" data-i18n="gallery_2018_tag">RUSSIA 2018</span>
+          <h3 class="panel-header" data-i18n="gallery_2018_title">Resilience in Adversity</h3>
+          <p class="panel-desc" data-i18n="gallery_2018_desc">A dramatic campaign of intense struggle, featuring Messi's magical strike against Nigeria.</p>
         </div>
         <span class="panel-year-label" data-tournament="Russia">2018</span>
       </div>
@@ -144,9 +149,9 @@
         <div class="panel-background" style="background-image: url('images/gallery_2014.jpg');"></div>
         <div class="panel-overlay"></div>
         <div class="panel-content">
-          <span class="panel-tag">BRAZIL 2014</span>
-          <h3 class="panel-header">So Close, So Far</h3>
-          <p class="panel-desc">A heartbeat away from the trophy. Winning the tournament's Golden Ball amidst final heartbreak.</p>
+          <span class="panel-tag" data-i18n="gallery_2014_tag">BRAZIL 2014</span>
+          <h3 class="panel-header" data-i18n="gallery_2014_title">So Close, So Far</h3>
+          <p class="panel-desc" data-i18n="gallery_2014_desc">A heartbeat away from the trophy. Winning the tournament's Golden Ball amidst final heartbreak.</p>
         </div>
         <span class="panel-year-label" data-tournament="Brazil">2014</span>
       </div>
@@ -155,9 +160,9 @@
         <div class="panel-background" style="background-image: url('images/gallery_2010.jpg');"></div>
         <div class="panel-overlay"></div>
         <div class="panel-content">
-          <span class="panel-tag">SOUTH AFRICA 2010</span>
-          <h3 class="panel-header">First Captaincy</h3>
-          <p class="panel-desc">Wearing the captain's armband for the first time under Maradona's legendary guidance.</p>
+          <span class="panel-tag" data-i18n="gallery_2010_tag">SOUTH AFRICA 2010</span>
+          <h3 class="panel-header" data-i18n="gallery_2010_title">First Captaincy</h3>
+          <p class="panel-desc" data-i18n="gallery_2010_desc">Wearing the captain's armband for the first time under Maradona's legendary guidance.</p>
         </div>
         <span class="panel-year-label" data-tournament="South Africa">2010</span>
       </div>
@@ -166,9 +171,9 @@
         <div class="panel-background" style="background-image: url('images/gallery_2006.jpg');"></div>
         <div class="panel-overlay"></div>
         <div class="panel-content">
-          <span class="panel-tag">GERMANY 2006</span>
-          <h3 class="panel-header">The Debut</h3>
-          <p class="panel-desc">A superstar is born. Messi makes history as Argentina's youngest player and scorer at a World Cup.</p>
+          <span class="panel-tag" data-i18n="gallery_2006_tag">GERMANY 2006</span>
+          <h3 class="panel-header" data-i18n="gallery_2006_title">The Debut</h3>
+          <p class="panel-desc" data-i18n="gallery_2006_desc">A superstar is born. Messi makes history as Argentina's youngest player and scorer at a World Cup.</p>
         </div>
         <span class="panel-year-label" data-tournament="Germany">2006</span>
       </div>
@@ -208,12 +213,12 @@
           <!-- Loading overlay -->
           <div class="loading-overlay" id="canvas-loading-overlay">
             <div class="loading-spinner"></div>
-            <div class="loading-text">Assembling Jersey...</div>
+            <div class="loading-text"><span data-i18n="viewer_loading">Assembling Jersey...</span></div>
           </div>
         </div>
         <div class="viewer-hint">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m10 15 5-3-5-3v6z"/></svg>
-          Drag to rotate · Scroll to zoom
+          <span data-i18n="viewer_hint">Drag to rotate · Scroll to zoom</span>
         </div>
         <!-- Timeline Progress -->
         <div class="timeline-progress">
@@ -244,35 +249,35 @@
             <span class="era-flag">🇺🇸🇨🇦🇲🇽</span>
             <div class="era-year-label">2026</div>
           </div>
-          <h2 class="era-title">North America</h2>
-          <p class="era-tagline">The Last Dance</p>
+          <h2 class="era-title" data-i18n="era_2026_title">North America</h2>
+          <p class="era-tagline" data-i18n="era_2026_tagline">The Last Dance</p>
           <div class="era-messi-image-container">
             <img class="era-messi-image" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" data-src="images/2026_Card_Era.jpeg" alt="Lionel Messi 2026 World Cup" loading="lazy">
           </div>
-          <p class="era-story">
+          <p class="era-story" data-i18n="era_2026_story">
             At 39, the <strong>GOAT returns</strong> to the World Cup stage <strong>one final time</strong>. With <strong>three stars</strong> on the crest he helped earn, Messi's <strong>farewell tournament</strong> across North America marks the end of an era that redefined the beautiful game. Whatever happens on the pitch, the jersey he wears one last time carries the weight of every dream, every tear, and every moment of magic that made him <strong>immortal</strong>.
           </p>
           <div class="era-stats">
             <div class="stat">
               <span class="stat-value">39</span>
-              <span class="stat-label">Age</span>
+              <span class="stat-label" data-i18n="stat_age">Age</span>
             </div>
             <div class="stat">
-              <span class="stat-value" id="stats-2026-apps">—</span>
-              <span class="stat-label">Apps</span>
+              <span class="stat-value" id="stats-2026-apps" data-i18n="stats_initial_empty">—</span>
+              <span class="stat-label" data-i18n="stat_apps">Apps</span>
             </div>
             <div class="stat">
-              <span class="stat-value" id="stats-2026-goals">—</span>
-              <span class="stat-label">Goals</span>
+              <span class="stat-value" id="stats-2026-goals" data-i18n="stats_initial_empty">—</span>
+              <span class="stat-label" data-i18n="stat_goals">Goals</span>
             </div>
             <div class="stat">
-              <span class="stat-value">TBD</span>
-              <span class="stat-label">Result</span>
+              <span class="stat-value" data-i18n="result_2026">TBD</span>
+              <span class="stat-label" data-i18n="stat_result">Result</span>
             </div>
           </div>
           <div class="era-detail">
-            <span class="detail-label">Jersey</span>
-            <span class="detail-value">V-neck collar with blue accents · White sleeves · Metallic gold logos & side panels</span>
+            <span class="detail-label" data-i18n="detail_jersey">Jersey</span>
+            <span class="detail-value" data-i18n="era_2026_jersey">V-neck collar with blue accents · White sleeves · Metallic gold logos & side panels</span>
           </div>
         </div>
       </section>
@@ -288,35 +293,35 @@
             <span class="era-flag">🇶🇦</span>
             <div class="era-year-label">2022</div>
           </div>
-          <h2 class="era-title">Qatar <span class="trophy-icon">🏆</span></h2>
-          <p class="era-tagline">The Coronation</p>
+          <h2 class="era-title"><span data-i18n="era_2022_title">Qatar</span> <span class="trophy-icon">🏆</span></h2>
+          <p class="era-tagline" data-i18n="era_2022_tagline">The Coronation</p>
           <div class="era-messi-image-container">
             <img class="era-messi-image" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" data-src="images/qatar_messi.jpg" alt="Lionel Messi at the 2022 FIFA World Cup" loading="lazy">
           </div>
-          <p class="era-story">
+          <p class="era-story" data-i18n="era_2022_story">
             At 35, Messi delivered the <strong>performance of a lifetime</strong>. <strong>Seven goals, three assists</strong>, and a triumph in the <strong>greatest World Cup final ever played</strong> — against France. After 120 minutes of sheer drama and a penalty shootout, Messi finally <strong>lifted the one trophy</strong> that had eluded him. The image of the little Argentine, golden trophy raised high, completed football's <strong>greatest ever story</strong>.
           </p>
           <div class="era-stats">
             <div class="stat highlight">
               <span class="stat-value">35</span>
-              <span class="stat-label">Age</span>
+              <span class="stat-label" data-i18n="stat_age">Age</span>
             </div>
             <div class="stat highlight">
               <span class="stat-value">7</span>
-              <span class="stat-label">Apps</span>
+              <span class="stat-label" data-i18n="stat_apps">Apps</span>
             </div>
             <div class="stat highlight">
               <span class="stat-value">7</span>
-              <span class="stat-label">Goals</span>
+              <span class="stat-label" data-i18n="stat_goals">Goals</span>
             </div>
             <div class="stat highlight">
               <span class="stat-value">🥇</span>
-              <span class="stat-label">Champion</span>
+              <span class="stat-label" data-i18n="result_2022">Champion</span>
             </div>
           </div>
           <div class="era-detail">
-            <span class="detail-label">Jersey</span>
-            <span class="detail-value">Ribbed black crew neck & cuffs · Black Adidas stripes · Sol de Mayo on back</span>
+            <span class="detail-label" data-i18n="detail_jersey">Jersey</span>
+            <span class="detail-value" data-i18n="era_2022_jersey">Ribbed black crew neck & cuffs · Black Adidas stripes · Sol de Mayo on back</span>
           </div>
         </div>
       </section>
@@ -332,35 +337,35 @@
             <span class="era-flag">🇷🇺</span>
             <div class="era-year-label">2018</div>
           </div>
-          <h2 class="era-title">Russia</h2>
-          <p class="era-tagline">The Darkest Chapter</p>
+          <h2 class="era-title" data-i18n="era_2018_title">Russia</h2>
+          <p class="era-tagline" data-i18n="era_2018_tagline">The Darkest Chapter</p>
           <div class="era-messi-image-container">
             <img class="era-messi-image" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" data-src="images/russia_messi.webp" alt="Lionel Messi at the 2018 FIFA World Cup" loading="lazy">
           </div>
-          <p class="era-story">
+          <p class="era-story" data-i18n="era_2018_story">
             At 31, many believed this would be Messi's last World Cup. The campaign was <strong>chaos from start to finish</strong> — a frustrating draw, a <strong>3-0 humiliation by Croatia</strong> that left him visibly broken, then a <strong>dramatic late winner</strong> over Nigeria. It ended in a breathless <strong>4-3 Round of 16 defeat</strong> to Kylian Mbappé and France. The pixelated jersey became a symbol of a <strong>fractured era</strong>.
           </p>
           <div class="era-stats">
             <div class="stat">
               <span class="stat-value">30</span>
-              <span class="stat-label">Age</span>
+              <span class="stat-label" data-i18n="stat_age">Age</span>
             </div>
             <div class="stat">
               <span class="stat-value">4</span>
-              <span class="stat-label">Apps</span>
+              <span class="stat-label" data-i18n="stat_apps">Apps</span>
             </div>
             <div class="stat">
               <span class="stat-value">1</span>
-              <span class="stat-label">Goal</span>
+              <span class="stat-label" data-i18n="stat_goal">Goal</span>
             </div>
             <div class="stat">
-              <span class="stat-value">R16</span>
-              <span class="stat-label">Result</span>
+              <span class="stat-value" data-i18n="result_2018">R16</span>
+              <span class="stat-label" data-i18n="stat_result">Result</span>
             </div>
           </div>
           <div class="era-detail">
-            <span class="detail-label">Jersey</span>
-            <span class="detail-value">V-neck · Digital pixelated gradient stripes · Plain white shoulders/sleeves</span>
+            <span class="detail-label" data-i18n="detail_jersey">Jersey</span>
+            <span class="detail-value" data-i18n="era_2018_jersey">V-neck · Digital pixelated gradient stripes · Plain white shoulders/sleeves</span>
           </div>
         </div>
       </section>
@@ -376,35 +381,35 @@
             <span class="era-flag">🇧🇷</span>
             <div class="era-year-label">2014</div>
           </div>
-          <h2 class="era-title">Brazil</h2>
-          <p class="era-tagline">So Close, So Far</p>
+          <h2 class="era-title" data-i18n="era_2014_title">Brazil</h2>
+          <p class="era-tagline" data-i18n="era_2014_tagline">So Close, So Far</p>
           <div class="era-messi-image-container">
             <img class="era-messi-image" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" data-src="images/brazil_messi.jpg" alt="Lionel Messi at the 2014 FIFA World Cup" loading="lazy">
           </div>
-          <p class="era-story">
+          <p class="era-story" data-i18n="era_2014_story">
             Messi was magnificent — scoring <strong>four goals</strong> and <strong>dragging Argentina to the final</strong> through sheer individual brilliance. He won the <strong>Golden Ball</strong> as the tournament's best player, but the ultimate prize slipped away in a <strong>1-0 extra-time defeat to Germany</strong> at the Maracanã. The image of Messi staring at the trophy he couldn't touch became one of football's <strong>most haunting photographs</strong>.
           </p>
           <div class="era-stats">
             <div class="stat">
               <span class="stat-value">26</span>
-              <span class="stat-label">Age</span>
+              <span class="stat-label" data-i18n="stat_age">Age</span>
             </div>
             <div class="stat">
               <span class="stat-value">7</span>
-              <span class="stat-label">Apps</span>
+              <span class="stat-label" data-i18n="stat_apps">Apps</span>
             </div>
             <div class="stat">
               <span class="stat-value">4</span>
-              <span class="stat-label">Goals</span>
+              <span class="stat-label" data-i18n="stat_goals">Goals</span>
             </div>
             <div class="stat">
-              <span class="stat-value">Final</span>
-              <span class="stat-label">Result</span>
+              <span class="stat-value" data-i18n="result_2014">Final</span>
+              <span class="stat-label" data-i18n="stat_result">Result</span>
             </div>
           </div>
           <div class="era-detail">
-            <span class="detail-label">Jersey</span>
-            <span class="detail-value">White V-neck with black back line · Distinct white sleeves · Crest in golden shield</span>
+            <span class="detail-label" data-i18n="detail_jersey">Jersey</span>
+            <span class="detail-value" data-i18n="era_2014_jersey">White V-neck with black back line · Distinct white sleeves · Crest in golden shield</span>
           </div>
         </div>
       </section>
@@ -420,35 +425,35 @@
             <span class="era-flag">🇿🇦</span>
             <div class="era-year-label">2010</div>
           </div>
-          <h2 class="era-title">South Africa</h2>
-          <p class="era-tagline">The Weight of a Nation</p>
+          <h2 class="era-title" data-i18n="era_2010_title">South Africa</h2>
+          <p class="era-tagline" data-i18n="era_2010_tagline">The Weight of a Nation</p>
           <div class="era-messi-image-container">
             <img class="era-messi-image" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" data-src="https://upload.wikimedia.org/wikipedia/commons/7/71/Messi_Podolski_Di_Maria_2010.jpg" alt="Lionel Messi at the 2010 FIFA World Cup" loading="lazy">
           </div>
-          <p class="era-story">
+          <p class="era-story" data-i18n="era_2010_story">
             Now the <strong>reigning Ballon d'Or holder</strong>, Messi carried the <strong>weight of an entire nation</strong> on his shoulders. Despite his brilliance in build-up, he couldn't find the net, and the campaign ended in a devastating <strong>4-0 quarter-final demolition by Germany</strong>. The round-collar jersey became a symbol of <strong>promise unfulfilled</strong> — where Messi learned what it truly cost <strong>to lead</strong>.
           </p>
           <div class="era-stats">
             <div class="stat">
               <span class="stat-value">22</span>
-              <span class="stat-label">Age</span>
+              <span class="stat-label" data-i18n="stat_age">Age</span>
             </div>
             <div class="stat">
               <span class="stat-value">5</span>
-              <span class="stat-label">Apps</span>
+              <span class="stat-label" data-i18n="stat_apps">Apps</span>
             </div>
             <div class="stat">
               <span class="stat-value">0</span>
-              <span class="stat-label">Goals</span>
+              <span class="stat-label" data-i18n="stat_goals">Goals</span>
             </div>
             <div class="stat">
-              <span class="stat-value">QF</span>
-              <span class="stat-label">Result</span>
+              <span class="stat-value" data-i18n="result_2010">QF</span>
+              <span class="stat-label" data-i18n="stat_result">Result</span>
             </div>
           </div>
           <div class="era-detail">
-            <span class="detail-label">Jersey</span>
-            <span class="detail-value">Classic white crew neck · Blue sleeves with white 3-stripes · Centered Adidas logo</span>
+            <span class="detail-label" data-i18n="detail_jersey">Jersey</span>
+            <span class="detail-value" data-i18n="era_2010_jersey">Classic white crew neck · Blue sleeves with white 3-stripes · Centered Adidas logo</span>
           </div>
         </div>
       </section>
@@ -464,35 +469,35 @@
             <span class="era-flag">🇩🇪</span>
             <div class="era-year-label">2006</div>
           </div>
-          <h2 class="era-title">Germany</h2>
-          <p class="era-tagline">The Beginning</p>
+          <h2 class="era-title" data-i18n="era_2006_title">Germany</h2>
+          <p class="era-tagline" data-i18n="era_2006_tagline">The Beginning</p>
           <div class="era-messi-image-container">
             <img class="era-messi-image" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" data-src="images/germany_messi.jpg" alt="Lionel Messi in 2006 World Cup Cycle" loading="lazy">
           </div>
-          <p class="era-story">
+          <p class="era-story" data-i18n="era_2006_story">
             An <strong>18-year-old Lionel Messi</strong> stepped onto the World Cup stage for the <strong>first time</strong>, wearing the classic wide-striped Albiceleste. He became <strong>Argentina's youngest-ever goalscorer</strong> with a stunning finish against Serbia & Montenegro — announcing himself as a <strong>generational talent</strong>. The exit only <strong>fueled the fire</strong> for what was to come.
           </p>
           <div class="era-stats">
             <div class="stat">
               <span class="stat-value">18</span>
-              <span class="stat-label">Age</span>
+              <span class="stat-label" data-i18n="stat_age">Age</span>
             </div>
             <div class="stat">
               <span class="stat-value">3</span>
-              <span class="stat-label">Apps</span>
+              <span class="stat-label" data-i18n="stat_apps">Apps</span>
             </div>
             <div class="stat">
               <span class="stat-value">1</span>
-              <span class="stat-label">Goal</span>
+              <span class="stat-label" data-i18n="stat_goal">Goal</span>
             </div>
             <div class="stat">
-              <span class="stat-value">QF</span>
-              <span class="stat-label">Result</span>
+              <span class="stat-value" data-i18n="result_2006">QF</span>
+              <span class="stat-label" data-i18n="stat_result">Result</span>
             </div>
           </div>
           <div class="era-detail">
-            <span class="detail-label">Jersey</span>
-            <span class="detail-value">White V-neck with gold & black outlines · Underarm side piping · Set-in sleeves</span>
+            <span class="detail-label" data-i18n="detail_jersey">Jersey</span>
+            <span class="detail-value" data-i18n="era_2006_jersey">White V-neck with gold & black outlines · Underarm side piping · Set-in sleeves</span>
           </div>
         </div>
       </section>
@@ -502,7 +507,7 @@
         <div class="closing-card">
           <div class="closing-stars">★ ★ ★</div>
           <h2 class="closing-title">D10S</h2>
-          <p class="closing-text">
+          <p class="closing-text" data-i18n="closing_text">
             26 World Cup goals. 6 tournaments. 1 trophy that changed everything.<br>
             The Albiceleste was never just a jersey — it was a canvas for the greatest story ever told in football.
           </p>
@@ -515,20 +520,20 @@
       <!-- Creator Section -->
       <section class="creator-section">
         <div class="creator-card">
-          <span class="creator-overline">THE ENGINEER</span>
-          <h2 class="creator-title-section">About the <span class="creator-accent">Creator</span></h2>
+          <span class="creator-overline" data-i18n="creator_overline">THE ENGINEER</span>
+          <h2 class="creator-title-section" data-i18n="creator_title">About the <span class="creator-accent">Creator</span></h2>
           <div class="creator-box">
             <div class="creator-header">
               <img class="creator-avatar-img" src="images/somenath_profile.png" alt="Somenath Mondal" width="56" height="56">
               <div class="creator-info">
                 <h3 class="creator-name">Somenath Mondal</h3>
-                <span class="creator-role">CREATOR & DEVELOPER</span>
+                <span class="creator-role" data-i18n="creator_role">CREATOR & DEVELOPER</span>
               </div>
             </div>
-            <p class="creator-bio">
+            <p class="creator-bio" data-i18n="creator_bio">
               As a developer and a passionate fan of the Argentina national team, I created this visual journey to honor the legendary path of Lionel Messi. Combining WebGL rendering with editorial typography, this platform celebrates the iconic Albiceleste jerseys that witnessed history.
             </p>
-            <p class="creator-bio-secondary">
+            <p class="creator-bio-secondary" data-i18n="creator_bio_secondary">
               Exploring the convergence of 3D technology, sports heritage, and fine-tuned digital configurators.
             </p>
             <div class="creator-gallery">
@@ -541,11 +546,11 @@
             </div>
             <div class="creator-actions">
               <a href="https://www.linkedin.com/in/somenath-mondal-xr-tech/" target="_blank" rel="noopener noreferrer" class="creator-btn btn-secondary" onclick="if(typeof gtag==='function')gtag('event','click_linkedin',{'event_category':'Outbound Links'});">
-                <span>LinkedIn Profile</span>
+                <span data-i18n="creator_btn_linkedin">LinkedIn Profile</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"/></svg>
               </a>
               <a href="https://somenath-portfolio-3d.vercel.app/" target="_blank" rel="noopener noreferrer" class="creator-btn btn-primary" onclick="if(typeof gtag==='function')gtag('event','click_portfolio',{'event_category':'Outbound Links'});">
-                <span>Explore 3D Portfolio</span>
+                <span data-i18n="creator_btn_portfolio">Explore 3D Portfolio</span>
               </a>
             </div>
           </div>
@@ -557,32 +562,32 @@
         <div class="fan-zone-container">
           <!-- Memory Poll Card -->
           <div class="fan-card-wrapper poll-card">
-            <span class="fan-zone-overline">VOX POPULI</span>
-            <h2 class="fan-zone-title">Favorite World Cup Campaign?</h2>
-            <p class="fan-zone-subtitle">Which Messi World Cup era meant the most to you? Vote to see live fan standings.</p>
+            <span class="fan-zone-overline" data-i18n="poll_overline">VOX POPULI</span>
+            <h2 class="fan-zone-title" data-i18n="poll_title">Favorite World Cup Campaign?</h2>
+            <p class="fan-zone-subtitle" data-i18n="poll_subtitle">Which Messi World Cup era meant the most to you? Vote to see live fan standings.</p>
             
             <div class="poll-options" id="poll-options-container">
               <button class="poll-btn" data-era="2022">
                 <span class="poll-btn-year">2022</span>
-                <span class="poll-btn-label">Qatar (The Coronation)</span>
+                <span class="poll-btn-label" data-i18n="poll_label_2022">Qatar (The Coronation)</span>
                 <span class="poll-bar"></span>
                 <span class="poll-percentage">0%</span>
               </button>
               <button class="poll-btn" data-era="2014">
                 <span class="poll-btn-year">2014</span>
-                <span class="poll-btn-label">Brazil (So Close, So Far)</span>
+                <span class="poll-btn-label" data-i18n="poll_label_2014">Brazil (So Close, So Far)</span>
                 <span class="poll-bar"></span>
                 <span class="poll-percentage">0%</span>
               </button>
               <button class="poll-btn" data-era="2018">
                 <span class="poll-btn-year">2018</span>
-                <span class="poll-btn-label">Russia (The Darkest Chapter)</span>
+                <span class="poll-btn-label" data-i18n="poll_label_2018">Russia (The Darkest Chapter)</span>
                 <span class="poll-bar"></span>
                 <span class="poll-percentage">0%</span>
               </button>
               <button class="poll-btn" data-era="2006">
                 <span class="poll-btn-year">2006</span>
-                <span class="poll-btn-label">Germany (The Beginning)</span>
+                <span class="poll-btn-label" data-i18n="poll_label_2006">Germany (The Beginning)</span>
                 <span class="poll-bar"></span>
                 <span class="poll-percentage">0%</span>
               </button>
@@ -591,23 +596,23 @@
 
           <!-- Fan Card Generator Card -->
           <div class="fan-card-wrapper generator-card">
-            <span class="fan-zone-overline">ALBICELESTE ID</span>
-            <h2 class="fan-zone-title">Create Your Fan Card</h2>
-            <p class="fan-zone-subtitle">Generate a custom-themed digital trading card with your name to share Messi's journey.</p>
+            <span class="fan-zone-overline" data-i18n="fanzone_overline">ALBICELESTE ID</span>
+            <h2 class="fan-zone-title" data-i18n="fanzone_gen_title_main">Create Your Fan Card</h2>
+            <p class="fan-zone-subtitle" data-i18n="fanzone_gen_desc">Generate a custom-themed digital trading card with your name to share Messi's journey.</p>
             
             <div class="generator-controls">
               <div class="input-group">
-                <input type="text" id="fan-name-input" placeholder="Your Name" maxlength="15" autocomplete="off">
+                <input type="text" id="fan-name-input" placeholder="Your Name" maxlength="15" autocomplete="off" data-i18n-placeholder="fanzone_input_placeholder">
               </div>
               <div class="input-group">
                 <select id="fan-era-select">
-                  <option value="2022">Qatar 2022 — Champion</option>
-                  <option value="2014">Brazil 2014 — Finalist</option>
-                  <option value="2018">Russia 2018 — R16</option>
-                  <option value="2006">Germany 2006 — Debut</option>
+                  <option value="2022" data-i18n="fanzone_opt_2022">Qatar 2022 — Champion</option>
+                  <option value="2014" data-i18n="fanzone_opt_2014">Brazil 2014 — Finalist</option>
+                  <option value="2018" data-i18n="fanzone_opt_2018">Russia 2018 — R16</option>
+                  <option value="2006" data-i18n="fanzone_opt_2006">Germany 2006 — Debut</option>
                 </select>
               </div>
-              <button id="btn-generate-card" class="generator-btn">Generate Card</button>
+              <button id="btn-generate-card" class="generator-btn" data-i18n="fanzone_btn_generate">Generate Card</button>
             </div>
           </div>
         </div>
@@ -617,24 +622,24 @@
       <div id="fan-card-modal" class="fan-modal-overlay" style="display: none;">
         <div class="fan-modal-content">
           <button id="btn-close-modal" class="fan-modal-close" aria-label="Close modal">&times;</button>
-          <h3 class="fan-modal-title">¡Tu Albiceleste Card!</h3>
-          <p class="fan-modal-subtitle">Your custom trading card is ready to download and share.</p>
+          <h3 class="fan-modal-title" data-i18n="fanzone_modal_title">¡Tu Albiceleste Card!</h3>
+          <p class="fan-modal-subtitle" data-i18n="fanzone_modal_desc">Your custom trading card is ready to download and share.</p>
           
           <div class="canvas-preview-box">
             <canvas id="fan-card-canvas" width="400" height="560"></canvas>
             <div class="canvas-actions" id="canvas-actions-container" style="display: none;">
               <button id="btn-download-card" class="action-btn-share download">
                 <svg class="btn-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:2px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                Download PNG
+                <span data-i18n="fanzone_btn_download">Download PNG</span>
               </button>
               <div class="social-share-group">
                 <a href="#" id="share-twitter" target="_blank" rel="noopener" class="action-btn-share twitter">
                   <svg class="btn-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="margin-right:2px;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                  Share on X
+                  <span data-i18n="fanzone_btn_twitter">Share on X</span>
                 </a>
                 <a href="#" id="share-whatsapp" target="_blank" rel="noopener" class="action-btn-share whatsapp">
                   <svg class="btn-icon" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="margin-right:2px;"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.197 1.451 4.782 1.452 5.386 0 9.766-4.38 9.77-9.764.002-2.607-1.01-5.059-2.85-6.902C16.495 2.097 14.049 1.082 11.456 1.08 6.07 1.08 1.69 5.46 1.686 10.845c-.001 1.622.48 3.21 1.393 4.615l-.95 3.475 3.524-.924zm10.963-7.412c-.287-.144-1.702-.84-1.97-.938-.269-.099-.465-.147-.659.144-.195.29-.756.938-.926 1.129-.17.193-.341.217-.628.073-.287-.144-1.21-.447-2.309-1.427-.855-.763-1.433-1.706-1.6-1.996-.168-.29-.018-.447.126-.59.13-.129.287-.338.431-.507.144-.169.192-.29.288-.483.097-.193.048-.361-.024-.507-.072-.144-.66-1.59-.904-2.17-.238-.575-.48-.497-.659-.507l-.56-.008c-.193 0-.507.073-.772.361-.265.29-1.012.989-1.012 2.411 0 1.422 1.036 2.795 1.18 2.99.144.193 2.037 3.111 4.934 4.364.688.298 1.225.476 1.644.609.693.22 1.324.19 1.823.115.556-.083 1.702-.696 1.942-1.37.24-.674.24-1.25.17-1.37-.072-.12-.266-.192-.553-.336z"/></svg>
-                  WhatsApp
+                  <span data-i18n="fanzone_btn_whatsapp">WhatsApp</span>
                 </a>
               </div>
             </div>
@@ -653,8 +658,8 @@
   <!-- ========== PINTEREST STYLE 3-ROW REEL (BELOW HERO) ========== -->
   <section class="hero-reels-section" id="reels-section">
     <div class="hero-reels-title-block">
-      <h2 class="reels-section-title">The Journey in Motion</h2>
-      <p class="reels-section-subtitle">Moments from Messi's historic path with the Albiceleste</p>
+      <h2 class="reels-section-title" data-i18n="reels_title">The Journey in Motion</h2>
+      <p class="reels-section-subtitle" data-i18n="reels_subtitle">Moments from Messi's historic path with the Albiceleste</p>
     </div>
     <div class="hero-reels-wrapper">
       <!-- Row 1: scrolls left -->
@@ -981,6 +986,7 @@
   </section>
 
   <!-- Main Controllers -->
+  <script defer src="translations.js"></script>
   <script type="module" src="threeD-script.js?v=1.0.2"></script>
   <script defer src="interactions.js?v=1.0.2"></script>
 </body>

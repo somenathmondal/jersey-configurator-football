@@ -2385,7 +2385,7 @@ canvas[id^="fabric-canvas-"] {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(15, 32, 56, 0.2);
     transition: background 0.3s ease, transform 0.3s ease;
   }
 
@@ -2394,4 +2394,66 @@ canvas[id^="fabric-canvas-"] {
     transform: scale(1.25);
   }
 }
+
+/* Floating Language Switcher Styles */
+.lang-switcher {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+  display: flex;
+  background: rgba(59, 30, 30, 0.6); /* RedSands Dark Reddish-brown translucent backdrop */
+  border: 1px solid rgba(212, 175, 55, 0.25); /* Subtle Gold border */
+  border-radius: 30px;
+  padding: 4px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(15, 32, 56, 0.2);
+  pointer-events: auto !important; /* Force interactive input */
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.lang-switcher:hover {
+  border-color: rgba(212, 175, 55, 0.5);
+  box-shadow: 0 8px 32px rgba(212, 175, 55, 0.15);
+}
+
+.lang-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.5); /* Muted white text */
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.lang-btn:hover {
+  color: #FFFFFF; /* High contrast bright white on hover */
+}
+
+.lang-btn.active {
+  background: #3B1E1E; /* RedSands theme dark background */
+  color: #FFFFFF; /* High contrast bright white */
+  border: 1px solid rgba(212, 175, 55, 0.6); /* High visibility gold active border */
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+}
+
+/* Ensure mobile compatibility of switcher position */
+@media (max-width: 1024px) {
+  .lang-switcher {
+    top: 1rem;
+    right: 1rem;
+    padding: 3px;
+  }
+  .lang-btn {
+    padding: 5px 11px;
+    font-size: 0.7rem;
+  }
+}
+
 
