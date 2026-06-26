@@ -799,18 +799,47 @@ document.addEventListener('DOMContentLoaded', () => {
           const targetRatio = targetW / targetH;
           const imgRatio = imgW / imgH;
           
+          // Face focus coordinates for all Messi images (normalized x and y, default to 0.5, 0.35)
+          const faceFocus = {
+            'images/card_messi.webp': { x: 0.4948, y: 0.3417 },
+            'images/card_messi_2.jpg': { x: 0.5, y: 0.35 },
+            'images/reels/reel-1.webp': { x: 0.5, y: 0.30 },
+            'images/reels/reel-2.webp': { x: 0.5325, y: 0.2106 },
+            'images/reels/reel-3.webp': { x: 0.5, y: 0.30 },
+            'images/reels/reel-4.webp': { x: 0.5, y: 0.30 },
+            'images/reels/reel-5.webp': { x: 0.5533, y: 0.34 },
+            'images/reels/reel-6.webp': { x: 0.5225, y: 0.2731 },
+            'images/reels/reel-7.webp': { x: 0.4842, y: 0.2869 },
+            'images/reels/reel-8.webp': { x: 0.4983, y: 0.2088 },
+            'images/reels/reel-9.webp': { x: 0.5, y: 0.30 },
+            'images/reels/reel-10.webp': { x: 0.4968, y: 0.2400 },
+            'images/reels/reel-11.webp': { x: 0.4638, y: 0.2500 }, // Overridden to y: 0.25 (face is near top-mid, opencv got false positive at 0.51)
+            'images/reels/orig-1.webp': { x: 0.5732, y: 0.1500 },
+            'images/reels/orig-2.webp': { x: 0.5, y: 0.30 },
+            'images/reels/orig-3.webp': { x: 0.5, y: 0.35 },
+            'images/reels/orig-4.webp': { x: 0.5, y: 0.35 },
+            'images/reels/orig-5.webp': { x: 0.5, y: 0.30 },
+            'images/reels/orig-6.webp': { x: 0.5, y: 0.20 },
+            'images/reels/orig-7.webp': { x: 0.5, y: 0.30 },
+            'images/reels/orig-8.webp': { x: 0.5, y: 0.35 }
+          };
+
+          const focus = faceFocus[randomImageSrc] || { x: 0.5, y: 0.35 };
+          
           if (imgRatio > targetRatio) {
             // Image is wider than target
             sHeight = imgH;
             sWidth = imgH * targetRatio;
-            sx = (imgW - sWidth) / 2;
+            sx = (imgW * focus.x) - (sWidth / 2);
+            sx = Math.max(0, Math.min(imgW - sWidth, sx));
             sy = 0;
           } else {
             // Image is taller than target
             sWidth = imgW;
             sHeight = imgW / targetRatio;
             sx = 0;
-            sy = (imgH - sHeight) / 2;
+            sy = (imgH * focus.y) - (sHeight / 2);
+            sy = Math.max(0, Math.min(imgH - sHeight, sy));
           }
           
           ctx.drawImage(messiImg, sx, sy, sWidth, sHeight, targetX, targetY, targetW, targetH);
