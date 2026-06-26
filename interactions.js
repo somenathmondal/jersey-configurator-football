@@ -742,8 +742,30 @@ document.addEventListener('DOMContentLoaded', () => {
           modal.style.display = 'flex';
         }
 
-        // Randomly select between the 2 available Messi card images
-        const cardImages = ['images/card_messi.webp', 'images/card_messi_2.jpg'];
+        // Randomly select between all 21 available Messi images (including reels assets)
+        const cardImages = [
+          'images/card_messi.webp',
+          'images/card_messi_2.jpg',
+          'images/reels/reel-1.webp',
+          'images/reels/reel-2.webp',
+          'images/reels/reel-3.webp',
+          'images/reels/reel-4.webp',
+          'images/reels/reel-5.webp',
+          'images/reels/reel-6.webp',
+          'images/reels/reel-7.webp',
+          'images/reels/reel-8.webp',
+          'images/reels/reel-9.webp',
+          'images/reels/reel-10.webp',
+          'images/reels/reel-11.webp',
+          'images/reels/orig-1.webp',
+          'images/reels/orig-2.webp',
+          'images/reels/orig-3.webp',
+          'images/reels/orig-4.webp',
+          'images/reels/orig-5.webp',
+          'images/reels/orig-6.webp',
+          'images/reels/orig-7.webp',
+          'images/reels/orig-8.webp'
+        ];
         const randomImageSrc = cardImages[Math.floor(Math.random() * cardImages.length)];
 
         const messiImg = new Image();
